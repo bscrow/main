@@ -35,36 +35,10 @@ image::Ui.png[width="790"]
 
 === Start Session
 
-You can select, view, or delete interview sessions from a list of
-existing interview sessions to continue from an interview you left off
-previously, or you can create a new interview session from scratch.
-
-*Command*
+You can select the current interview session by updating the currentSession attribute in userConfig before launching HireLah! application. currentSession by default is defaultSession.
 
 ....
-view session <session>
-delete session <session>
-start session <session>
-new session <session>
-....
-
-*Example*
-
-....
-view session
-new session CEOInterview
-....
-
-_Action:_ views existing interview sessions, followed by creating and
-starting a new interview session named "CEOInterview"
-
-_Output:_
-
-....
-You have 1 existing interview session:
-JanitorInterview
-
-Started new interview session: CEOInterview
+currentSession: defaultSession
 ....
 
 === Initialization Phase
@@ -88,7 +62,7 @@ list interviewee
 *Execution Example*
 
 ....
-> new interviewee Jane Doe -a Doe
+> add interviewee Jane Doe -a Doe
 > edit interviewee Jane Doe - Janice Doe
 > delete interviewee Doe
 > list interviewee
@@ -115,7 +89,7 @@ The following interviewee has been deleted:
 *Command*
 
 ....
-> new attribute <attribute>
+> add attribute <attribute>
 > edit attribute <attribute> <new attribute>
 > delete attribute <attribute>
 > list attribute
@@ -124,8 +98,8 @@ The following interviewee has been deleted:
 *Execution Example*
 
 ....
-> new attribute teamwork
-> new attribute leadership
+> add attribute teamwork
+> add attribute leadership
 > edit attribute leadership leadership
 > list attribute
 > delete attribute teamwork
@@ -160,7 +134,7 @@ questions.
 *Command*
 
 ....
-new question <question>
+add question <question>
 edit question <question number> <edited question>
 list question
 delete question <question number>
@@ -169,7 +143,7 @@ delete question <question number>
 *Example*
 
 ....
-> new question What are your relevant experiences?
+> add question What are your relevant experiences?
 > edit question 1 What do you hope to accomplish in 5 years?
 > edit question 2 How can you add value to the company?
 > list question
@@ -193,6 +167,64 @@ These are the current questions:
 The following question was deleted:
   1. What do you hope to accomplish in 5 years?
 ....
+
+==== Finalise Interview Attributes and Questions
+
+After the interviewer is satisfied with the list of questions and attributes created for an interview session, the interviewer must finalise changes in attributes and questions. This is to ensure that the interviewers will evaluate all interviewees fairly and equally using the same set of questions and attributes.
+
+*Command*
+
+....
+finalise
+....
+
+_Output:_
+
+....
+Questions and Attributes for this interview session have been finalised.
+....
+
+==== Add, Edit and Delete Metrics
+
+Before the interview process, the interviewer may add, remove, and update Metrics to determine the relative importance of several Attributes. Each metric assigns a numerical score to one or more Attributes, and interviewees can be ranked based on their overall score for this metric in the Decision Phase. 
+
+*Command*
+
+....
+add metric <name> <attribute> <score> [<attribute> <score>...]
+edit metric <name> <attribute> <score> [<attribute> <score>...]
+list metric
+delete metric <name>
+....
+
+*Example*
+
+....
+> add metric Weighted bravery 0.5 manliness 0.4 intellij 0.1
+> edit metric Weighted bravery 0.005 manliness 0.005 intellij 0.99
+> list metric
+> delete metric Weighted
+....
+
+_Output:_
+
+....
+The following metric has been added:
+  Weighted
+
+The following metric has been updated:
+  Weighted
+
+These are the current metrics:
+  1. Weighted
+    - bravery: 0.005
+    - manliness: 0.005
+    - intellij: 0.99
+
+The following metric has been deleted:
+  Weighted
+....
+
 
 === Interview Phase
 
@@ -229,7 +261,7 @@ interview session, to be asked to the interviewees.
 *Command*
 
 ....
-view questions
+list question
 ....
 
 *Example*
@@ -237,7 +269,6 @@ view questions
 _Output:_
 
 ....
-Questions
 Q1. What are your strengths and weaknesses?
 Q2. What are your relevant experiences as a software developer?
 Q3. What was your last salary?
@@ -463,25 +494,16 @@ contains the data of your previous HireLah! folder.
 
 == Command Summary
 
-*Start Session*
-
-* `view session` +
-* `delete session <session>` +
-e.g. `delete session CEOInterview`
-* `start session <session>` +
-e.g. `start session CEOInterview`
-* `new session <session>` +
-e.g. `new session CEOInterview`
 
 *Initialization Phase*
 
-* `new interviewee <fullname> [-a <alias>]` +
-e.g. `new interviewee - Jane Doe -a Doe`
+* `add interviewee <fullname> [-a <alias>]` +
+e.g. `add interviewee - Jane Doe -a Doe`
 * `delete interviewee <interviewee>` +
 e.g. `delete interviewee Doe`
 * `list interviewee`
-* `new attribute <attributes>` +
-e.g. `new attribute teamwork`
+* `add attribute <attributes>` +
+e.g. `add attribute teamwork`
 * `edit attribute <attributes>` +
 e.g. `edit attribute leadership`
 * `delete attribute <attributes>` +
