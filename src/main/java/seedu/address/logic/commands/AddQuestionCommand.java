@@ -36,7 +36,7 @@ public class AddQuestionCommand extends AddCommand {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        ObservableList<Question> questions = model.getQuestionList();
+        ObservableList<Question> questions = model.getQuestionListView();
         Question question = new Question(toAdd);
         if (questions.contains(question)) {
             throw new CommandException(MESSAGE_DUPLICATE_QUESTION);

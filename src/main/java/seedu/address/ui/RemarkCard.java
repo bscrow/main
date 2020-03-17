@@ -8,7 +8,7 @@ import javafx.scene.layout.Region;
 import seedu.address.model.hirelah.Remark;
 
 /**
- * An UI component that displays information of a {@code Person}.
+ * An UI component that displays information of an {@code Interviewee}.
  */
 public class RemarkCard extends UiPart<Region> {
 

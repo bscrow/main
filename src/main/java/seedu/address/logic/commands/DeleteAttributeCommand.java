@@ -34,7 +34,7 @@ public class DeleteAttributeCommand extends DeleteCommand {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        ObservableList<Attribute> attributes = model.getAttributeList();
+        ObservableList<Attribute> attributes = model.getAttributeListView();
         Attribute attribute = find(attributes);
         attributes.remove(attribute);
         return new CommandResult(String.format(MESSAGE_DELETE_ATTRIBUTE_SUCCESS, attribute), ToggleView.ATTRIBUTE);

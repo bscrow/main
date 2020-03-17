@@ -7,13 +7,10 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.Question;
 import seedu.address.model.hirelah.Transcript;
-import seedu.address.model.person.Person;
-
 /**
  * API of the Logic component
  */
@@ -27,37 +24,27 @@ public interface Logic {
      */
     CommandResult execute(String commandText) throws CommandException, ParseException;
 
-    /**
-     * Returns the AddressBook.
-     *
-     * @see seedu.address.model.Model#getAddressBook()
-     */
-    ReadOnlyAddressBook getAddressBook();
-
-    /** Returns an unmodifiable view of the filtered list of persons */
-    ObservableList<Person> getFilteredPersonList();
-
     /** Returns an unmodifiable view of the list of attributes */
-    ObservableList<Attribute> getAttributeList();
+    ObservableList<Attribute> getAttributeListView();
 
     /** Returns an unmodifiable view of the filtered list of interviewees */
-    ObservableList<Interviewee> getFilteredIntervieweeList();
+    ObservableList<Interviewee> getFilteredIntervieweeListView();
 
     /** Returns an unmodifiable view of the list of questions */
-    ObservableList<Question> getQuestionList();
+    ObservableList<Question> getQuestionListView();
 
     /** Returns an unmodifiable view of the transcripts entries of an interviewee.
      *
      * @param interviewee The interviewee whose transcript we are interested in
      */
-    ObservableList<Transcript> getTranscriptList(Interviewee interviewee);
+    ObservableList<Transcript> getTranscriptListView(Interviewee interviewee);
 
 
 
     /**
-     * Returns the user prefs' address book file path.
+     * Returns the user prefs' sessions directory.
      */
-    Path getAddressBookFilePath();
+    Path getSessionsDirectory();
 
     /**
      * Returns the user prefs' GUI settings.

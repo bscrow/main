@@ -27,11 +27,11 @@ class JsonSerializableModel {
      * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
      */
     public JsonSerializableModel(Model source) {
-        questions.addAll(source.getQuestionList().stream()
+        questions.addAll(source.getQuestionListView().stream()
                 .map(JsonAdaptedQuestions::new).collect(Collectors.toList()));
-        attributes.addAll(source.getAttributeList().stream()
+        attributes.addAll(source.getAttributeListView().stream()
                 .map(JsonAdaptedAttributes::new).collect(Collectors.toList()));
-        interviewees.addAll(source.getFilteredIntervieweeList().stream()
+        interviewees.addAll(source.getFilteredIntervieweeListView().stream()
                 .map(JsonAdaptedInterviewee::new).collect(Collectors.toList()));
     }
 

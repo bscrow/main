@@ -5,21 +5,21 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.hirelah.AppPhase;
 import seedu.address.model.hirelah.Attribute;
+import seedu.address.model.hirelah.AttributeList;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.IntervieweeList;
 import seedu.address.model.hirelah.Question;
+import seedu.address.model.hirelah.QuestionList;
+import seedu.address.model.hirelah.Session;
 import seedu.address.model.hirelah.Transcript;
-import seedu.address.model.person.Person;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -27,26 +27,31 @@ import seedu.address.model.person.Person;
 public class ModelManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
-    private final AddressBook addressBook;
+    private Session session;
+    private AppPhase appPhase;
+    private final IntervieweeList intervieweeList;
+    private final AttributeList attributeList;
+    private final QuestionList questionList;
     private final UserPrefs userPrefs;
-    private final FilteredList<Person> filteredPersons;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUserPrefs userPrefs) {
-        super();
-        requireAllNonNull(addressBook, userPrefs);
+    public ModelManager(ReadOnlyUserPrefs userPrefs) {
+        requireAllNonNull(userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with user prefs " + userPrefs);
 
-        this.addressBook = new AddressBook(addressBook);
+        this.appPhase = AppPhase.PRE_SESSION;
+
+        this.intervieweeList = new IntervieweeList();
+        this.attributeList = new AttributeList();
+        this.questionList = new QuestionList();
         this.userPrefs = new UserPrefs(userPrefs);
-        filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new UserPrefs());
     }
 
     //=========== UserPrefs ==================================================================================
@@ -74,103 +79,90 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public Path getAddressBookFilePath() {
-        return userPrefs.getAddressBookFilePath();
+    public Path getSessionsDirectory() {
+        return userPrefs.getSessionsDirectory();
     }
 
     @Override
-    public void setAddressBookFilePath(Path addressBookFilePath) {
+    public void setSessionsDirectory(Path addressBookFilePath) {
         requireNonNull(addressBookFilePath);
-        userPrefs.setAddressBookFilePath(addressBookFilePath);
+        userPrefs.setSessionsDirectory(addressBookFilePath);
     }
 
-    //=========== AddressBook ================================================================================
+    //=========== App state setters/getters ======================================================
 
     @Override
-    public void setAddressBook(ReadOnlyAddressBook addressBook) {
-        this.addressBook.resetData(addressBook);
-    }
-
-    @Override
-    public ReadOnlyAddressBook getAddressBook() {
-        return addressBook;
+    public void setSession(Session session) {
+        this.session = session;
     }
 
     @Override
-    public boolean hasPerson(Person person) {
-        requireNonNull(person);
-        return addressBook.hasPerson(person);
+    public Session getSession() {
+        return session;
     }
 
     @Override
-    public void deletePerson(Person target) {
-        addressBook.removePerson(target);
+    public void setAppPhase(AppPhase phase) {
+        this.appPhase = phase;
     }
-
-    @Override
-    public void addPerson(Person person) {
-        addressBook.addPerson(person);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-    }
-
-    @Override
-    public void setPerson(Person target, Person editedPerson) {
-        requireAllNonNull(target, editedPerson);
-
-        addressBook.setPerson(target, editedPerson);
-    }
-
-    //=========== Filtered Person List Accessors =============================================================
 
     /**
-     * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
-     * {@code versionedAddressBook}
+     * Returns the current mode of the App
      */
     @Override
-    public ObservableList<Person> getFilteredPersonList() {
-        return filteredPersons;
+    public AppPhase getAppPhase() {
+        return appPhase;
+    }
+
+    //=========== Observable accessors =============================================================
+
+
+    @Override
+    public ObservableList<Attribute> getAttributeListView() {
+        return FXCollections.unmodifiableObservableList(attributeList.getObservableList());
     }
 
     @Override
-    public ObservableList<Attribute> getAttributeList() {
-        return FXCollections.observableList(List.of(new Attribute("Manliness"), new Attribute("Womanliness")));
+    public ObservableList<Question> getQuestionListView() {
+        return FXCollections.unmodifiableObservableList(questionList.getObservableList());
     }
 
     @Override
-    public ObservableList<Question> getQuestionList() {
-        return FXCollections.observableList(List.of(
-                new Question("How old are you?"),
-                new Question("How old are you?"),
-                new Question("How old are you?"),
-                new Question("How old are you?"),
-                new Question("How old are you?")));
-    }
-
-    @Override
-    public ObservableList<Transcript> getTranscriptList(Interviewee interviewee) {
+    public ObservableList<Transcript> getTranscriptListView(Interviewee interviewee) {
         return FXCollections.observableList(List.of());
     }
 
     @Override
-    public ObservableList<Interviewee> getFilteredIntervieweeList() {
-        Interviewee i;
-        try {
-            i = new Interviewee("Bob", 1);
-        } catch (IllegalValueException e) {
-            throw new RuntimeException();
-        }
-        return FXCollections.observableList(List.of(i));
+    public ObservableList<Interviewee> getFilteredIntervieweeListView() {
+        return FXCollections.unmodifiableObservableList(intervieweeList.getObservableList());
     }
+
+    //=========== Model component accessors ========================================================
 
     @Override
     public IntervieweeList getIntervieweeList() {
-        return null;
+        return intervieweeList;
+    }
+
+    /**
+     * Returns the list of attributes to score interviewees by
+     */
+    @Override
+    public AttributeList getAttributeList() {
+        return attributeList;
     }
 
     @Override
-    public void updateFilteredPersonList(Predicate<Person> predicate) {
-        requireNonNull(predicate);
-        filteredPersons.setPredicate(predicate);
+    public QuestionList getQuestionList() {
+        return questionList;
+    }
+
+    /**
+     * Finalizes the questions and attributes so they do not change between interviews
+     */
+    @Override
+    public void finalizeQuestionsAndAttributes() {
+        // TODO: add finalizing methods for Questions and Attributes
     }
 
     @Override
@@ -187,9 +179,7 @@ public class ModelManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return addressBook.equals(other.addressBook)
-                && userPrefs.equals(other.userPrefs)
-                && filteredPersons.equals(other.filteredPersons);
+        return userPrefs.equals(other.userPrefs);
     }
 
 }

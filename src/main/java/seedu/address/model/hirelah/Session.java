@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataConversionException;
-import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -39,7 +38,7 @@ public class Session {
             if (optionalModel.isEmpty()) {
                 logger.info("Data file not found. Will be starting with an empty session.");
             }
-            initialData = optionalModel.orElseGet(() -> new ModelManager(new AddressBook(), new UserPrefs()));
+            initialData = optionalModel.orElseGet(() -> new ModelManager(new UserPrefs()));
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty session");
             initialData = new ModelManager();

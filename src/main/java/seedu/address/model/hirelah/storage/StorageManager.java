@@ -13,15 +13,12 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.JsonUtil;
 import seedu.address.model.Model;
-import seedu.address.storage.AddressBookStorage;
 
 /**
  * Manages storage of different Sessions data in local storage.
  */
 public class StorageManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(seedu.address.storage.StorageManager.class);
-
-    private AddressBookStorage addressBookStorage;
 
     private Path filePath;
 

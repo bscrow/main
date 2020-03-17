@@ -1,6 +1,5 @@
 package seedu.address.logic;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
@@ -10,15 +9,14 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.logic.parser.AddressBookParser;
+import seedu.address.logic.parser.InterviewParser;
+import seedu.address.logic.parser.NormalParser;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
-import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.Question;
 import seedu.address.model.hirelah.Transcript;
-import seedu.address.model.person.Person;
 import seedu.address.storage.Storage;
 
 /**
@@ -30,12 +28,14 @@ public class LogicManager implements Logic {
 
     private final Model model;
     private final Storage storage;
-    private final AddressBookParser addressBookParser;
+    private final InterviewParser interviewParser;
+    private final NormalParser normalParser;
 
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.storage = storage;
-        addressBookParser = new AddressBookParser();
+        interviewParser = new InterviewParser();
+        normalParser = new NormalParser();
     }
 
     @Override
@@ -43,56 +43,53 @@ public class LogicManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
         CommandResult commandResult;
-        Command command = addressBookParser.parseCommand(commandText);
+        Command command;
+        switch (model.getAppPhase()) {
+        case PRE_SESSION:
+            // TODO: PreSession parser
+        case NORMAL:
+            command = normalParser.parseCommand(commandText);
+            break;
+        case INTERVIEW:
+            command = interviewParser.parseCommand(commandText);
+            break;
+        default:
+            throw new IllegalArgumentException("Impossible enum case");
+        }
         commandResult = command.execute(model);
 
-        try {
-            storage.saveAddressBook(model.getAddressBook());
-        } catch (IOException ioe) {
-            throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
-        }
+        //try {
+        //    storage.saveAddressBook(model.getAddressBook());
+        //} catch (IOException ioe) {
+        //    throw new CommandException(FILE_OPS_ERROR_MESSAGE + ioe, ioe);
+        //}
 
         return commandResult;
     }
 
     @Override
-    public ReadOnlyAddressBook getAddressBook() {
-        return model.getAddressBook();
+    public ObservableList<Attribute> getAttributeListView() {
+        return model.getAttributeListView();
     }
 
     @Override
-    public ObservableList<Person> getFilteredPersonList() {
-        return model.getFilteredPersonList();
-    }
-
-    /*
-      @todo:
-      Create the following methods in model when we update them.
-     */
-
-    @Override
-    public ObservableList<Attribute> getAttributeList() {
-        return model.getAttributeList();
+    public ObservableList<Question> getQuestionListView() {
+        return model.getQuestionListView();
     }
 
     @Override
-    public ObservableList<Question> getQuestionList() {
-        return model.getQuestionList();
+    public ObservableList<Transcript> getTranscriptListView(Interviewee interviewee) {
+        return model.getTranscriptListView(interviewee);
     }
 
     @Override
-    public ObservableList<Transcript> getTranscriptList(Interviewee interviewee) {
-        return model.getTranscriptList(interviewee);
+    public ObservableList<Interviewee> getFilteredIntervieweeListView() {
+        return model.getFilteredIntervieweeListView();
     }
 
     @Override
-    public ObservableList<Interviewee> getFilteredIntervieweeList() {
-        return model.getFilteredIntervieweeList();
-    }
-
-    @Override
-    public Path getAddressBookFilePath() {
-        return model.getAddressBookFilePath();
+    public Path getSessionsDirectory() {
+        return model.getSessionsDirectory();
     }
 
     @Override

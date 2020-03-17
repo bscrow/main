@@ -35,9 +35,10 @@ public class NormalParser {
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
     private static final HashMap<String, CommandSupplier> suppliers = new HashMap<>() {
         {
-            put("add", (x) -> new AddCommandParser().parse(x));
-            put("edit", (x) -> new EditCommandParser().parse(x));
-            put("delete", (x) -> new DeleteCommandParser().parse(x));
+            put("add", args -> new AddCommandParser().parse(args));
+            put("edit", args -> new EditCommandParser().parse(args));
+            put("delete", args -> new DeleteCommandParser().parse(args));
+            put("list", args -> new ListCommandParser().parse(args));
         }
     };
 

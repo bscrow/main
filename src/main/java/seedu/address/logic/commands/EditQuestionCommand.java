@@ -36,7 +36,7 @@ public class EditQuestionCommand extends EditCommand {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        ObservableList<Question> questions = model.getQuestionList();
+        ObservableList<Question> questions = model.getQuestionListView();
         try {
             int index = Integer.parseInt(questionIndex);
 
