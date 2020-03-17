@@ -18,7 +18,7 @@ public class EditIntervieweeCommand extends EditCommand {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Edits the name of the interviewee identified by the identifier.\n"
             + "Parameters: IDENTIFIER NAME\n"
-            + "Example: update " + COMMAND_WORD + "Doe Mario Lorenzo";
+            + "Example: update " + COMMAND_WORD + " Doe Mario Lorenzo";
 
     public static final String MESSAGE_EDIT_INTERVIEWEE_SUCCESS = "Successfully edited Interviewee: %1$s to %1$s";
     public static final String MESSAGE_EDIT_DUPLICATE_PREFIX = "There are multiple interviewees with identifier: %s";

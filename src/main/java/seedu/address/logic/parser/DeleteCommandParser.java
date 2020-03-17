@@ -18,7 +18,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class DeleteCommandParser implements Parser<DeleteCommand> {
 
     private static final Pattern BASIC_DELETE_COMMAND_FORMAT =
-            Pattern.compile("(?<deleteCommandWord>\\S+)(?<deleteArguments>.+)");
+            Pattern.compile("(?<deleteCommandWord>\\S+) (?<deleteArguments>.+)");
 
     /**
      * Parses the given {@code String} of arguments in the context of the DeleteCommand
@@ -38,13 +38,16 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
 
         switch (deleteCommandWord) {
         case DeleteAttributeCommand.COMMAND_WORD:
-            return new DeleteAttributeCommandParser().parse(deleteArguments);
+            return new DeleteAttributeCommand(deleteArguments.trim());
+
         case DeleteIntervieweeCommand.COMMAND_WORD:
-            return new DeleteIntervieweeCommandParser().parse(deleteArguments);
+            return new DeleteIntervieweeCommand(deleteArguments.trim());
+
         case DeleteQuestionCommand.COMMAND_WORD:
-            return new DeleteQuestionCommandParser().parse(deleteArguments);
+            return new DeleteQuestionCommand(deleteArguments.trim());
+
         default:
-            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+            throw new ParseException(MESSAGE_UNKNOWN_COMMAND.trim());
         }
     }
 

@@ -54,7 +54,7 @@ aliases, or assigned ID.
 
 ....
 add interviewee <fullname> [-a <alias>]
-edit interviewee <old full name> - <new full name>
+edit interviewee -o <old full name> -n <new full name>
 delete interviewee <interviewee>
 list interviewee
 ....
@@ -63,7 +63,7 @@ list interviewee
 
 ....
 > add interviewee Jane Doe -a Doe
-> edit interviewee Jane Doe - Janice Doe
+> edit interviewee -o Jane Doe -n Janice Doe
 > delete interviewee Doe
 > list interviewee
 ....
@@ -90,7 +90,7 @@ The following interviewee has been deleted:
 
 ....
 > add attribute <attribute>
-> edit attribute <attribute> <new attribute>
+> edit attribute -o <old attribute> -n <new attribute>
 > delete attribute <attribute>
 > list attribute
 ....
