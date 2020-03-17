@@ -186,7 +186,7 @@ Questions and Attributes for this interview session have been finalised.
 
 ==== Add, Edit and Delete Metrics
 
-Before the interview process, the interviewer may add, remove, and update Metrics to determine the relative importance of several Attributes. Each metric assigns a numerical score to one or more Attributes, and interviewees can be ranked based on their overall score for this metric in the Decision Phase. 
+Before the interview process, the interviewer may add, remove, and update Metrics to determine the relative importance of several Attributes. Each metric assigns a numerical score to one or more Attributes, and interviewees can be ranked based on their overall score for this metric in the Decision Phase.
 
 *Command*
 
