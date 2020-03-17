@@ -73,9 +73,9 @@ public class MainWindow extends UiPart<Stage> {
         setAccelerators();
 
         helpWindow = new HelpWindow();
-        intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeList());
-        attributeListPanel = new AttributeListPanel(logic.getAttributeList());
-        questionListPanel = new QuestionListPanel(logic.getQuestionList());
+        intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeListView());
+        attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
+        questionListPanel = new QuestionListPanel(logic.getQuestionListView());
     }
 
     public Stage getPrimaryStage() {
@@ -125,7 +125,7 @@ public class MainWindow extends UiPart<Stage> {
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
-        StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getAddressBookFilePath());
+        StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getSessionsDirectory());
         statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
