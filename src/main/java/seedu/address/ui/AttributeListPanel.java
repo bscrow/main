@@ -13,15 +13,15 @@ import seedu.address.model.hirelah.Attribute;
  * Panel containing the list of attributes.
  */
 public class AttributeListPanel extends UiPart<Region> {
-    private static final String FXML = "GeneralListPanel.fxml";
+    private static final String FXML = "TextListView.fxml";
     private final Logger logger = LogsCenter.getLogger(AttributeListPanel.class);
 
     @FXML
-    private ListView<Attribute> generalListView;
+    private ListView<Attribute> textListView;
 
     public AttributeListPanel(ObservableList<Attribute> attributeList) {
         super(FXML);
-        generalListView.setItems(attributeList);
+        textListView.setItems(attributeList);
     }
 
 }

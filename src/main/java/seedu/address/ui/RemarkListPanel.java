@@ -14,7 +14,7 @@ import seedu.address.model.hirelah.Remark;
  * Panel containing the list of remarks for an interviewee.
  */
 public class RemarkListPanel extends UiPart<Region> {
-    private static final String FXML = "RemarkListPanel.fxml";
+    private static final String FXML = "CardListView.fxml";
     private final Logger logger = LogsCenter.getLogger(RemarkListPanel.class);
 
     @FXML

@@ -107,6 +107,31 @@
     -fx-background-color: #515658;
 }
 
+#textListView .list-view {
+    -fx-padding: 8;
+    -fx-background-color: derive(#1d1d1d, 20%);
+}
+
+#textListView .list-cell:filled {
+
+    -fx-label-padding: 8px;
+    -fx-background-insets: 5px;
+    -fx-text-fill: white;
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI";
+    -fx-background-color: #3c3e3f;
+    -fx-background-radius: 5, 20, 5;
+    -fx-effect: dropshadow(three-pass-box, #515658, 10, 0, 0, 0);
+}
+/*
+#textListView .list-cell:filled:odd {
+    -fx-background-color: #515658;
+}
+
+#textListView .list-cell:filled:even {
+    -fx-background-color: #3c3e3f;
+}
+*/
 .list-cell:filled:selected {
     -fx-background-color: #424d5f;
 }

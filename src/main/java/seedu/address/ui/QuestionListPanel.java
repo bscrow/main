@@ -14,16 +14,16 @@ import seedu.address.model.hirelah.Question;
  * Panel containing the list of questions.
  */
 public class QuestionListPanel extends UiPart<Region> {
-    private static final String FXML = "GeneralListPanel.fxml";
+    private static final String FXML = "TextListView.fxml";
     private final Logger logger = LogsCenter.getLogger(QuestionListPanel.class);
 
     @FXML
-    private ListView<Question> generalListView;
+    private ListView<Question> textListView;
 
     public QuestionListPanel(ObservableList<Question> questionList) {
         super(FXML);
-        generalListView.setItems(questionList);
-        generalListView.setCellFactory(listView -> new QuestionListViewCell());
+        textListView.setItems(questionList);
+        textListView.setCellFactory(listView -> new QuestionListViewCell());
     }
 
 
@@ -36,6 +36,8 @@ public class QuestionListPanel extends UiPart<Region> {
             super.updateItem(question, empty);
             int questionNumber = getIndex() + 1;
             setText(question == null ? "" : questionNumber + ". " + question.toString());
+            setPrefWidth(150.0);
+            setWrapText(true);
         }
     }
 }

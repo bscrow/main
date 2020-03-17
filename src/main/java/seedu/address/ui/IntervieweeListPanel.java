@@ -14,16 +14,16 @@ import seedu.address.model.hirelah.Interviewee;
  * Panel containing the list of interviewees.
  */
 public class IntervieweeListPanel extends UiPart<Region> {
-    private static final String FXML = "GeneralListPanel.fxml";
+    private static final String FXML = "CardListView.fxml";
     private final Logger logger = LogsCenter.getLogger(IntervieweeListPanel.class);
 
     @FXML
-    private ListView<Interviewee> generalListView;
+    private ListView<Interviewee> cardListView;
 
     public IntervieweeListPanel(ObservableList<Interviewee> intervieweeList) {
         super(FXML);
-        generalListView.setItems(intervieweeList);
-        generalListView.setCellFactory(listView -> new IntervieweeListViewCell());
+        cardListView.setItems(intervieweeList);
+        cardListView.setCellFactory(listView -> new IntervieweeListViewCell());
     }
 
     /**
