@@ -4,7 +4,17 @@ import java.nio.file.Path;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
-import seedu.address.model.hirelah.*;
+import seedu.address.model.hirelah.AppPhase;
+import seedu.address.model.hirelah.Attribute;
+import seedu.address.model.hirelah.AttributeList;
+import seedu.address.model.hirelah.Interviewee;
+import seedu.address.model.hirelah.IntervieweeList;
+import seedu.address.model.hirelah.Metric;
+import seedu.address.model.hirelah.MetricList;
+import seedu.address.model.hirelah.Question;
+import seedu.address.model.hirelah.QuestionList;
+import seedu.address.model.hirelah.Session;
+import seedu.address.model.hirelah.Transcript;
 
 /**
  * The API of the Model component.
