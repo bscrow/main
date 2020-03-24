@@ -35,15 +35,19 @@ public class MainWindow extends UiPart<Stage> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private IntervieweeListPanel intervieweeListPanel;
-    private RemarkListPanel remarkListPanel;
     private AttributeListPanel attributeListPanel;
-    private QuestionListPanel questionListPanel;
     private DetailedIntervieweeCard detailedIntervieweeCard;
-    private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+    private IntervieweeListPanel intervieweeListPanel;
+    private MetricListPanel metricListPanel;
+    private QuestionListPanel questionListPanel;
+    private RemarkListPanel remarkListPanel;
+    private ResultDisplay resultDisplay;
 
+    // On startup, HireLah shows the list of interviewees
     private ToggleView toggleView = ToggleView.INTERVIEWEE;
+
+    private Interviewee currentInterviewee;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -72,10 +76,13 @@ public class MainWindow extends UiPart<Stage> {
 
         setAccelerators();
 
+        attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
         helpWindow = new HelpWindow();
         intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeListView());
-        attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
+        metricListPanel = new MetricListPanel(logic.getMetricListView());
         questionListPanel = new QuestionListPanel(logic.getQuestionListView());
+
+        this.currentInterviewee = null;
     }
 
     public Stage getPrimaryStage() {
@@ -150,8 +157,8 @@ public class MainWindow extends UiPart<Stage> {
      * @param toggleView enum representing what should be displayed
      */
     @FXML
-    public void handleToggle(ToggleView toggleView) throws IllegalValueException {
-        if (this.toggleView == toggleView) {
+    public void handleToggle(ToggleView toggleView) {
+        if (this.toggleView == toggleView && this.toggleView != ToggleView.TRANSCRIPT) {
             return;
         }
         this.toggleView = toggleView;
@@ -162,20 +169,32 @@ public class MainWindow extends UiPart<Stage> {
             listPanelStackPane.getChildren().add(attributeListPanel.getRoot());
             break;
 
+        case INTERVIEWEE: // interviewee
+            listPanelStackPane.getChildren().add(intervieweeListPanel.getRoot());
+            break;
+
+        case METRIC: // metrics
+            listPanelStackPane.getChildren().add(metricListPanel.getRoot());
+            break;
+
         case QUESTION: // questions
             listPanelStackPane.getChildren().add(questionListPanel.getRoot());
             break;
 
         case TRANSCRIPT: // transcript
+            Interviewee currentInterviewee = logic.getCurrentInterviewee();
+            if (currentInterviewee.equals(this.currentInterviewee)) {
+                break;
+            }
+            // remarkListPanel = new RemarkListPanel(FXCollections
+            //         .unmodifiableObservableList(logic.getCurrentInterviewee()
+            //         .getTranscript()
+            //         .get()
+            //         .getRemarkList()));
             remarkListPanel = new RemarkListPanel(null);
-            detailedIntervieweeCard = new DetailedIntervieweeCard(new Interviewee("Test name",
-                    10086));
+            detailedIntervieweeCard = new DetailedIntervieweeCard(currentInterviewee);
             listPanelStackPane.getChildren().addAll(remarkListPanel.getRoot(), detailedIntervieweeCard.getRoot());
             StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
-            break;
-
-        case INTERVIEWEE: // interviewee
-            listPanelStackPane.getChildren().add(intervieweeListPanel.getRoot());
             break;
 
         default:

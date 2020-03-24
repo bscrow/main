@@ -2,8 +2,10 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
@@ -18,12 +20,18 @@ public class RemarkListPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(RemarkListPanel.class);
 
     @FXML
-    private ListView<Remark> generalListView;
+    private ListView<Remark> cardListView;
+
+    @FXML
+    private Label title;
 
     public RemarkListPanel(ObservableList<Remark> remarkList) {
         super(FXML);
-        generalListView.setItems(remarkList);
-        generalListView.setCellFactory(listView -> new RemarkListViewCell());
+        title.setText("Remarks");
+        cardListView.setItems(remarkList);
+        cardListView.setCellFactory(listView -> new RemarkListViewCell());
+        cardListView.getItems().addListener(
+                (ListChangeListener<Remark>) c -> cardListView.scrollTo(c.getList().size() - 1));
     }
 
     /**

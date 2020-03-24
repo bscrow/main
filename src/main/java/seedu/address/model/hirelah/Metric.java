@@ -35,6 +35,24 @@ public class Metric {
     }
 
     /**
+     * Get the name given to a metric.
+     *
+     * @return String name of the metric
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the map of attribute to weight.
+     *
+     * @return HashMap of Attribute to Weight.
+     */
+    public HashMap<Attribute, Double> getMap() {
+        return this.attributeToWeight;
+    }
+
+    /**
      * Set a particular attribute to a value.
      * @param attribute The attribute that the value wants to be set.
      * @param value The value of the attribute.

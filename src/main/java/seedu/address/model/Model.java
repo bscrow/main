@@ -84,4 +84,6 @@ public interface Model {
 
     /** Finalizes the questions and attributes so they do not change between interviews */
     void finalizeQuestionsAndAttributes();
+
+    ObservableList<Transcript> getCurrentTranscriptListView();
 }

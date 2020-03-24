@@ -2,8 +2,10 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
@@ -20,10 +22,16 @@ public class IntervieweeListPanel extends UiPart<Region> {
     @FXML
     private ListView<Interviewee> cardListView;
 
+    @FXML
+    private Label title;
+
     public IntervieweeListPanel(ObservableList<Interviewee> intervieweeList) {
         super(FXML);
+        title.setText("Interviewees");
         cardListView.setItems(intervieweeList);
         cardListView.setCellFactory(listView -> new IntervieweeListViewCell());
+        cardListView.getItems().addListener(
+                (ListChangeListener<Interviewee>) c -> cardListView.scrollTo(c.getList().size() - 1));
     }
 
     /**

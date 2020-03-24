@@ -375,3 +375,15 @@
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
+
+#title {
+    -fx-font-size: 20px;
+    -fx-font-family: "Roboto header";
+    -fx-font-style: oblique;
+    -fx-font-weight: 700;
+    -fx-text-fill: white;
+    -fx-border-color: white, transparent, white;
+    -fx-border-width: 0 0 1 0, 0 0 1 0, 0 0 1 0;
+    -fx-border-insets: 0 0 1 0, 0 0 2 0, 0 0 3 0;
+    -fx-label-margin: 8px;
+}

@@ -15,8 +15,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.Model;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.Interviewee;
+import seedu.address.model.hirelah.Metric;
 import seedu.address.model.hirelah.Question;
-import seedu.address.model.hirelah.Transcript;
 import seedu.address.storage.Storage;
 
 /**
@@ -78,8 +78,13 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public ObservableList<Transcript> getTranscriptListView(Interviewee interviewee) {
-        return model.getTranscriptListView(interviewee);
+    public ObservableList<Metric> getMetricListView() {
+        return null;
+    }
+
+    @Override
+    public Interviewee getCurrentInterviewee() {
+        return null;
     }
 
     @Override

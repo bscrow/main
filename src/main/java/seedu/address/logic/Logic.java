@@ -9,8 +9,8 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.Interviewee;
+import seedu.address.model.hirelah.Metric;
 import seedu.address.model.hirelah.Question;
-import seedu.address.model.hirelah.Transcript;
 /**
  * API of the Logic component
  */
@@ -33,11 +33,11 @@ public interface Logic {
     /** Returns an unmodifiable view of the list of questions */
     ObservableList<Question> getQuestionListView();
 
-    /** Returns an unmodifiable view of the transcripts entries of an interviewee.
-     *
-     * @param interviewee The interviewee whose transcript we are interested in
-     */
-    ObservableList<Transcript> getTranscriptListView(Interviewee interviewee);
+    /** Returns an unmodifiable view of the list of metrics */
+    ObservableList<Metric> getMetricListView();
+
+    /** Returns the Interviewee currently being looked at*/
+    Interviewee getCurrentInterviewee();
 
 
 
