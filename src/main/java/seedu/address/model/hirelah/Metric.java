@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import seedu.address.commons.exceptions.IllegalValueException;
+
 /*
  * Metric
  *
@@ -22,6 +24,10 @@ import java.util.Map;
  */
 
 public class Metric {
+    public static final String MESSAGE_CONSTRAINTS =
+            "A name of metric should only contain alphabet characters and spaces, and it should not be blank";
+    public static final String VALIDATION_REGEX = "[\\p{Alpha}][\\p{Alpha} ]*";
+
     private String name;
     private HashMap<Attribute, Double> attributeToWeight;
 
@@ -29,9 +35,23 @@ public class Metric {
      * Constructs a Metric instance.
      * @param name The name of the metric.
      */
-    public Metric(String name) {
+    public Metric(String name, HashMap<Attribute, Double> attributeToWeight) {
         this.name = name;
-        this.attributeToWeight = new HashMap<>();
+        this.attributeToWeight = attributeToWeight;
+    }
+
+    /**
+     * Constructs a Metric with validation.
+     *
+     * @param name The name of the metric.
+     * @return The created metric.
+     * @throws IllegalValueException if the name is invalid.
+     */
+    public static Metric of(String name, HashMap<Attribute, Double> attributeToWeight) throws IllegalValueException {
+        if (!isValidMetricName(name)) {
+            throw new IllegalValueException(MESSAGE_CONSTRAINTS);
+        }
+        return new Metric(name, attributeToWeight);
     }
 
     /**
@@ -50,6 +70,17 @@ public class Metric {
      */
     public HashMap<Attribute, Double> getMap() {
         return this.attributeToWeight;
+    }
+
+    /**
+     * Returns true if a given string is a valid name.
+     */
+    public static boolean isValidMetricName(String test) {
+        return test.matches(VALIDATION_REGEX);
+    }
+
+    public Metric setName(String updatedName) throws IllegalValueException {
+        return Metric.of(updatedName, new HashMap<>(attributeToWeight));
     }
 
     /**

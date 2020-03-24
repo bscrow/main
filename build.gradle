@@ -67,9 +67,8 @@ dependencies {
 }
 
 shadowJar {
-    archiveName = 'addressbook.jar'
-
-    destinationDir = file("${buildDir}/jar/")
+    archiveBaseName = "hirelah"
+    archiveVersion = "1.2.1"
 }
 
 task coverage(type: JacocoReport) {

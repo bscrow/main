@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import seedu.address.logic.commands.EditAttributeCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditIntervieweeCommand;
+import seedu.address.logic.commands.EditMetricCommand;
 import seedu.address.logic.commands.EditQuestionCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -47,6 +48,8 @@ public class EditCommandParser implements Parser<EditCommand> {
         case EditQuestionCommand.COMMAND_WORD:
             return new EditQuestionCommandParser().parse(editArguments);
 
+        case EditMetricCommand.COMMAND_WORD:
+            return new EditMetricCommandParser().parse(editArguments);
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
         }

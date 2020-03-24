@@ -66,6 +66,7 @@ public class MetricCard extends UiPart<Region> {
 
         attributeToWeight.getColumns().set(1, weightColumn);
 
+
     }
 
 

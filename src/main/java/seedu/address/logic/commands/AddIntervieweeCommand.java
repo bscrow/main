@@ -53,7 +53,7 @@ public class AddIntervieweeCommand extends AddCommand {
             } else {
                 interviewees.addIntervieweeWithAlias(fullname, alias);
             }
-        } catch (IllegalValueException | IllegalActionException e) {
+        } catch (IllegalActionException | IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
 

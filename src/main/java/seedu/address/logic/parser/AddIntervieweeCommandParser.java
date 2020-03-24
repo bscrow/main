@@ -19,7 +19,6 @@ public class AddIntervieweeCommandParser implements Parser<AddIntervieweeCommand
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddIntervieweeCommand parse(String arguments) throws ParseException {
-        System.out.println("'" + arguments + "'");
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(arguments, PREFIX_ALIAS);
 

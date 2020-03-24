@@ -9,5 +9,5 @@ public enum ToggleView {
     METRIC,
     QUESTION,
     SESSION,
-    TRANSCRIPT
+    TRANSCRIPT,
 }

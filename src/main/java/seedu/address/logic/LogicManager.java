@@ -79,7 +79,7 @@ public class LogicManager implements Logic {
 
     @Override
     public ObservableList<Metric> getMetricListView() {
-        return null;
+        return model.getMetricListView();
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import seedu.address.logic.commands.AddAttributeCommand;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.AddIntervieweeCommand;
+import seedu.address.logic.commands.AddMetricCommand;
 import seedu.address.logic.commands.AddQuestionCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -45,6 +46,9 @@ public class AddCommandParser implements Parser<AddCommand> {
 
         case AddQuestionCommand.COMMAND_WORD:
             return new AddQuestionCommand(addArguments.trim());
+
+        case AddMetricCommand.COMMAND_WORD:
+            return new AddMetricCommandParser().parse(addArguments.trim());
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

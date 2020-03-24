@@ -7,7 +7,6 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.hirelah.QuestionList;
 
-
 /**
  * AddQuestionCommand describes the behavior when the
  * client wants to add a question to the list.
@@ -37,6 +36,10 @@ public class AddQuestionCommand extends AddCommand {
         requireNonNull(model);
         QuestionList questions = model.getQuestionList();
         try {
+            if (model.isfinalisedInterviewProperties()) {
+                throw new CommandException("The interview session's questions has been finalised."
+                        + " You can no longer add a new question.");
+            }
             questions.add(toAdd);
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());

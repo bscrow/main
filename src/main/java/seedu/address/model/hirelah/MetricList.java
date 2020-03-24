@@ -1,8 +1,15 @@
 package seedu.address.model.hirelah;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+
 
 /*
  * MetricList
@@ -23,38 +30,72 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 
 public class MetricList {
+    private static final String ALREADY_EXISTS_MESSAGE = "This metric is already exists!";
     private static final String DUPLICATE_MESSAGE = "There are multiple metrics with the same prefix.";
+    private static final String INCOMPLETE_MESSAGE = "The number of attributes and the number of weights is not equal.";
     private static final String NOT_FOUND_MESSAGE = "No metrics with the entered prefix.";
 
-    private ArrayList<Metric> metrics;
+    private ObservableList<Metric> metrics;
 
     /**
      * Constructs a MetricList instance.
      */
     public MetricList() {
-        this.metrics = new ArrayList<>();
+        this.metrics = FXCollections.observableArrayList();
+    }
+
+    public ObservableList<Metric> getObservableList() {
+        return metrics;
     }
 
     /**
      * Adds the metric to the list.
      * @param metricName The metric name.
-     * @return The message outcome.
+     * @throws IllegalValueException If the name of the metric already exists.
      */
 
-    public String add(String metricName) throws IllegalValueException {
-        try {
-            Metric metric = new Metric(metricName);
-            boolean isDuplicate = isDuplicate(metric);
-
-            if (isDuplicate) {
-                throw new IllegalValueException("This attribute is already exists!");
-            }
-
-            metrics.add(metric);
-            return String.format("Successfully added metric: %s", metric);
-        } catch (IllegalArgumentException e) {
-            return e.getMessage();
+    public void add(String metricName, AttributeList attributes,
+                    List<String> attributePrefixes, List<Double> weightages) throws IllegalValueException {
+        if (!isEqualSizeMapping(attributePrefixes, weightages)) {
+            throw new IllegalValueException(INCOMPLETE_MESSAGE);
         }
+        HashMap<Attribute, Double> attributeToScore = new HashMap<>();
+        for (int i = 0; i < attributePrefixes.size(); i++) {
+            Attribute attribute = attributes.find(attributePrefixes.get(i));
+            attributeToScore.put(attribute, weightages.get(i));
+        }
+        Metric metric = Metric.of(metricName, attributeToScore);
+        boolean isDuplicate = isDuplicate(metric);
+
+        if (isDuplicate) {
+            throw new IllegalValueException(ALREADY_EXISTS_MESSAGE);
+        }
+
+        metrics.add(metric);
+    }
+
+    /**
+     * Edits the name or the weightage of a metric.
+     * @param metricPrefix The prefix of the current metric.
+     * @param updatedName The updated name of the metric.
+     * @param attributes The list of attributes that is available in a sessiong.
+     * @param attributePrefixes The list of attribute prefixes.
+     * @param weightages The list of the weightages that wants to be added.
+     * @throws IllegalValueException If there is a formatting error in the command.
+     */
+
+    public void edit(String metricPrefix, String updatedName, AttributeList attributes,
+                     List<String> attributePrefixes, List<Double> weightages) throws IllegalValueException {
+        Metric metric = find(metricPrefix);
+        Metric updatedMetric = metric.setName(updatedName);
+
+        for (int i = 0; i < attributePrefixes.size(); i++) {
+            Attribute attribute = attributes.find(attributePrefixes.get(i));
+            updatedMetric.setValueToAttribute(attribute, weightages.get(i));
+        }
+
+        int index = metrics.indexOf(metric);
+        metrics.set(index, updatedMetric);
     }
 
     /**
@@ -65,10 +106,18 @@ public class MetricList {
      */
 
     public Metric find(String metricPrefix) throws IllegalValueException {
-        checkPrefix(metricPrefix);
-        return metrics.stream().filter(metric -> metric.toString().startsWith(metricPrefix))
-                               .findFirst()
-                               .get();
+        Optional<Metric> exactMetric = metrics.stream().filter(metric -> metric.toString()
+                .equals(metricPrefix))
+                .findFirst();
+        if (exactMetric.isEmpty()) {
+            checkPrefix(metricPrefix);
+            return metrics.stream().filter(metric -> metric.toString().startsWith(metricPrefix))
+                    .findFirst()
+                    .get();
+        } else {
+            return exactMetric.get();
+        }
+
     }
 
     /**
@@ -78,10 +127,8 @@ public class MetricList {
      * @throws IllegalValueException if the prefix can be multi-interpreted or no such Attribute found.
      */
 
-    public String delete(String metricPrefix) throws IllegalValueException {
-        Metric metric = find(metricPrefix);
-        metrics.remove(metric);
-        return String.format("Successfully removed metric: %s", metric);
+    public Metric delete(String metricPrefix) throws IllegalValueException {
+        return find(metricPrefix);
     }
 
     /**
@@ -100,6 +147,41 @@ public class MetricList {
         } else if (startWithPrefix == 0) {
             throw new IllegalValueException(NOT_FOUND_MESSAGE);
         }
+    }
+
+    private boolean isEqualSizeMapping(List<String> attributePrefixes, List<Double> weightages) {
+        return attributePrefixes.size() == weightages.size();
+    }
+
+    /**
+     * Checks whether the checklist is complete or not.
+     * @param checklist The checklist of whether all attributes are listed by the client.
+     * @return The corresponding result.
+     */
+    private boolean isNotCompleteChecklist(HashMap<Attribute, Boolean> checklist) {
+        boolean result = true;
+
+        for (Map.Entry<Attribute, Boolean> entry : checklist.entrySet()) {
+            result = result && entry.getValue();
+        }
+
+        return !result;
+    }
+
+    /**
+     * Builds a checklist from the attribute list.
+     * @param attributes The attribute list.
+     * @return The checklist of whether an attribute's score is stated.
+     */
+    private HashMap<Attribute, Boolean> initiateChecklist(AttributeList attributes) {
+        ObservableList<Attribute> attributeList = attributes.getObservableList();
+        HashMap<Attribute, Boolean> hashMap = new HashMap<>();
+
+        for (Attribute attribute: attributeList) {
+            hashMap.put(attribute, false);
+        }
+
+        return hashMap;
     }
 
     private boolean isDuplicate(Metric metric) {

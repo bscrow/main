@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import seedu.address.logic.commands.DeleteAttributeCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.DeleteIntervieweeCommand;
+import seedu.address.logic.commands.DeleteMetricCommand;
 import seedu.address.logic.commands.DeleteQuestionCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -45,6 +46,9 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
 
         case DeleteQuestionCommand.COMMAND_WORD:
             return new DeleteQuestionCommand(deleteArguments.trim());
+
+        case DeleteMetricCommand.COMMAND_WORD:
+            return new DeleteMetricCommand(deleteArguments.trim());
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND.trim());

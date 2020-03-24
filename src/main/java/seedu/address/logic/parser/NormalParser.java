@@ -39,6 +39,8 @@ public class NormalParser {
             put("edit", args -> new EditCommandParser().parse(args));
             put("delete", args -> new DeleteCommandParser().parse(args));
             put("list", args -> new ListCommandParser().parse(args));
+            put("finalise", args -> new FinaliseCommandParser().parse(args));
+            put("open", args -> new OpenReportCommandParser().parse(args));
         }
     };
 

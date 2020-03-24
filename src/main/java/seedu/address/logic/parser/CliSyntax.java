@@ -11,4 +11,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_NEW = new Prefix("-n");
     public static final Prefix PREFIX_ATTRIBUTE = new Prefix("-a");
     public static final Prefix PREFIX_WEIGHTAGE = new Prefix("-w");
+    public static final Prefix PREFIX_NAME = new Prefix("-n");
 }

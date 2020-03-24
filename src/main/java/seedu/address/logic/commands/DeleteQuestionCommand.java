@@ -35,6 +35,10 @@ public class DeleteQuestionCommand extends DeleteCommand {
         requireNonNull(model);
         QuestionList questions = model.getQuestionList();
         try {
+            if (model.isfinalisedInterviewProperties()) {
+                throw new CommandException("The interview session's questions has been finalised."
+                        + " You can no longer delete a question.");
+            }
             return new CommandResult(String.format(MESSAGE_DELETE_QUESTION_SUCCESS, questions.delete(questionIndex)),
                     ToggleView.QUESTION);
         } catch (IllegalValueException e) {

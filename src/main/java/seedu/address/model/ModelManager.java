@@ -11,15 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.model.hirelah.AppPhase;
-import seedu.address.model.hirelah.Attribute;
-import seedu.address.model.hirelah.AttributeList;
-import seedu.address.model.hirelah.Interviewee;
-import seedu.address.model.hirelah.IntervieweeList;
-import seedu.address.model.hirelah.Question;
-import seedu.address.model.hirelah.QuestionList;
-import seedu.address.model.hirelah.Session;
-import seedu.address.model.hirelah.Transcript;
+import seedu.address.model.hirelah.*;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -32,7 +24,9 @@ public class ModelManager implements Model {
     private final IntervieweeList intervieweeList;
     private final AttributeList attributeList;
     private final QuestionList questionList;
+    private final MetricList metricList;
     private final UserPrefs userPrefs;
+    private boolean finalisedInterviewProperties;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -47,6 +41,7 @@ public class ModelManager implements Model {
         this.intervieweeList = new IntervieweeList();
         this.attributeList = new AttributeList();
         this.questionList = new QuestionList();
+        this.metricList = new MetricList();
         this.userPrefs = new UserPrefs(userPrefs);
     }
 
@@ -137,6 +132,11 @@ public class ModelManager implements Model {
         return FXCollections.unmodifiableObservableList(intervieweeList.getObservableList());
     }
 
+    @Override
+    public ObservableList<Metric> getMetricListView() {
+        return FXCollections.unmodifiableObservableList(metricList.getObservableList());
+    }
+
     //=========== Model component accessors ========================================================
 
     @Override
@@ -157,17 +157,23 @@ public class ModelManager implements Model {
         return questionList;
     }
 
-    /**
-     * Finalizes the questions and attributes so they do not change between interviews
-     */
     @Override
-    public void finalizeQuestionsAndAttributes() {
-        // TODO: add finalizing methods for Questions and Attributes
+    public MetricList getMetricList() {
+        return metricList;
     }
 
+    /**
+     * Finalizes the questions and attributes so they do not change between interviews.
+     */
+
+    public void finaliseInterviewProperties() {
+        this.finalisedInterviewProperties = true;
+    }
+
+    /** Checks whether the interviewees, questions and attributes has been finalised */
     @Override
-    public ObservableList<Transcript> getCurrentTranscriptListView() {
-        return null;
+    public boolean isfinalisedInterviewProperties() {
+        return this.finalisedInterviewProperties;
     }
 
     @Override
