@@ -1,5 +1,8 @@
 package seedu.address.ui;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -37,7 +40,6 @@ public class MainWindow extends UiPart<Stage> {
     // Independent Ui parts residing in this Ui container
     private AttributeListPanel attributeListPanel;
     private DetailedIntervieweeCard detailedIntervieweeCard;
-    private HelpWindow helpWindow;
     private IntervieweeListPanel intervieweeListPanel;
     private MetricListPanel metricListPanel;
     private QuestionListPanel questionListPanel;
@@ -77,7 +79,6 @@ public class MainWindow extends UiPart<Stage> {
         setAccelerators();
 
         attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
-        helpWindow = new HelpWindow();
         intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeListView());
         metricListPanel = new MetricListPanel(logic.getMetricListView());
         questionListPanel = new QuestionListPanel(logic.getQuestionListView());
@@ -203,14 +204,18 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Opens the help window or focuses on it if it's already opened.
+     * Opens the user guide PDF on help command.
      */
-    @FXML
     public void handleHelp() {
-        if (!helpWindow.isShowing()) {
-            helpWindow.show();
-        } else {
-            helpWindow.focus();
+
+        if (Desktop.isDesktopSupported()) {
+            new Thread(() -> {
+                try {
+                    Desktop.getDesktop().open(new File("./src/main/resources/help/UserGuide.pdf"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }).start();
         }
     }
 
@@ -227,7 +232,6 @@ public class MainWindow extends UiPart<Stage> {
         GuiSettings guiSettings = new GuiSettings(primaryStage.getWidth(), primaryStage.getHeight(),
                 (int) primaryStage.getX(), (int) primaryStage.getY());
         logic.setGuiSettings(guiSettings);
-        helpWindow.hide();
         primaryStage.hide();
     }
 
