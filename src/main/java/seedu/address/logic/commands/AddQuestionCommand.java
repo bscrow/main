@@ -12,14 +12,13 @@ import seedu.address.model.hirelah.QuestionList;
  * client wants to add a question to the list.
  */
 
-public class AddQuestionCommand extends AddCommand {
+public class AddQuestionCommand extends Command {
     public static final String COMMAND_WORD = "question";
     public static final String MESSAGE_DUPLICATE_QUESTION = "The question already exists.";
     public static final String MESSAGE_SUCCESS = "New question added: %1$s";
-    public static final String MESSAGE_USAGE = "new " + COMMAND_WORD + ": Adds an question to the Question list. "
-            + "Parameters: "
-            + "DESCRIPTION "
-            + "Example: new " + COMMAND_WORD + " what is this question?";
+    public static final String MESSAGE_USAGE = "new " + COMMAND_WORD + ": Adds an question to the Question list.\n"
+            + "Parameters: DESCRIPTION\n"
+            + "Example: add " + COMMAND_WORD + " what is this question?";
 
 
     private final String toAdd;

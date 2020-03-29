@@ -2,8 +2,8 @@ package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
+import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.ListAttributeCommand;
-import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.ListIntervieweeCommand;
 import seedu.address.logic.commands.ListMetricCommand;
 import seedu.address.logic.commands.ListQuestionCommand;
@@ -13,7 +13,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 /**
  * Parses input command and creates a new ListCommand object
  */
-public class ListCommandParser implements Parser<ListCommand> {
+public class ListCommandParser implements Parser<Command> {
 
     /**
      * Parses the given {@code String} of commandWord in the context of the ListCommand
@@ -22,7 +22,7 @@ public class ListCommandParser implements Parser<ListCommand> {
      * @param commandWord the command word to be parsed
      * @throws ParseException if the user input is not a valid command word
      */
-    public ListCommand parse(String commandWord) throws ParseException {
+    public Command parse(String commandWord) throws ParseException {
 
         final String listCommandWord = commandWord.trim().toLowerCase();
 

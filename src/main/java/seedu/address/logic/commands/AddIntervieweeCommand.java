@@ -13,12 +13,13 @@ import seedu.address.model.hirelah.exceptions.IllegalActionException;
  * client wants to add an interviewee to the list.
  */
 
-public class AddIntervieweeCommand extends AddCommand {
+public class AddIntervieweeCommand extends Command {
     public static final String PREFIX_ALIAS = "-a";
 
     public static final String COMMAND_WORD = "interviewee";
     public static final String MESSAGE_SUCCESS = "New interviewee added: %1$s";
-    public static final String MESSAGE_USAGE = "new " + COMMAND_WORD + ": Adds an interviewee to the Interviewee list. "
+    public static final String MESSAGE_USAGE = "add " + COMMAND_WORD
+            + ": Adds an interviewee to the Interviewee list.\n"
             + "Parameters: "
             + "NAME "
             + PREFIX_ALIAS + " ALIAS\n"

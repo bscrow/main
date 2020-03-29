@@ -12,7 +12,7 @@ import seedu.address.model.hirelah.QuestionList;
  * client wants to delete a question from the list.
  */
 
-public class DeleteQuestionCommand extends DeleteCommand {
+public class DeleteQuestionCommand extends Command {
     public static final String COMMAND_WORD = "question";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD

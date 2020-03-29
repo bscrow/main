@@ -21,7 +21,6 @@ import seedu.address.commons.exceptions.IllegalValueException;
  * by their ordering.</p>
  * @author AY1920S2-W15-2
  */
-
 public class QuestionList {
     private ObservableList<Question> questions;
 

@@ -13,7 +13,7 @@ import seedu.address.model.hirelah.QuestionList;
  * client wants to update a question from the list.
  */
 
-public class EditQuestionCommand extends EditCommand {
+public class EditQuestionCommand extends Command {
     public static final String COMMAND_WORD = "question";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD

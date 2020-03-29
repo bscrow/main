@@ -1,6 +1,7 @@
 package seedu.address.ui;
 
-import java.awt.*;
+
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;

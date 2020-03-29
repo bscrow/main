@@ -24,9 +24,7 @@ public class RemarkListPanel extends UiPart<Region> {
 
     @FXML
     private ListView<Remark> cardListView;
-
-    @FXML
-    private Label title;
+    
 
     public RemarkListPanel(Interviewee interviewee) {
         super(FXML);
@@ -36,7 +34,6 @@ public class RemarkListPanel extends UiPart<Region> {
             remarkList = null;
         }
 
-        title.setText("Remarks");
         cardListView.setItems(remarkList);
         cardListView.setCellFactory(listView -> new RemarkListViewCell());
         cardListView.getItems().addListener(

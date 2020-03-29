@@ -1,5 +1,6 @@
 package seedu.address.model.hirelah;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 import javafx.collections.FXCollections;
@@ -25,7 +26,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
  * @author AY1920S2-W15-2
  */
 
-public class AttributeList {
+public class AttributeList implements Iterable<Attribute> {
     private static final String DUPLICATE_MESSAGE = "There are multiple attributes with the same prefix.";
     private static final String NOT_FOUND_MESSAGE = "No attributes with the entered prefix.";
 
@@ -129,5 +130,10 @@ public class AttributeList {
 
     private boolean isDuplicate(Attribute attribute) {
         return attributes.stream().anyMatch(attribute::equals);
+    }
+
+    @Override
+    public Iterator<Attribute> iterator() {
+        return attributes.iterator();
     }
 }

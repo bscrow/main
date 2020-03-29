@@ -13,7 +13,7 @@ import seedu.address.model.hirelah.exceptions.IllegalActionException;
  * client wants to update an intervewee's name from the list.
  */
 
-public class EditIntervieweeCommand extends EditCommand {
+public class EditIntervieweeCommand extends Command {
     public static final String COMMAND_WORD = "interviewee";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD

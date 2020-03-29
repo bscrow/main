@@ -1,6 +1,6 @@
 package seedu.address.logic.parser;
 
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.CommandTestUtility.VALID_ATTRIBUTE_INTEGRITY;
 import static seedu.address.logic.commands.CommandTestUtility.VALID_ATTRIBUTE_PERSISTENCE;
 import static seedu.address.logic.commands.CommandTestUtility.VALID_INTERVIEWEE_JANE;
@@ -18,7 +18,6 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSucces
 import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.commands.EditAttributeCommand;
-import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditIntervieweeCommand;
 import seedu.address.logic.commands.EditQuestionCommand;
 
@@ -47,18 +46,17 @@ class EditCommandParserTest {
     void parse_compulsoryFieldsMissing_success() {
 
         assertParseFailure(parser, WHITESPACE + VALID_PROPERTY_INTERVIEWEE + WHITESPACE,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+                MESSAGE_UNKNOWN_COMMAND);
 
         assertParseFailure(parser, WHITESPACE + VALID_PROPERTY_ATTRIBUTE + WHITESPACE,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+                MESSAGE_UNKNOWN_COMMAND);
 
         assertParseFailure(parser, WHITESPACE + VALID_PROPERTY_QUESTION + WHITESPACE,
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+                MESSAGE_UNKNOWN_COMMAND);
     }
 
     @Test
     public void parse_argumentMissing_failure() {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
-        assertParseFailure(parser, WHITESPACE, expectedMessage);
+        assertParseFailure(parser, WHITESPACE, MESSAGE_UNKNOWN_COMMAND);
     }
 }

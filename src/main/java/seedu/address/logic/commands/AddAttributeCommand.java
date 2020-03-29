@@ -12,12 +12,11 @@ import seedu.address.model.hirelah.AttributeList;
  * client wants to add an attribute to the list.
  */
 
-public class AddAttributeCommand extends AddCommand {
+public class AddAttributeCommand extends Command {
     public static final String COMMAND_WORD = "attribute";
     public static final String MESSAGE_SUCCESS = "New attribute added: %1$s";
-    public static final String MESSAGE_USAGE = "new " + COMMAND_WORD + ": Adds an attribute to the Attribute list. "
-            + "Parameters: "
-            + "NAME "
+    public static final String MESSAGE_USAGE = "add " + COMMAND_WORD + ": Adds an attribute to the Attribute list.\n"
+            + "Parameters: NAME\n"
             + "Example: new " + COMMAND_WORD + " leadership";
 
 

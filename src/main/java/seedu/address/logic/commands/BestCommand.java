@@ -2,8 +2,6 @@ package seedu.address.logic.commands;
 
 import java.util.Comparator;
 
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -21,7 +19,6 @@ import seedu.address.model.hirelah.MetricList;
  * BestCommand describes the behavior of the command
  * that sorts the interviewees based on a certain parameter.
  */
-
 public class BestCommand extends Command {
     public static final String COMMAND_WORD = "best";
     public static final String MESSAGE_HAS_NOT_FINALIZED = "The session has not been finalized. Please finalize it"
@@ -53,6 +50,7 @@ public class BestCommand extends Command {
 
     /**
      * Executes the best command.
+     *
      * @param model {@code Model} which the command should operate on.
      * @return The corresponding CommandResult instance.
      * @throws CommandException If there is an invalid parameter entered by the client.
@@ -74,16 +72,14 @@ public class BestCommand extends Command {
             default:
                 comparator = getOverallComparator(model.getAttributeList());
             }
-
-            ObservableList<Interviewee> observableInterviewees = model.getIntervieweeList().getObservableList();
-            ObservableList<Interviewee> sortedObservableInterviewees = getBestN(observableInterviewees, comparator,
-                    size);
-            model.setBestNInterviewees(sortedObservableInterviewees);
-            return new CommandResult(MESSAGE_SUCCESS, ToggleView.BEST_INTERVIEWEE);
-
         } catch (IllegalValueException e) {
             throw new CommandException(String.format(MESSAGE_PARAM_NOT_FOUND, paramPrefix));
         }
+
+        ObservableList<Interviewee> observableInterviewees = model.getFilteredIntervieweeListView();
+        ObservableList<Interviewee> bestNInterviewees = model.getBestNInterviewees();
+        getBestN(bestNInterviewees, observableInterviewees, comparator, size);
+        return new CommandResult(MESSAGE_SUCCESS, ToggleView.BEST_INTERVIEWEE);
     }
 
     /**
@@ -93,26 +89,22 @@ public class BestCommand extends Command {
      * @param size
      * @return
      */
-    private ObservableList<Interviewee> getBestN(ObservableList<Interviewee> observableInterviewees,
-                                                 Comparator<Interviewee> comparator, int size) {
+    private void getBestN(ObservableList<Interviewee> bestNInterviewees,
+                          ObservableList<Interviewee> observableInterviewees,
+                          Comparator<Interviewee> comparator, int size) {
+        bestNInterviewees.clear();
         FilteredList<Interviewee> filtered = new FilteredList<>(observableInterviewees,
             x -> x.getTranscript().isPresent());
         SortedList<Interviewee> sorted = new SortedList<>(filtered, comparator);
-        ObservableList<Interviewee> interviewees = FXCollections.observableArrayList(interviewee -> new Observable[] {
-                interviewee.fullNameProperty(),
-                interviewee.aliasProperty(),
-                interviewee.resumeProperty(),
-                interviewee.transcriptProperty()
-            });
-
-        for (int i = 0; i < size; i++) {
-            interviewees.add(sorted.get(i));
+        int n = Math.min(size, sorted.size());
+        for (int i = 0; i < n; i++) {
+            bestNInterviewees.add(sorted.get(i));
         }
-        return interviewees;
     }
 
     /**
      * Gets the Interviewee Comparator based on the Metric provided.
+     *
      * @param metrics The metric list.
      * @param paramPrefix The prefix of the metric name.
      * @return The corresponding comparator.
@@ -126,6 +118,7 @@ public class BestCommand extends Command {
 
     /**
      * Gets the Interviewee Comparator based on the Attribute provided.
+     *
      * @param attributes The attribute list.
      * @param paramPrefix The prefix of the attribute name.
      * @return The corresponding comparator.
@@ -144,6 +137,7 @@ public class BestCommand extends Command {
 
     /**
      * Gets the Interviewee Comparator based on their overall performances.
+     *
      * @param attributes The attribute list.
      * @return The corresponding comparator.
      */
@@ -157,6 +151,7 @@ public class BestCommand extends Command {
 
     /**
      * Computes the total overall score of an interviewee.
+     *
      * @param attributes The attribute list.
      * @param interviewee The interviewee.
      * @return The overall score of the interviewee.
@@ -173,6 +168,7 @@ public class BestCommand extends Command {
 
     /**
      * Parses the number of interviewees entered by the client to the corresponding integer.
+     *
      * @param numberOfInterviewees The String representing the size of the interviewees entered by the client.
      * @return The corresponding integer value.
      * @throws CommandException If the value entered is not a number or the number is less than or equal to zero.

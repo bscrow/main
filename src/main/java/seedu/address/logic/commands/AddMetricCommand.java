@@ -15,7 +15,7 @@ import seedu.address.model.hirelah.MetricList;
  * when a user wants to delete the metric from the list.
  */
 
-public class AddMetricCommand extends AddCommand {
+public class AddMetricCommand extends Command {
     public static final String COMMAND_WORD = "metric";
     public static final String MESSAGE_HAS_NOT_FINALIZED = "The session has not been finalized. Please finalize it"
             + " before adding metrics.";

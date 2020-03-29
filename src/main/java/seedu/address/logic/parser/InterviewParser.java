@@ -1,14 +1,14 @@
 package seedu.address.logic.parser;
 
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.address.logic.commands.Command;
-import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.interview.EndCommand;
+import seedu.address.logic.commands.interview.RemarkCommand;
+import seedu.address.logic.commands.interview.ScoreCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /*
@@ -26,18 +26,9 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * InterviewParser parses the input entered by the client
  * when HireLah! is not in interviewing mode.
  */
-
-
 public class InterviewParser {
-    /**
-     * Used for initial separation of command word and args.
-     */
-    private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
-    private static final HashMap<String, CommandSupplier> suppliers = new HashMap<>() {
-        {
-            // fill your commands here! e.g. put("add", (x) -> new AddCommand(x[0]));
-        }
-    };
+    private static final Pattern SCORE_COMMAND_FORMAT =
+            Pattern.compile(":(?<attribute>[\\p{Alpha}][\\p{Alpha} ]*?)\\s+(?<score>\\d+(\\.\\d+)?)");
 
     /**
      * Parses user input into command for execution.
@@ -47,17 +38,31 @@ public class InterviewParser {
      * @throws ParseException if the user input does not conform the expected format
      */
     public Command parseCommand(String userInput) throws ParseException {
-        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
-        if (!matcher.matches()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
+        if (userInput.startsWith(":")) {
+            return parseSpecialCommand(userInput);
+        } else {
+            return new RemarkCommand(userInput);
+        }
+    }
+
+    /**
+     * Parses non-remark commands during the interview.
+     *
+     * @param userInput the user input.
+     * @return the parsed command.
+     * @throws ParseException if the command word cannot be identified with any command or attribute to score.
+     */
+    private Command parseSpecialCommand(String userInput) throws ParseException {
+        if (userInput.equals(":end interview")) {
+            return new EndCommand();
         }
 
-        final String commandWord = matcher.group("commandWord");
-        final String arguments = matcher.group("arguments");
-        if (suppliers.containsKey(commandWord)) {
-            return suppliers.get(commandWord).getCommand(arguments);
-        } else {
-            throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
+        Matcher matcher = SCORE_COMMAND_FORMAT.matcher(userInput.trim());
+        if (matcher.matches()) {
+            double score = Double.parseDouble(matcher.group("score"));
+            return new ScoreCommand(matcher.group("attribute"), score);
         }
+
+        throw new ParseException(MESSAGE_UNKNOWN_COMMAND);
     }
 }

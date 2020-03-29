@@ -13,7 +13,7 @@ import seedu.address.model.hirelah.AttributeList;
  * client wants to update an attribute from the list.
  */
 
-public class EditAttributeCommand extends EditCommand {
+public class EditAttributeCommand extends Command {
     public static final String COMMAND_WORD = "attribute";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD

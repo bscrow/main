@@ -60,8 +60,18 @@ public class Transcript {
      * @param attribute The attribute whose score is to be retrieved.
      * @return The score of the given attribute as recorded in the interview.
      */
-    public double getAttributeScore (Attribute attribute) {
+    public double getAttributeScore(Attribute attribute) {
         return this.attributeToScoreMap.get(attribute);
+    }
+
+    /**
+     * Indicates if an attribute has been scored yet.
+     *
+     * @param attribute the attribute to check.
+     * @return true if attribute has a score, false otherwise.
+     */
+    public boolean isAttributeScored(Attribute attribute) {
+        return this.attributeToScoreMap.containsKey(attribute);
     }
 
     /**
