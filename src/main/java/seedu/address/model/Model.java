@@ -14,7 +14,6 @@ import seedu.address.model.hirelah.Metric;
 import seedu.address.model.hirelah.MetricList;
 import seedu.address.model.hirelah.Question;
 import seedu.address.model.hirelah.QuestionList;
-import seedu.address.model.hirelah.Transcript;
 
 /**
  * The API of the Model component.
@@ -56,9 +55,6 @@ public interface Model {
 
     /** Returns an unmodifiable view of the question list */
     ObservableList<Question> getQuestionListView();
-
-    /** Returns an unmodifiable view of the transcript list of an interviewee */
-    ObservableList<Transcript> getTranscriptListView(Interviewee interviewee);
 
     /** Returns an unmodifiable view of the filtered interviewee list */
     ObservableList<Interviewee> getFilteredIntervieweeListView();

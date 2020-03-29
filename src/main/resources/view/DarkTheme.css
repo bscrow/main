@@ -387,3 +387,9 @@
     -fx-border-insets: 0 0 1 0, 0 0 2 0, 0 0 3 0;
     -fx-label-margin: 8px;
 }
+
+#metricName {
+    -fx-rotate: 270;
+    -fx-font-family: "Comic Sans";
+
+}

@@ -10,6 +10,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.Remark;
 
 /**
@@ -19,14 +20,22 @@ public class RemarkListPanel extends UiPart<Region> {
     private static final String FXML = "CardListView.fxml";
     private final Logger logger = LogsCenter.getLogger(RemarkListPanel.class);
 
+    private ObservableList<Remark> remarkList;
+
     @FXML
     private ListView<Remark> cardListView;
 
     @FXML
     private Label title;
 
-    public RemarkListPanel(ObservableList<Remark> remarkList) {
+    public RemarkListPanel(Interviewee interviewee) {
         super(FXML);
+        if (interviewee.getTranscript().isPresent()) {
+            remarkList = interviewee.getTranscript().get().getRemarkListView();
+        } else {
+            remarkList = null;
+        }
+
         title.setText("Remarks");
         cardListView.setItems(remarkList);
         cardListView.setCellFactory(listView -> new RemarkListViewCell());

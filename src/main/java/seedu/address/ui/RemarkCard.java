@@ -12,7 +12,7 @@ import seedu.address.model.hirelah.Remark;
  */
 public class RemarkCard extends UiPart<Region> {
 
-    private static final String FXML = "TranscriptListCard.fxml";
+    private static final String FXML = "RemarkListCard.fxml";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -30,8 +30,8 @@ public class RemarkCard extends UiPart<Region> {
     private Label timestamp;
     @FXML
     private Label content;
-    @FXML
-    private FlowPane questionTags;
+
+
 
     /**
      * Constructs a remark card based on the data stored in a Remark object. Implementation may change?

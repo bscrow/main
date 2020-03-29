@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
@@ -22,6 +23,7 @@ import seedu.address.model.hirelah.MetricList;
 import seedu.address.model.hirelah.Question;
 import seedu.address.model.hirelah.QuestionList;
 import seedu.address.model.hirelah.Transcript;
+
 
 /**
  * Represents the in-memory model of the address book data.
@@ -164,11 +166,6 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public ObservableList<Transcript> getTranscriptListView(Interviewee interviewee) {
-        return FXCollections.observableList(List.of());
-    }
-
-    @Override
     public ObservableList<Interviewee> getFilteredIntervieweeListView() {
         return FXCollections.unmodifiableObservableList(intervieweeList.getObservableList());
     }
@@ -205,7 +202,7 @@ public class ModelManager implements Model {
 
     @Override
     public ObservableList<Interviewee> getBestNInterviewees() {
-        return bestNIntervieweeList;
+        return Objects.requireNonNullElseGet(bestNIntervieweeList, () -> FXCollections.observableList(List.of()));
     }
 
     @Override

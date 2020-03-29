@@ -11,6 +11,9 @@ import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.Metric;
 import seedu.address.model.hirelah.Question;
+import seedu.address.model.hirelah.Remark;
+import seedu.address.model.hirelah.Transcript;
+
 /**
  * API of the Logic component
  */

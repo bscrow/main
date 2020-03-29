@@ -32,6 +32,7 @@ public class IntervieweeListPanel extends UiPart<Region> {
         cardListView.setCellFactory(listView -> new IntervieweeListViewCell());
         cardListView.getItems().addListener(
                 (ListChangeListener<Interviewee>) c -> cardListView.scrollTo(c.getList().size() - 1));
+
     }
 
     /**

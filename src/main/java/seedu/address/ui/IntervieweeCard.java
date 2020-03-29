@@ -2,9 +2,13 @@ package seedu.address.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.hirelah.Interviewee;
+
+import java.io.File;
 
 /**
  * An UI component that displays information of a {@code Interviewee}.
@@ -32,15 +36,23 @@ public class IntervieweeCard extends UiPart<Region> {
     @FXML
     private Label alias;
     @FXML
-    private Label done;
+    private ImageView done;
 
     public IntervieweeCard(Interviewee interviewee) {
         super(FXML);
         this.interviewee = interviewee;
-        name.setText(interviewee.getFullName());
-        id.setText(String.valueOf(interviewee.getId()));
-        alias.setText(interviewee.getAlias().orElse("No alias has been set."));
-        // done should be a image? or just tick/cross? status check for interviewee
+        name.setText("Full Name: " + interviewee.getFullName());
+        id.setText("ID:         " + interviewee.getId());
+        alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
+        if (interviewee.getTranscript().isPresent()) {
+            File imgFile = new File("./src/main/resources/images/checkbox_tick.png");
+            done.setImage(new Image(imgFile.toURI().toString()));
+        } else {
+            File imgFile = new File("./src/main/resources/images/checkbox_cross.png");
+            done.setImage(new Image(imgFile.toURI().toString()));
+        }
+        done.setTranslateX(10);
+        done.setTranslateY(25);
     }
 
     @Override

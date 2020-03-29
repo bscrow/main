@@ -162,7 +162,7 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     public void handleToggle(ToggleView toggleView) {
-        if (this.toggleView == toggleView && this.toggleView != ToggleView.TRANSCRIPT) {
+        if (this.toggleView == toggleView || this.toggleView == ToggleView.TRANSCRIPT && logic.getCurrentInterviewee().equals(this.currentInterviewee)) {
             return;
         }
         this.toggleView = toggleView;
@@ -183,16 +183,12 @@ public class MainWindow extends UiPart<Stage> {
             listPanelStackPane.getChildren().add(questionListPanel.getRoot());
             break;
         case TRANSCRIPT: // transcript
-            Interviewee currentInterviewee = logic.getCurrentInterviewee();
-            if (currentInterviewee.equals(this.currentInterviewee)) {
+            if (!logic.getCurrentInterviewee().equals(this.currentInterviewee)) {
+                currentInterviewee = logic.getCurrentInterviewee();
+            } else {
                 break;
             }
-            // remarkListPanel = new RemarkListPanel(FXCollections
-            //         .unmodifiableObservableList(logic.getCurrentInterviewee()
-            //         .getTranscript()
-            //         .get()
-            //         .getRemarkList()));
-            remarkListPanel = new RemarkListPanel(null);
+            remarkListPanel = new RemarkListPanel(currentInterviewee);
             detailedIntervieweeCard = new DetailedIntervieweeCard(currentInterviewee);
             listPanelStackPane.getChildren().addAll(remarkListPanel.getRoot(), detailedIntervieweeCard.getRoot());
             StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
@@ -210,7 +206,6 @@ public class MainWindow extends UiPart<Stage> {
      * Opens the user guide PDF on help command.
      */
     public void handleHelp() {
-
         if (Desktop.isDesktopSupported()) {
             new Thread(() -> {
                 try {

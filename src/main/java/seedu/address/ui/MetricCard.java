@@ -9,8 +9,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.Metric;
 
@@ -32,7 +32,7 @@ public class MetricCard extends UiPart<Region> {
     public final Metric metric;
 
     @FXML
-    private HBox cardPane;
+    private VBox cardPane;
 
     @FXML
     private Label metricName;
@@ -65,6 +65,13 @@ public class MetricCard extends UiPart<Region> {
         weightColumn.setCellValueFactory(p -> new SimpleObjectProperty<>(p.getValue().getValue()));
 
         attributeToWeight.getColumns().set(1, weightColumn);
+
+        attributeColumn.prefWidthProperty().bind(attributeToWeight.widthProperty().multiply(0.48));
+        weightColumn.prefWidthProperty().bind(attributeToWeight.widthProperty().multiply(0.48));
+
+        attributeColumn.setResizable(false);
+        weightColumn.setResizable(false);
+        attributeToWeight.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
 
     }
