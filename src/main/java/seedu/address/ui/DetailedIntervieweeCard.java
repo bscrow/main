@@ -83,27 +83,22 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
     }
 
     /**
-     * Converts the ObservableMap of Attribute to Score to an ObservableList of XYChart.Data<String, Double>, used to
-     * plot a BarChart. A listener is added to the ObservableMap so that the change made by any put operation is
+     * Converts the ObservableMap of Attribute to Score to an ObservableList of XYChart.Data of type String, Double,
+     * used t0 plot a BarChart. A listener is added to the ObservableMap so that the change made by any put operation is
      * reflected in the BarChart.
      *
      * @param mapToScore ObservableMap of Attribute to Score.
-     * @return ObservableList<XYChart.Data<String, Double>> used as data input for BarChart.
+     * @return ObservableList XYChart.Data String, Double  used as data input for BarChart.
      */
     private ObservableList<XYChart.Data<String, Double>> convertMapToList(
             ObservableMap<Attribute, Double> mapToScore) {
 
         ObservableList<XYChart.Data<String, Double>> attributeList = FXCollections.observableArrayList();
 
-//        // Initialise all attribute score to 0 due to X axis misalignment bug in BarChart
-//        for (Map.Entry<Attribute, Double> entry : mapToScore.entrySet()) {
-//            attributeList.add(new Data<>(entry.getKey().toString(), 1.0));
-//        }
-
         mapToScore.addListener((MapChangeListener<Attribute, Double>) change -> {
             if (change.wasAdded()) {
                 String attributeAdded = change.getKey().toString();
-                for (int i = 0; i<attributeList.size(); i++) {
+                for (int i = 0; i < attributeList.size(); i++) {
                     if (attributeList.get(i).getXValue().equals(attributeAdded)) {
                         attributeList.remove(i);
                         break;

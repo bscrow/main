@@ -11,8 +11,6 @@ import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.Metric;
 import seedu.address.model.hirelah.Question;
-import seedu.address.model.hirelah.Remark;
-import seedu.address.model.hirelah.Transcript;
 
 /**
  * API of the Logic component
@@ -41,6 +39,11 @@ public interface Logic {
 
     /** Returns the Interviewee currently being looked at*/
     Interviewee getCurrentInterviewee();
+
+    /**
+     * Sets the currentInterviewee.
+     */
+    void setCurrentInterviewee(Interviewee interviewee);
 
     ObservableList<Interviewee> getBestNIntervieweesView();
 

@@ -1,6 +1,5 @@
 package seedu.address.ui;
 
-
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +19,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.Logic;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.NavigationCommandResult;
 import seedu.address.logic.commands.ToggleView;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -164,11 +164,15 @@ public class MainWindow extends UiPart<Stage> {
     @FXML
     public void handleToggle(ToggleView toggleView) {
         if (this.toggleView == toggleView) {
-            if (toggleView != ToggleView.TRANSCRIPT || currentInterviewee.equals(logic.getCurrentInterviewee())) {
+            if (toggleView != ToggleView.TRANSCRIPT || !currentInterviewee.equals(logic.getCurrentInterviewee())) {
                 return;
             }
         }
+
         this.toggleView = toggleView;
+        if (this.toggleView != ToggleView.TRANSCRIPT) {
+            logic.setCurrentInterviewee(null);
+        }
 
         listPanelStackPane.getChildren().clear();
         switch (toggleView) {
@@ -192,6 +196,8 @@ public class MainWindow extends UiPart<Stage> {
             listPanelStackPane.getChildren().addAll(remarkListPanel.getRoot(), detailedIntervieweeCard.getRoot());
             StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
             StackPane.setAlignment(remarkListPanel.getRoot(), Pos.CENTER);
+            // second screen
+            // handleSecondStage();
             break;
         case BEST_INTERVIEWEE:
             bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView());
@@ -201,6 +207,13 @@ public class MainWindow extends UiPart<Stage> {
             break;
         }
     }
+
+    // /**
+    //  * Opens up a second window to show the question list, as a guide for the interviewee.
+    //  */
+    // private void handleSecondStage() {
+    //     SecondWindow(questionListPanel).show();
+    // }
 
     /**
      * Opens the user guide PDF on help command.
@@ -251,6 +264,10 @@ public class MainWindow extends UiPart<Stage> {
 
             if (commandResult.isExit()) {
                 handleExit();
+            }
+
+            if (commandResult instanceof NavigationCommandResult) {
+                remarkListPanel.scrollTo(((NavigationCommandResult) commandResult).getIndex());
             }
 
             handleToggle(commandResult.getToggleView());

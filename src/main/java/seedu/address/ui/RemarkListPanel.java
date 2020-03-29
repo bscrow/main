@@ -38,6 +38,10 @@ public class RemarkListPanel extends UiPart<Region> {
                 (ListChangeListener<Remark>) c -> remarkCardListView.scrollTo(c.getList().size() - 1));
     }
 
+    public void scrollTo(int index) {
+        remarkCardListView.scrollTo(index);
+    }
+
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code Remark} using a {@code RemarkCard}.
      */

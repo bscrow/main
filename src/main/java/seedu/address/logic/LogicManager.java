@@ -86,6 +86,11 @@ public class LogicManager implements Logic {
     }
 
     @Override
+    public void setCurrentInterviewee(Interviewee interviewee) {
+        model.setCurrentInterviewee(interviewee);
+    }
+
+    @Override
     public ObservableList<Interviewee> getFilteredIntervieweeListView() {
         return model.getFilteredIntervieweeListView();
     }
