@@ -38,12 +38,13 @@ public class MainWindow extends UiPart<Stage> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
+    private IntervieweeListPanel intervieweeListPanel;
+    private IntervieweeListPanel bestNIntervieweesPanel;
+    private RemarkListPanel remarkListPanel;
     private AttributeListPanel attributeListPanel;
     private DetailedIntervieweeCard detailedIntervieweeCard;
-    private IntervieweeListPanel intervieweeListPanel;
     private MetricListPanel metricListPanel;
     private QuestionListPanel questionListPanel;
-    private RemarkListPanel remarkListPanel;
     private ResultDisplay resultDisplay;
 
     // On startup, HireLah shows the list of interviewees
@@ -80,6 +81,8 @@ public class MainWindow extends UiPart<Stage> {
 
         attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
         intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeListView());
+        bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView());
+        attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
         metricListPanel = new MetricListPanel(logic.getMetricListView());
         questionListPanel = new QuestionListPanel(logic.getQuestionListView());
 
@@ -169,7 +172,6 @@ public class MainWindow extends UiPart<Stage> {
         case ATTRIBUTE: // attribute
             listPanelStackPane.getChildren().add(attributeListPanel.getRoot());
             break;
-
         case INTERVIEWEE: // interviewee
             listPanelStackPane.getChildren().add(intervieweeListPanel.getRoot());
             break;
@@ -177,11 +179,9 @@ public class MainWindow extends UiPart<Stage> {
         case METRIC: // metrics
             listPanelStackPane.getChildren().add(metricListPanel.getRoot());
             break;
-
         case QUESTION: // questions
             listPanelStackPane.getChildren().add(questionListPanel.getRoot());
             break;
-
         case TRANSCRIPT: // transcript
             Interviewee currentInterviewee = logic.getCurrentInterviewee();
             if (currentInterviewee.equals(this.currentInterviewee)) {
@@ -197,7 +197,10 @@ public class MainWindow extends UiPart<Stage> {
             listPanelStackPane.getChildren().addAll(remarkListPanel.getRoot(), detailedIntervieweeCard.getRoot());
             StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
             break;
-
+        case BEST_INTERVIEWEE:
+            bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView());
+            listPanelStackPane.getChildren().add(bestNIntervieweesPanel.getRoot());
+            break;
         default:
             break;
         }

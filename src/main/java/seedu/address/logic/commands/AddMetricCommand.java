@@ -44,7 +44,7 @@ public class AddMetricCommand extends AddCommand {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (!model.isfinalisedInterviewProperties()) {
+        if (!model.isFinalisedInterviewProperties()) {
             throw new CommandException(MESSAGE_HAS_NOT_FINALIZED);
         }
 

@@ -36,7 +36,7 @@ public class AddQuestionCommand extends AddCommand {
         requireNonNull(model);
         QuestionList questions = model.getQuestionList();
         try {
-            if (model.isfinalisedInterviewProperties()) {
+            if (model.isFinalisedInterviewProperties()) {
                 throw new CommandException("The interview session's questions has been finalised."
                         + " You can no longer add a new question.");
             }

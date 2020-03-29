@@ -36,7 +36,7 @@ public class AddAttributeCommand extends AddCommand {
         AttributeList attributes = model.getAttributeList();
 
         try {
-            if (model.isfinalisedInterviewProperties()) {
+            if (model.isFinalisedInterviewProperties()) {
                 throw new CommandException("The interview session's attributes has been finalised."
                         + " You can no longer add a new attribute.");
             }

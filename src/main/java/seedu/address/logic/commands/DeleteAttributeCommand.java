@@ -34,7 +34,7 @@ public class DeleteAttributeCommand extends DeleteCommand {
         requireNonNull(model);
         AttributeList attributes = model.getAttributeList();
         try {
-            if (model.isfinalisedInterviewProperties()) {
+            if (model.isFinalisedInterviewProperties()) {
                 throw new CommandException("The interview session's attributes has been finalised."
                         + " You can no longer delete an attribute.");
             }

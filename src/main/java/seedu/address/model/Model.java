@@ -7,6 +7,7 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.hirelah.AppPhase;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.AttributeList;
+import seedu.address.model.hirelah.InterviewSession;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.IntervieweeList;
 import seedu.address.model.hirelah.Metric;
@@ -77,15 +78,39 @@ public interface Model {
     /** Returns the list of metrics that describes certain weight */
     MetricList getMetricList();
 
+    /** Returns the list of best N interviewees based on certain measures */
+    ObservableList<Interviewee> getBestNInterviewees();
+
+    /** Sets the list of best N interviewees */
+    void setBestNInterviewees(ObservableList<Interviewee> interviewees);
+
     /** Sets the current mode of the App */
     void setAppPhase(AppPhase phase);
 
     /** Returns the current mode of the App */
     AppPhase getAppPhase();
 
+    /**
+     * Sets the interviewee currently in focus, either when viewing his/her transcript or
+     * when interviewing him/her.
+     */
+    void setCurrentInterviewee(Interviewee interviewee);
+
+    /** Returns the interviewee currently in focus */
+    Interviewee getCurrentInterviewee();
+
+    /** Starts an interview with the given interviewee */
+    void startInterview(Interviewee interviewee);
+
+    /** Gets information about the current Interview Session */
+    InterviewSession getInterviewSession();
+
+    /** Indicates that the interview has ended */
+    void endInterview();
+
     /** Finalizes the interviewees, questions and attributes so they do not change between interviews */
     void finaliseInterviewProperties();
 
     /** Checks whether the interviewees, questions and attributes has been finalised */
-    boolean isfinalisedInterviewProperties();
+    boolean isFinalisedInterviewProperties();
 }

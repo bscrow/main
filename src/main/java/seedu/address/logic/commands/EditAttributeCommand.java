@@ -38,7 +38,7 @@ public class EditAttributeCommand extends EditCommand {
         requireNonNull(model);
         AttributeList attributes = model.getAttributeList();
         try {
-            if (model.isfinalisedInterviewProperties()) {
+            if (model.isFinalisedInterviewProperties()) {
                 throw new CommandException("The interview session's attributes has been finalised."
                         + " You can no longer edit an attribute.");
             }

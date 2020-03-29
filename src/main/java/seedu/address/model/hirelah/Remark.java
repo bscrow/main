@@ -1,6 +1,6 @@
 package seedu.address.model.hirelah;
 
-import java.time.Instant;
+import java.time.Duration;
 
 /**
  * Stores the remark message that are inserted by the interviewer
@@ -8,9 +8,9 @@ import java.time.Instant;
  * a particular question, or just a normal remark.
  */
 public class Remark {
-    private final Instant time;
+    private final Duration time;
     private final String message;
-    private final Question question;
+    private final Integer questionNumber;
 
     /**
      * Constructs a {@code Remark} which is part of the answer
@@ -18,12 +18,12 @@ public class Remark {
      *
      * @param time The time when the remark was made.
      * @param message The remark message.
-     * @param question The question associated with this remark as its answer.
+     * @param questionNumber The question associated with this remark as its answer.
      */
-    public Remark(Instant time, String message, Question question) {
+    Remark(Duration time, String message, Integer questionNumber) {
         this.time = time;
         this.message = message;
-        this.question = question;
+        this.questionNumber = questionNumber;
     }
 
     /**
@@ -33,30 +33,43 @@ public class Remark {
      * @param time The time when the remark was made.
      * @param message The remark message.
      */
-    Remark(Instant time, String message) {
+    Remark(Duration time, String message) {
         this.time = time;
         this.message = message;
-        this.question = null;
+        this.questionNumber = null;
     }
 
     /**
-     * Retrieves the Instant where this {@code Remark}
+     * Retrieves the time of the interview when this {@code Remark}
      * was created.
      *
-     * @return  The Instant when this {@code Remark} was created.
+     * @return  The Duration since interview start when this {@code Remark} was created.
      */
-    public Instant getTime() {
+    public Duration getTime() {
         return time;
     }
 
     /**
-     * Retrieves the Question associated with this {@code Remark}
+     * Formats the time in a readable format.
+     *
+     * @return the formatted time string in minutes and seconds.
+     */
+    public String getTimeString() {
+        return String.format("%d:%d", time.toMinutes(), time.toSecondsPart());
+    }
+
+    /**
+     * Retrieves the Question index associated with this {@code Remark}
      * if there is any.
      *
-     * @return The Question associated with this {@code Remark} if there is any.
+     * @return The index of the Question associated with this {@code Remark} if there is any.
      */
-    public Question getQuestion() {
-        return question;
+    public Integer getQuestionNumber() {
+        return questionNumber;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     @Override
@@ -70,13 +83,12 @@ public class Remark {
             return true;
         } else if (other instanceof Remark) {
             Remark otherRemark = ((Remark) other);
-            if (question == null || otherRemark.getQuestion() == null) {
-                return question == otherRemark.getQuestion();
-            } else {
-                return time.equals(otherRemark.time)
-                        && message.equals(otherRemark.message)
-                        && question.equals(otherRemark.question);
-            }
+            boolean isSameQuestion = this.questionNumber == otherRemark.getQuestionNumber() // both null
+                    || (this.questionNumber != null
+                    && this.questionNumber.equals(otherRemark.getQuestionNumber()));
+            return time.equals(otherRemark.getTime())
+                    && message.equals(otherRemark.getMessage())
+                    && isSameQuestion;
         } else {
             return false;
         }

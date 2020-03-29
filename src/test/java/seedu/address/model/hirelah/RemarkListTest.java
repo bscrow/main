@@ -4,106 +4,58 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import seedu.address.model.hirelah.exceptions.IllegalActionException;
 
 class RemarkListTest {
 
     @Test
     void getRemarks_retrieveRemarks_success() {
-        RemarkList actualRemarks = new RemarkList();
-        assertEquals(new ArrayList<Remark>(), actualRemarks.getRemarks());
+        RemarkList actualRemarks = new RemarkList(3);
+        assertTrue(actualRemarks.getRemarks().isEmpty());
     }
 
     @Test
     void add_addRemarks_success() {
-        RemarkList actualRemarks = new RemarkList();
+        RemarkList actualRemarks = new RemarkList(3);
         actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITHOUT_QUESTION);
-        ArrayList<Remark> expectedArray = new ArrayList<>();
-        expectedArray.add(RemarkTest.REMARK_MIDDLE_WITHOUT_QUESTION);
+        ObservableList<Remark> expectedArray =
+                FXCollections.observableArrayList(RemarkTest.REMARK_MIDDLE_WITHOUT_QUESTION);
         assertEquals(expectedArray, actualRemarks.getRemarks());
     }
 
-    @Test
-    void getStartRemarkTime_getStartTime_success() {
-        RemarkList actualRemarks = new RemarkList();
-        actualRemarks.add(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
-        assertEquals(RemarkTest.DEFAULT_EARLIER_INSTANT, actualRemarks.getStartRemarkTime());
-    }
 
     @Test
-    void getLastRemarkTime_getLastTime_success() {
-        RemarkList actualRemarks = new RemarkList();
+    void getIndexAtTime_getMiddleRemark_success() {
+        RemarkList actualRemarks = new RemarkList(3);
         actualRemarks.add(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION);
+        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION_1);
+        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION_2);
         actualRemarks.add(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
-        assertEquals(RemarkTest.DEFAULT_LATER_INSTANT, actualRemarks.getLastRemarkTime());
-    }
-
-    @Test
-    void getInterviewDurationInMs_getInterviewTime_success() {
-        RemarkList actualRemarks = new RemarkList();
-        actualRemarks.add(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
-        assertEquals(1000, actualRemarks.getInterviewDurationInMs());
-    }
-
-    @Test
-    void isTimeInValidRange_validTime_success() {
-        RemarkList actualRemarks = new RemarkList();
-        actualRemarks.add(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
-        assertTrue(actualRemarks.isTimeInValidRange(1000));
-    }
-
-    @Test
-    void isTimeInValidRange_invalidTime_success() {
-        RemarkList actualRemarks = new RemarkList();
-        actualRemarks.add(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
-        assertFalse(actualRemarks.isTimeInValidRange(1001));
-    }
-
-    @Test
-    void getRemarkAtTime_getMiddleRemark_success() {
-        RemarkList actualRemarks = new RemarkList();
-        actualRemarks.add(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
-        Remark result = actualRemarks.getRemarkAtTime(500);
-        assertEquals(RemarkTest.REMARK_MIDDLE_WITH_QUESTION, actualRemarks.getRemarkAtTime(500));
+        int result = actualRemarks.getIndexAtTime(RemarkTest.DEFAULT_MIDDLE_INSTANT);
+        assertEquals(actualRemarks.getRemarks().indexOf(RemarkTest.REMARK_MIDDLE_WITH_QUESTION_2), result);
     }
 
     @Test
     void isQuestionAnswered_noAnswer_success() {
-        RemarkList actualRemarks = new RemarkList();
+        RemarkList actualRemarks = new RemarkList(3);
         actualRemarks.add(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION);
+        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION_1);
+        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION_2);
         actualRemarks.add(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
-        assertFalse(actualRemarks.isQuestionAnswered(RemarkTest.DEFAULT_QUESTION_3));
+        assertFalse(actualRemarks.isQuestionAnswered(3));
     }
 
     @Test
-    void getInstantOfQuestion_firstQuestion_success() {
-        RemarkList actualRemarks = new RemarkList();
+    void getInstantOfQuestion_firstQuestion_success() throws IllegalActionException {
+        RemarkList actualRemarks = new RemarkList(3);
         actualRemarks.add(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION);
+        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION_1);
+        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION_2);
         actualRemarks.add(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
-        actualRemarks.getRemarkOfQuestion(RemarkTest.DEFAULT_QUESTION_2);
-        assertEquals(RemarkTest.REMARK_MIDDLE_WITH_QUESTION,
-                actualRemarks.getRemarkOfQuestion(RemarkTest.DEFAULT_QUESTION_2));
+        assertEquals(2, actualRemarks.getIndexOfQuestion(2));
     }
 }

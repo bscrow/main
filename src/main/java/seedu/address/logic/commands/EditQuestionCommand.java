@@ -37,7 +37,7 @@ public class EditQuestionCommand extends EditCommand {
         QuestionList questions = model.getQuestionList();
 
         try {
-            if (model.isfinalisedInterviewProperties()) {
+            if (model.isFinalisedInterviewProperties()) {
                 throw new CommandException("The interview session's questions has been finalised."
                         + " You can no longer edit a question.");
             }

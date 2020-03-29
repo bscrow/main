@@ -45,8 +45,6 @@ public class LogicManager implements Logic {
         CommandResult commandResult;
         Command command;
         switch (model.getAppPhase()) {
-        case PRE_SESSION:
-            // TODO: PreSession parser
         case NORMAL:
             command = normalParser.parseCommand(commandText);
             break;
@@ -90,6 +88,11 @@ public class LogicManager implements Logic {
     @Override
     public ObservableList<Interviewee> getFilteredIntervieweeListView() {
         return model.getFilteredIntervieweeListView();
+    }
+
+    @Override
+    public ObservableList<Interviewee> getBestNIntervieweesView() {
+        return model.getBestNInterviewees();
     }
 
     @Override

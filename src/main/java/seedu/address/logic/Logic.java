@@ -39,7 +39,7 @@ public interface Logic {
     /** Returns the Interviewee currently being looked at*/
     Interviewee getCurrentInterviewee();
 
-
+    ObservableList<Interviewee> getBestNIntervieweesView();
 
     /**
      * Returns the user prefs' sessions directory.

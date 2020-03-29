@@ -51,6 +51,15 @@ public class QuestionList {
     }
 
     /**
+     * Returns the number of questions.
+     *
+     * @return the number of questions in QuestionList.
+     */
+    public int size() {
+        return questions.size();
+    }
+
+    /**
      * Finds the question based on its index, if the index
      * string entered is a valid integer string.
      * @param questionIndex The string index.
