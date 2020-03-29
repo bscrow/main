@@ -20,6 +20,16 @@ public class CommandTestUtility {
     public static final String VALID_ATTRIBUTE_INTEGRITY = "integrity";
 
     public static final String VALID_QUESTION_WHAT = "What is this question?";
+    public static final String VALID_QUESTION_NUMBER_14 = "q14";
+    public static final String VALID_QUESTION_NUMBER_1 = "q1";
+    public static final String VALID_TIME_30 = "30.00";
+    public static final String VALID_TIME_123 = "123.45";
+
+    public static final String INVALID_QUESTION_NUMBER_1 = "q14a";
+    public static final String INVALID_QUESTION_NUMBER_2 = "qabc";
+    public static final String INVALID_TIME_123 = "123,2";
+    public static final String INVALID_TIME_1234 = "1234";
+    public static final String INVALID_DUMMY_VALUE = "dummy";
 
     public static final String WHITESPACE = " ";
 }

@@ -42,6 +42,7 @@ public class NormalParser {
             put("list", args -> new ListCommandParser().parse(args));
             put("finalise", args -> new FinaliseCommandParser().parse(args));
             put("open", args -> new OpenReportCommandParser().parse(args));
+            put("to", args -> new NavigationCommandParser().parse(args));
             put("best", args -> new BestCommandParser().parse(args));
             put("interview", args -> new StartInterviewCommand(args.trim()));
         }

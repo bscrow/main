@@ -7,6 +7,7 @@ import java.util.stream.IntStream;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.hirelah.exceptions.IllegalActionException;
 
 /**
@@ -93,14 +94,16 @@ public class RemarkList {
      * Retrieves the index of the Remark when this {@code Question}
      * was first asked.
      *
-     * @param questionNumber Question number that is queried.
+     * @param questionIndex Question number that is queried.
      * @return The index of the {@code Remark} in the RemarkList
      *         that was first associated with this {@code Question}.
+     * @throws IllegalActionException If the question queried has not been answered.
+     * @throws IllegalValueException If the question index queried is out of bound or is not a number.
      */
-    public int getIndexOfQuestion(int questionNumber) throws IllegalActionException {
-        if (!isQuestionAnswered(questionNumber)) {
+    public int getIndexOfQuestion(int questionIndex) throws IllegalActionException, IllegalValueException {
+        if (!isQuestionAnswered(questionIndex)) {
             throw new IllegalActionException("This question was not answered!");
         }
-        return questionIndices[questionNumber];
+        return questionIndices[questionIndex];
     }
 }

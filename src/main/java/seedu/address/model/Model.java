@@ -94,6 +94,9 @@ public interface Model {
     /** Returns the interviewee currently in focus */
     Interviewee getCurrentInterviewee();
 
+    /** Checks whether there is an interviewee on focus at the current state */
+    boolean hasCurrentInterviewee();
+
     /** Returns the transcript of the current interviewee */
     Transcript getCurrentTranscript();
 
@@ -111,4 +114,5 @@ public interface Model {
 
     /** Checks whether the interviewees, questions and attributes has been finalised */
     boolean isFinalisedInterviewProperties();
+
 }
