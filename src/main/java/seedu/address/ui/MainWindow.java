@@ -163,8 +163,10 @@ public class MainWindow extends UiPart<Stage> {
      */
     @FXML
     public void handleToggle(ToggleView toggleView) {
-        if (this.toggleView == toggleView || this.toggleView == ToggleView.TRANSCRIPT && logic.getCurrentInterviewee().equals(this.currentInterviewee)) {
-            return;
+        if (this.toggleView == toggleView) {
+            if (toggleView != ToggleView.TRANSCRIPT || currentInterviewee.equals(logic.getCurrentInterviewee())) {
+                return;
+            }
         }
         this.toggleView = toggleView;
 
@@ -184,15 +186,12 @@ public class MainWindow extends UiPart<Stage> {
             listPanelStackPane.getChildren().add(questionListPanel.getRoot());
             break;
         case TRANSCRIPT: // transcript
-            if (!logic.getCurrentInterviewee().equals(this.currentInterviewee)) {
-                currentInterviewee = logic.getCurrentInterviewee();
-            } else {
-                break;
-            }
+            currentInterviewee = logic.getCurrentInterviewee();
             remarkListPanel = new RemarkListPanel(currentInterviewee);
             detailedIntervieweeCard = new DetailedIntervieweeCard(currentInterviewee);
             listPanelStackPane.getChildren().addAll(remarkListPanel.getRoot(), detailedIntervieweeCard.getRoot());
             StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
+            StackPane.setAlignment(remarkListPanel.getRoot(), Pos.CENTER);
             break;
         case BEST_INTERVIEWEE:
             bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView());

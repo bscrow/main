@@ -1,5 +1,9 @@
 package seedu.address.ui;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -8,9 +12,10 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.Interviewee;
 
@@ -24,7 +29,7 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
     public final Interviewee interviewee;
 
     @FXML
-    private HBox cardPane;
+    private VBox detailedIntervieweePane;
 
     @FXML
     private Label name;
@@ -38,6 +43,9 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
     @FXML
     private BarChart<String, Double> attributeScores;
 
+    @FXML
+    private Button viewResume;
+
     @SuppressWarnings("unchecked")
     public DetailedIntervieweeCard(Interviewee interviewee) {
         super(FXML);
@@ -46,15 +54,32 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
         id.setText("ID:         " + interviewee.getId());
         alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
         ObservableList<XYChart.Data<String, Double>> data = convertMapToList(this.interviewee
-                                                                                    .getTranscript()
-                                                                                    .get()
-                                                                                    .getAttributeToScoreMapView());
-        XYChart.Series<String, Double> attributeData = new XYChart.Series<>("Attribute Scores", data);
+                .getTranscript()
+                .get()
+                .getAttributeToScoreMapView());
+        XYChart.Series<String, Double> attributeData = new XYChart.Series<>("Attributes", data);
 
         //setAll() method causes a Unchecked generics array creation for varargs parameter warning,
         // but it shouldn't cause errors
         attributeScores.getData().setAll(attributeData);
         attributeScores.setTitle("Attribute Scores");
+        attributeScores.getXAxis().setAnimated(false);
+
+
+
+        viewResume.setOnAction(en -> {
+            File resumePath = interviewee.getResume()
+                                            .orElse(new File("./src/main/resources/help/NoResume.pdf"));
+            if (Desktop.isDesktopSupported()) {
+                new Thread(() -> {
+                    try {
+                        Desktop.getDesktop().open(resumePath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
+            }
+        });
     }
 
     /**
@@ -69,6 +94,11 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
             ObservableMap<Attribute, Double> mapToScore) {
 
         ObservableList<XYChart.Data<String, Double>> attributeList = FXCollections.observableArrayList();
+
+//        // Initialise all attribute score to 0 due to X axis misalignment bug in BarChart
+//        for (Map.Entry<Attribute, Double> entry : mapToScore.entrySet()) {
+//            attributeList.add(new Data<>(entry.getKey().toString(), 1.0));
+//        }
 
         mapToScore.addListener((MapChangeListener<Attribute, Double>) change -> {
             if (change.wasAdded()) {

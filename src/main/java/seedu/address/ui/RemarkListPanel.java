@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
@@ -17,14 +16,14 @@ import seedu.address.model.hirelah.Remark;
  * Panel containing the list of remarks for an interviewee.
  */
 public class RemarkListPanel extends UiPart<Region> {
-    private static final String FXML = "CardListView.fxml";
+    private static final String FXML = "RemarkCardListView.fxml";
     private final Logger logger = LogsCenter.getLogger(RemarkListPanel.class);
 
     private ObservableList<Remark> remarkList;
 
     @FXML
-    private ListView<Remark> cardListView;
-    
+    private ListView<Remark> remarkCardListView;
+
 
     public RemarkListPanel(Interviewee interviewee) {
         super(FXML);
@@ -33,11 +32,10 @@ public class RemarkListPanel extends UiPart<Region> {
         } else {
             remarkList = null;
         }
-
-        cardListView.setItems(remarkList);
-        cardListView.setCellFactory(listView -> new RemarkListViewCell());
-        cardListView.getItems().addListener(
-                (ListChangeListener<Remark>) c -> cardListView.scrollTo(c.getList().size() - 1));
+        remarkCardListView.setItems(remarkList);
+        remarkCardListView.setCellFactory(listView -> new RemarkListViewCell());
+        remarkCardListView.getItems().addListener(
+                (ListChangeListener<Remark>) c -> remarkCardListView.scrollTo(c.getList().size() - 1));
     }
 
     /**

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<!--For ListViews that displays list of cards-->
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <VBox>
+         <BorderPane VBox.vgrow="ALWAYS">
+            <center>
+               <ListView fx:id="remarkCardListView" prefWidth="150" />
+            </center>
+            <top>
+               <HBox prefHeight="25.0" prefWidth="200.0" />
+            </top>
+         </BorderPane>
+      </VBox>
+   </center>
+   <top>
+      <Pane minHeight="290.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </top>
+</BorderPane>
