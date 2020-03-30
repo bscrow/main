@@ -27,6 +27,7 @@ public class RemarkListPanel extends UiPart<Region> {
 
     public RemarkListPanel(Interviewee interviewee) {
         super(FXML);
+        //remarkList = interviewee.getTranscript().get().getRemarkListView();
         if (interviewee.getTranscript().isPresent()) {
             remarkList = interviewee.getTranscript().get().getRemarkListView();
         } else {
@@ -35,7 +36,9 @@ public class RemarkListPanel extends UiPart<Region> {
         remarkCardListView.setItems(remarkList);
         remarkCardListView.setCellFactory(listView -> new RemarkListViewCell());
         remarkCardListView.getItems().addListener(
-                (ListChangeListener<Remark>) c -> remarkCardListView.scrollTo(c.getList().size() - 1));
+            (ListChangeListener<Remark>) c -> {
+                remarkCardListView.scrollTo(c.getList().size() - 1);
+            });
     }
 
     public void scrollTo(int index) {

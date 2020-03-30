@@ -22,9 +22,12 @@ public class Transcript {
      * Constructs a {@code Transcript} object
      * that are associated with a particular interviewee.
      */
-    public Transcript(QuestionList questions) {
+    public Transcript(QuestionList questions, AttributeList attributes) {
         this.remarkList = new RemarkList(questions.size());
         this.attributeToScoreMap = FXCollections.observableHashMap();
+        for (Attribute attribute : attributes) {
+            attributeToScoreMap.put(attribute, Double.NaN);
+        }
     }
 
     /**

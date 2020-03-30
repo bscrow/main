@@ -147,7 +147,7 @@ public class ModelManager implements Model {
             throw new IllegalActionException("Interviewee has been interviewed already!");
         }
         setCurrentInterviewee(interviewee);
-        currentInterviewee.setTranscript(new Transcript(questionList));
+        currentInterviewee.setTranscript(new Transcript(questionList, attributeList));
         setAppPhase(AppPhase.INTERVIEW);
     }
 

@@ -15,7 +15,10 @@ class TranscriptTest {
         QuestionList questions = new QuestionList();
         questions.add("One");
         questions.add("Two");
-        return new Transcript(questions);
+        AttributeList attributes = new AttributeList();
+        attributes.add("Attribute one");
+        attributes.add("Attribute two");
+        return new Transcript(questions, attributes);
     }
 
     @Test

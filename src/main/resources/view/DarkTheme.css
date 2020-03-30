@@ -418,4 +418,15 @@
     -fx-text-fill: #82B8D9;
 }
 
+#xAxis {
+    -fx-tick-label-font-size: 1.1em;
+    -fx-tick-label-fill: #914800;
+    -fx-tick-label-font-family: "Tahoma";
+}
+
+#yAxis {
+    -fx-tick-label-font-size: 1.01em;
+
+}
+
 }

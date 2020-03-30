@@ -17,13 +17,6 @@ public class IntervieweeCard extends UiPart<Region> {
 
     private static final String FXML = "IntervieweeListCard.fxml";
 
-    /**
-     * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
-     * As a consequence, UI elements' variable names cannot be set to such keywords
-     * or an exception will be thrown by JavaFX during runtime.
-     *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
-     */
 
     public final Interviewee interviewee;
 
@@ -53,6 +46,20 @@ public class IntervieweeCard extends UiPart<Region> {
         }
         done.setTranslateX(10);
         done.setTranslateY(25);
+        //        this.getRoot().setOnMouseClicked(new EventHandler<MouseEvent>() {
+        //            @Override
+        //            public void handle(MouseEvent event) {
+        //
+        ////                try {
+        ////                    logic.execute("open " + interviewee.getFullName());
+        ////                } catch (CommandException | ParseException e) {
+        ////                    e.printStackTrace();
+        ////                }
+        //////                new OpenReportCommand(interviewee.getFullName()).execute();
+        ////                System.out.println("open " + interviewee.getFullName());
+        //
+        //            }
+        //        });
     }
 
     @Override

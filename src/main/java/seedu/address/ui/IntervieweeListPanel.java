@@ -10,6 +10,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.logic.Logic;
 import seedu.address.model.hirelah.Interviewee;
 
 /**
@@ -18,6 +19,7 @@ import seedu.address.model.hirelah.Interviewee;
 public class IntervieweeListPanel extends UiPart<Region> {
     private static final String FXML = "CardListView.fxml";
     private final Logger logger = LogsCenter.getLogger(IntervieweeListPanel.class);
+    private Logic logic;
 
     @FXML
     private ListView<Interviewee> cardListView;

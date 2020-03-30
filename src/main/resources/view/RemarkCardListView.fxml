@@ -13,7 +13,7 @@
       <VBox>
          <BorderPane VBox.vgrow="ALWAYS">
             <center>
-               <ListView fx:id="remarkCardListView" prefWidth="150" />
+               <ListView fx:id="remarkCardListView" prefWidth="150" minHeight="200"/>
             </center>
             <top>
                <HBox prefHeight="25.0" prefWidth="200.0" />
@@ -22,6 +22,6 @@
       </VBox>
    </center>
    <top>
-      <Pane minHeight="290.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <Pane minHeight="270.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </top>
 </BorderPane>
