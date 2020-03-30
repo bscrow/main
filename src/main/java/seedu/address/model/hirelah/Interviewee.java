@@ -145,4 +145,9 @@ public class Interviewee {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return getFullName();
+    }
 }

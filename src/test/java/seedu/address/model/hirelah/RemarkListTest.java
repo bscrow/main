@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.hirelah.exceptions.IllegalActionException;
 
@@ -20,43 +18,32 @@ class RemarkListTest {
     }
 
     @Test
-    void add_addRemarks_success() throws IllegalValueException {
+    void getIndexAtTime_getFirstRemark_success() {
         RemarkList actualRemarks = new RemarkList(3);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITHOUT_QUESTION);
-        ObservableList<Remark> expectedArray =
-                FXCollections.observableArrayList(RemarkTest.REMARK_MIDDLE_WITHOUT_QUESTION);
-        assertEquals(expectedArray, actualRemarks.getRemarks());
-    }
-
-
-    @Test
-    void getIndexAtTime_getMiddleRemark_success() throws IllegalValueException {
-        RemarkList actualRemarks = new RemarkList(3);
-        actualRemarks.add(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION_1);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION_2);
-        actualRemarks.add(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
-        int result = actualRemarks.getIndexAtTime(RemarkTest.DEFAULT_MIDDLE_INSTANT);
-        assertEquals(actualRemarks.getRemarks().indexOf(RemarkTest.REMARK_MIDDLE_WITH_QUESTION_2), result);
+        actualRemarks.addRemark(RemarkTest.REMARK_START.getMessage());
+        actualRemarks.addRemark(RemarkTest.REMARK_EARLIER.getMessage());
+        actualRemarks.addRemark(RemarkTest.REMARK_MIDDLE.getMessage());
+        actualRemarks.addRemark(RemarkTest.REMARK_LATER.getMessage());
+        int result = actualRemarks.getIndexAtTime(RemarkTest.DEFAULT_START_TIME);
+        assertEquals(0, result);
     }
 
     @Test
     void isQuestionAnswered_noAnswer_success() throws IllegalValueException {
         RemarkList actualRemarks = new RemarkList(3);
-        actualRemarks.add(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION_1);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION_2);
-        actualRemarks.add(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
+        actualRemarks.addRemark(RemarkTest.REMARK_START.getMessage());
+        actualRemarks.addRemark(RemarkTest.REMARK_MIDDLE.getMessage());
+        actualRemarks.addRemark(RemarkTest.REMARK_LATER.getMessage());
         assertFalse(actualRemarks.isQuestionAnswered(3));
     }
 
     @Test
-    void getInstantOfQuestion_firstQuestion_success() throws IllegalActionException, IllegalValueException {
+    void getIndexOfQuestion_firstQuestion_success() throws IllegalActionException, IllegalValueException {
         RemarkList actualRemarks = new RemarkList(3);
-        actualRemarks.add(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualRemarks.add(RemarkTest.REMARK_QUARTER_WITH_QUESTION_1);
-        actualRemarks.add(RemarkTest.REMARK_MIDDLE_WITH_QUESTION_2);
-        actualRemarks.add(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
-        assertEquals(2, actualRemarks.getIndexOfQuestion(2));
+        actualRemarks.addRemark(RemarkTest.REMARK_START.getMessage());
+        actualRemarks.startQuestion(1, new Question("How are you?"));
+        actualRemarks.addRemark(RemarkTest.REMARK_MIDDLE.getMessage());
+        actualRemarks.addRemark(RemarkTest.REMARK_LATER.getMessage());
+        assertEquals(1, actualRemarks.getIndexOfQuestion(1));
     }
 }

@@ -4,8 +4,6 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
@@ -16,7 +14,6 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.hirelah.AppPhase;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.AttributeList;
-import seedu.address.model.hirelah.InterviewSession;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.IntervieweeList;
 import seedu.address.model.hirelah.Metric;
@@ -35,7 +32,6 @@ public class ModelManager implements Model {
     private boolean finalisedInterviewProperties;
     private AppPhase appPhase;
     private Interviewee currentInterviewee;
-    private InterviewSession interviewSession;
     private final IntervieweeList intervieweeList;
     private final AttributeList attributeList;
     private final QuestionList questionList;
@@ -152,19 +148,12 @@ public class ModelManager implements Model {
         }
         setCurrentInterviewee(interviewee);
         currentInterviewee.setTranscript(new Transcript(questionList));
-        interviewSession = new InterviewSession();
         setAppPhase(AppPhase.INTERVIEW);
-    }
-
-    @Override
-    public InterviewSession getInterviewSession() {
-        return interviewSession;
     }
 
     @Override
     public void endInterview() {
         setCurrentInterviewee(null);
-        interviewSession = null;
         setAppPhase(AppPhase.NORMAL);
     }
 
@@ -218,7 +207,7 @@ public class ModelManager implements Model {
 
     @Override
     public ObservableList<Interviewee> getBestNInterviewees() {
-        return Objects.requireNonNullElseGet(bestNIntervieweeList, () -> FXCollections.observableList(List.of()));
+        return bestNIntervieweeList;
     }
 
     /**

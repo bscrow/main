@@ -19,21 +19,11 @@ class TranscriptTest {
     }
 
     @Test
-    void getTranscriptAtTime_beyondLastTime_returnLastIndex() throws IllegalValueException {
+    void getIndexAtTime_beyondLastTime_returnLastIndex() throws IllegalValueException {
         Transcript actualTranscript = getTranscript();
-        actualTranscript.addRemark(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualTranscript.addRemark(RemarkTest.REMARK_QUARTER_WITH_QUESTION_1);
+        actualTranscript.addRemark(RemarkTest.REMARK_START.getMessage());
+        actualTranscript.addRemark(RemarkTest.REMARK_EARLIER.getMessage());
         assertEquals(1, actualTranscript.getIndexAtTime(Duration.ofSeconds(10000)));
-    }
-
-    @Test
-    void getTranscriptAtTime_validTimeRange_success() throws IllegalValueException {
-        Transcript actualTranscript = getTranscript();
-        actualTranscript.addRemark(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualTranscript.addRemark(RemarkTest.REMARK_MIDDLE_WITH_QUESTION_2);
-        actualTranscript.addRemark(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
-
-        assertEquals(1, actualTranscript.getIndexAtTime(RemarkTest.DEFAULT_MIDDLE_INSTANT));
     }
 
     @Test
@@ -46,9 +36,9 @@ class TranscriptTest {
     @Test
     void getTranscriptAtQuestion_answeredQuestion_success() throws IllegalActionException, IllegalValueException {
         Transcript actualTranscript = getTranscript();
-        actualTranscript.addRemark(RemarkTest.REMARK_START_WITHOUT_QUESTION);
-        actualTranscript.addRemark(RemarkTest.REMARK_QUARTER_WITH_QUESTION_1);
-        actualTranscript.addRemark(RemarkTest.REMARK_STOP_WITHOUT_QUESTION);
+        actualTranscript.addRemark(RemarkTest.REMARK_START.getMessage());
+        actualTranscript.startQuestion(1, new Question("What's your name?"));
+        actualTranscript.addRemark(RemarkTest.REMARK_LATER.getMessage());
         assertEquals(1, actualTranscript.getIndexOfQuestion(1));
     }
 

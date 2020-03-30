@@ -9,6 +9,7 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.interview.EndCommand;
 import seedu.address.logic.commands.interview.RemarkCommand;
 import seedu.address.logic.commands.interview.ScoreCommand;
+import seedu.address.logic.commands.interview.StartQuestionCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /*
@@ -29,6 +30,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
 public class InterviewParser {
     private static final Pattern SCORE_COMMAND_FORMAT =
             Pattern.compile(":(?<attribute>[\\p{Alpha}][\\p{Alpha} ]*?)\\s+(?<score>\\d+(\\.\\d+)?)");
+    private static final Pattern START_QUESTION_COMMAND_FORMAT =
+            Pattern.compile(":start q(?<questionNumber>\\d+)");
 
     /**
      * Parses user input into command for execution.
@@ -53,14 +56,18 @@ public class InterviewParser {
      * @throws ParseException if the command word cannot be identified with any command or attribute to score.
      */
     private Command parseSpecialCommand(String userInput) throws ParseException {
-        if (userInput.equals(":end interview")) {
+        if (userInput.equals(":end")) {
             return new EndCommand();
         }
-
-        Matcher matcher = SCORE_COMMAND_FORMAT.matcher(userInput.trim());
-        if (matcher.matches()) {
-            double score = Double.parseDouble(matcher.group("score"));
-            return new ScoreCommand(matcher.group("attribute"), score);
+        Matcher startQuestionMatcher = START_QUESTION_COMMAND_FORMAT.matcher(userInput.trim());
+        if (startQuestionMatcher.matches()) {
+            int questionNumber = Integer.parseInt(startQuestionMatcher.group("questionNumber"));
+            return new StartQuestionCommand(questionNumber);
+        }
+        Matcher scoreMatcher = SCORE_COMMAND_FORMAT.matcher(userInput.trim());
+        if (scoreMatcher.matches()) {
+            double score = Double.parseDouble(scoreMatcher.group("score"));
+            return new ScoreCommand(scoreMatcher.group("attribute"), score);
         }
 
         throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

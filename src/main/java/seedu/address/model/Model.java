@@ -7,7 +7,6 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.hirelah.AppPhase;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.AttributeList;
-import seedu.address.model.hirelah.InterviewSession;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.IntervieweeList;
 import seedu.address.model.hirelah.Metric;
@@ -102,9 +101,6 @@ public interface Model {
 
     /** Starts an interview with the given interviewee. Error if the interviewee has been interviewed. */
     void startInterview(Interviewee interviewee) throws IllegalActionException;
-
-    /** Gets information about the current Interview Session */
-    InterviewSession getInterviewSession();
 
     /** Indicates that the interview has ended */
     void endInterview();

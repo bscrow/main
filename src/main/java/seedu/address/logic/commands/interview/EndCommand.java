@@ -25,8 +25,9 @@ public class EndCommand extends Command {
                 throw new CommandException(MESSAGE_SCORELESS_ATTRIBUTES);
             }
         }
-        model.endInterview();
-        return new CommandResult(String.format(MESSAGE_SUCCESS, model.getCurrentInterviewee()),
+        CommandResult result = new CommandResult(String.format(MESSAGE_SUCCESS, model.getCurrentInterviewee()),
                 ToggleView.INTERVIEWEE);
+        model.endInterview();
+        return result;
     }
 }

@@ -1,49 +1,39 @@
 package seedu.address.model.hirelah;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
 
 class RemarkTest {
-    public static final Duration DEFAULT_EARLIER_INSTANT = Duration.ofSeconds(0);
-    public static final Duration DEFAULT_QUARTER_INSTANT = DEFAULT_EARLIER_INSTANT.plusMillis(250);
-    public static final Duration DEFAULT_MIDDLE_INSTANT = DEFAULT_EARLIER_INSTANT.plusMillis(500);
-    public static final Duration DEFAULT_LATER_INSTANT = DEFAULT_EARLIER_INSTANT.plusMillis(1000);
-    public static final Remark REMARK_START_WITHOUT_QUESTION = new Remark(DEFAULT_EARLIER_INSTANT, "Start");
-    public static final Remark REMARK_START_WITH_QUESTION_1 = new Remark(DEFAULT_EARLIER_INSTANT, "Start", 1);
-    public static final Remark REMARK_MIDDLE_WITHOUT_QUESTION = new Remark(DEFAULT_MIDDLE_INSTANT, "Random remark");
-    public static final Remark REMARK_STOP_WITHOUT_QUESTION = new Remark(DEFAULT_LATER_INSTANT, "Stop");
-    public static final Remark REMARK_QUARTER_WITH_QUESTION_1 = new Remark(DEFAULT_QUARTER_INSTANT,
-            "Random remark", 1);
-    public static final Remark REMARK_MIDDLE_WITH_QUESTION_2 = new Remark(DEFAULT_MIDDLE_INSTANT,
-            "Random remark", 2);
+    public static final Duration DEFAULT_START_TIME = Duration.ofSeconds(0);
+    public static final Duration DEFAULT_EARLIER_TIME = DEFAULT_START_TIME.plusSeconds(43);
+    public static final Duration DEFAULT_MIDDLE_TIME = DEFAULT_START_TIME.plusSeconds(100);
+    public static final Duration DEFAULT_LATER_TIME = DEFAULT_START_TIME.plusSeconds(1003);
+    public static final Remark REMARK_START = new Remark(DEFAULT_START_TIME, "Start");
+    public static final Remark REMARK_EARLIER = new Remark(DEFAULT_EARLIER_TIME, "Earlier");
+    public static final Remark REMARK_MIDDLE = new Remark(DEFAULT_MIDDLE_TIME, "Random remark");
+    public static final Remark REMARK_LATER = new Remark(DEFAULT_LATER_TIME, "Stop");
 
     @Test
     void getTime_maxTime_success() {
-        assertEquals(DEFAULT_MIDDLE_INSTANT, REMARK_MIDDLE_WITHOUT_QUESTION.getTime());
+        assertEquals(DEFAULT_MIDDLE_TIME, REMARK_MIDDLE.getTime());
     }
 
     @Test
-    void getQuestion_noQuestion_nullReturned() {
-        assertNull(REMARK_MIDDLE_WITHOUT_QUESTION.getQuestionNumber());
+    void getTimeString_formattedProperly() {
+        assertEquals("0:00", REMARK_START.getTimeString());
+        assertEquals("0:43", REMARK_EARLIER.getTimeString());
+        assertEquals("1:40", REMARK_MIDDLE.getTimeString());
+        assertEquals("16:43", REMARK_LATER.getTimeString());
     }
 
     @Test
-    void getTime_withQuestion_success() {
-        assertEquals(DEFAULT_MIDDLE_INSTANT, REMARK_MIDDLE_WITH_QUESTION_2.getTime());
+    void equals_sameMessageAndTime_true() {
+        Remark remark1 = new Remark(DEFAULT_EARLIER_TIME, "Remark");
+        Remark remark2 = new Remark(DEFAULT_EARLIER_TIME, "Remark");
+        assertEquals(remark1, remark2);
     }
 
-    @Test
-    void getQuestion_withQuestion_success() {
-        assertEquals(2, REMARK_MIDDLE_WITH_QUESTION_2.getQuestionNumber());
-    }
-
-    @Test
-    void equals_sameTimeAndMessageDifferentQuestion_false() {
-        assertNotEquals(REMARK_START_WITH_QUESTION_1, REMARK_START_WITHOUT_QUESTION);
-    }
 }

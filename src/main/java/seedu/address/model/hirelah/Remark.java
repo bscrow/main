@@ -10,25 +10,9 @@ import java.time.Duration;
 public class Remark {
     private final Duration time;
     private final String message;
-    private final Integer questionNumber;
 
     /**
-     * Constructs a {@code Remark} which is part of the answer
-     * to a question of the interview.
-     *
-     * @param time The time when the remark was made.
-     * @param message The remark message.
-     * @param questionNumber The question associated with this remark as its answer.
-     */
-    Remark(Duration time, String message, Integer questionNumber) {
-        this.time = time;
-        this.message = message;
-        this.questionNumber = questionNumber;
-    }
-
-    /**
-     * Constructs a {@code Remark} which is not part of the answer
-     * to any question of the interview.
+     * Constructs a {@code Remark} with the given message at given time.
      *
      * @param time The time when the remark was made.
      * @param message The remark message.
@@ -36,8 +20,8 @@ public class Remark {
     Remark(Duration time, String message) {
         this.time = time;
         this.message = message;
-        this.questionNumber = null;
     }
+
 
     /**
      * Retrieves the time of the interview when this {@code Remark}
@@ -55,17 +39,7 @@ public class Remark {
      * @return the formatted time string in minutes and seconds.
      */
     public String getTimeString() {
-        return String.format("%d:%d", time.toMinutes(), time.toSecondsPart());
-    }
-
-    /**
-     * Retrieves the Question index associated with this {@code Remark}
-     * if there is any.
-     *
-     * @return The index of the Question associated with this {@code Remark} if there is any.
-     */
-    public Integer getQuestionNumber() {
-        return questionNumber;
+        return String.format("%d:%02d", time.toMinutes(), time.toSecondsPart());
     }
 
     public String getMessage() {
@@ -83,12 +57,8 @@ public class Remark {
             return true;
         } else if (other instanceof Remark) {
             Remark otherRemark = ((Remark) other);
-            boolean isSameQuestion = this.questionNumber == otherRemark.getQuestionNumber() // both null
-                    || (this.questionNumber != null
-                    && this.questionNumber.equals(otherRemark.getQuestionNumber()));
             return time.equals(otherRemark.getTime())
-                    && message.equals(otherRemark.getMessage())
-                    && isSameQuestion;
+                    && message.equals(otherRemark.getMessage());
         } else {
             return false;
         }

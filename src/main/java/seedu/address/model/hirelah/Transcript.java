@@ -78,10 +78,18 @@ public class Transcript {
     /**
      * Adds a remark to the {@code RemarkList} in this {@code Transcript}.
      *
-     * @param toAdd the Remark to add.
+     * @param message the message of the remark to add.
      */
-    public void addRemark(Remark toAdd) throws IllegalValueException {
-        remarkList.add(toAdd);
+    public void addRemark(String message) {
+        remarkList.addRemark(message);
+    }
+
+    /**
+     * Marks the beginning of a {@code Question} in this {@code Transcript}.
+     */
+    public void startQuestion(int questionNumber, Question question)
+            throws IllegalActionException, IllegalValueException {
+        remarkList.startQuestion(questionNumber, question);
     }
 
     /**
@@ -100,8 +108,7 @@ public class Transcript {
      * was first asked.
      *
      * @param questionIndex Index of the question that is queried.
-     * @return The index of the {@code Remark} in the RemarkList
-     *         that was first associated with this {@code Question}.
+     * @return The index of the {@code QuestionRemark} in the RemarkList associated with this question.
      */
     public int getIndexOfQuestion(int questionIndex) throws IllegalActionException, IllegalValueException {
         return remarkList.getIndexOfQuestion(questionIndex);
