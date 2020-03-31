@@ -2,26 +2,13 @@
 
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-
-<!--For ListViews that displays list of cards-->
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <VBox>
-         <BorderPane VBox.vgrow="ALWAYS">
-            <center>
-               <ListView fx:id="remarkCardListView" prefWidth="150" minHeight="200"/>
-            </center>
-            <top>
-               <HBox prefHeight="25.0" prefWidth="200.0" />
-            </top>
-         </BorderPane>
-      </VBox>
+      <ListView fx:id="remarkCardListView" minHeight="200" />
    </center>
    <top>
-      <Pane minHeight="270.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <Pane minHeight="225.0" BorderPane.alignment="CENTER" />
    </top>
 </BorderPane>

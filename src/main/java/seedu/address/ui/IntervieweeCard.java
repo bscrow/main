@@ -6,8 +6,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.hirelah.Interviewee;
 
 /**
@@ -16,9 +19,13 @@ import seedu.address.model.hirelah.Interviewee;
 public class IntervieweeCard extends UiPart<Region> {
 
     private static final String FXML = "IntervieweeListCard.fxml";
+    private static final File CHECKBOX_TICK = new File("./src/main/resources/images/checkbox_tick.png");
+    private static final File CHECKBOX_EMPTY = new File("./src/main/resources/images/checkbox_empty.png");
 
 
     public final Interviewee interviewee;
+
+    private CommandExecutor commandExecutor;
 
     @FXML
     private HBox cardPane;
@@ -29,37 +36,41 @@ public class IntervieweeCard extends UiPart<Region> {
     @FXML
     private Label alias;
     @FXML
-    private ImageView done;
+    private ImageView interviewStatus;
+    @FXML
+    private ImageView resumeStatus;
 
-    public IntervieweeCard(Interviewee interviewee) {
+    public IntervieweeCard(Interviewee interviewee, CommandExecutor commandExecutor) {
         super(FXML);
         this.interviewee = interviewee;
+        this.commandExecutor = commandExecutor;
         name.setText(interviewee.getFullName());
         id.setText("ID:         " + interviewee.getId());
         alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
         if (interviewee.getTranscript().isPresent()) {
-            File imgFile = new File("./src/main/resources/images/checkbox_tick.png");
-            done.setImage(new Image(imgFile.toURI().toString()));
+            interviewStatus.setImage(new Image(CHECKBOX_TICK.toURI().toString()));
         } else {
-            File imgFile = new File("./src/main/resources/images/checkbox_cross.png");
-            done.setImage(new Image(imgFile.toURI().toString()));
+            interviewStatus.setImage(new Image(CHECKBOX_EMPTY.toURI().toString()));
         }
-        done.setTranslateX(10);
-        done.setTranslateY(25);
-        //        this.getRoot().setOnMouseClicked(new EventHandler<MouseEvent>() {
-        //            @Override
-        //            public void handle(MouseEvent event) {
-        //
-        ////                try {
-        ////                    logic.execute("open " + interviewee.getFullName());
-        ////                } catch (CommandException | ParseException e) {
-        ////                    e.printStackTrace();
-        ////                }
-        //////                new OpenReportCommand(interviewee.getFullName()).execute();
-        ////                System.out.println("open " + interviewee.getFullName());
-        //
-        //            }
-        //        });
+        if (interviewee.getResume().isPresent()) {
+            resumeStatus.setImage(new Image(CHECKBOX_TICK.toURI().toString()));
+        } else {
+            resumeStatus.setImage(new Image(CHECKBOX_EMPTY.toURI().toString()));
+        }
+        this.getRoot().setOnKeyPressed(key -> {
+            KeyCode keyCode = key.getCode();
+            if (keyCode == KeyCode.ENTER) {
+                try {
+                    commandExecutor.execute("open " + this.interviewee.getFullName());
+                } catch (CommandException | IllegalValueException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void handleOpen() {
+
     }
 
     @Override

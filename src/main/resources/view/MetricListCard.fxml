@@ -21,7 +21,8 @@
    <left>
       <Pane prefWidth="60.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="metricName" alignment="CENTER" layoutX="-53.0" layoutY="64.0" prefHeight="53.0" prefWidth="160.0" text="Label" wrapText="true"/>
+            <Label fx:id="metricName" alignment="CENTER" layoutX="-53.0" layoutY="64.0" prefHeight="53.0"
+                   prefWidth="160.0" text="Label" wrapText="true"/>
          </children>
       </Pane>
    </left>

@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import seedu.address.model.hirelah.Remark;
 
 /**
@@ -29,7 +28,7 @@ public class RemarkCard extends UiPart<Region> {
     @FXML
     private Label timestamp;
     @FXML
-    private Text content;
+    private Label content;
 
 
 
@@ -43,6 +42,7 @@ public class RemarkCard extends UiPart<Region> {
         this.remark = remark;
         timestamp.setText(remark.getTimeString());
         content.setText(remark.getMessage());
+        this.getRoot().prefWidthProperty().bind(remarkCardPane.widthProperty().subtract(30));
 
     }
 

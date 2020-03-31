@@ -1,24 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Text?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox fx:id="remarkCardPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <GridPane VBox.vgrow="ALWAYS">
-    <columnConstraints>
-      <ColumnConstraints minWidth="10" prefWidth="150" />
-    </columnConstraints>
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints vgrow="ALWAYS" minHeight="20.0" />
-      </rowConstraints>
-      <children>
-         <Label fx:id="timestamp" text="Label" />
-         <Text fx:id="content" fill="#f0efef" stroke="#fdfdfd" strokeWidth="0.0" text="Text" wrappingWidth="${remarkCardPane.width}" GridPane.rowIndex="1" />
-      </children>
-  </GridPane>
+    <Label fx:id="timestamp" text="Label" />
+    <Label fx:id="content" text="Text" prefWidth="1000" wrapText="true"/>
+
 </VBox>

@@ -46,7 +46,7 @@ public class MainWindow extends UiPart<Stage> {
     private QuestionListPanel questionListPanel;
     private ResultDisplay resultDisplay;
 
-    // SecondWindow for displaying additional infromation during interview phase.
+    // SecondWindow for displaying additional information during interview phase.
     private SecondWindow secondWindow;
 
     // On startup, HireLah shows the list of interviewees
@@ -81,8 +81,8 @@ public class MainWindow extends UiPart<Stage> {
         setAccelerators();
 
         attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
-        intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeListView());
-        bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView());
+        intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeListView(), this::executeCommand);
+        bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView(), this::executeCommand);
         attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
         metricListPanel = new MetricListPanel(logic.getMetricListView());
         questionListPanel = new QuestionListPanel(logic.getQuestionListView());
@@ -192,7 +192,7 @@ public class MainWindow extends UiPart<Stage> {
         case TRANSCRIPT: // transcript
             Interviewee currentInterviewee = logic.getCurrentInterviewee();
             DetailedIntervieweeCard detailedIntervieweeCard = new DetailedIntervieweeCard(currentInterviewee);
-            remarkListPanel = new RemarkListPanel(currentInterviewee);
+            remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
             listPanelStackPane.getChildren().addAll(remarkListPanel.getRoot(), detailedIntervieweeCard.getRoot());
             StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
             StackPane.setAlignment(remarkListPanel.getRoot(), Pos.CENTER);
@@ -200,7 +200,7 @@ public class MainWindow extends UiPart<Stage> {
             secondWindow.show(questionListPanel);
             break;
         case BEST_INTERVIEWEE:
-            bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView());
+            bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView(), this::executeCommand);
             listPanelStackPane.getChildren().add(bestNIntervieweesPanel.getRoot());
             break;
         default:

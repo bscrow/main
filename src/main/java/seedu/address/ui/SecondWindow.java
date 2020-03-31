@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 
 /**
- * Second Window, for showing the lists of Questions during interviews.
+ * Second Window, currently for showing the lists of Questions during interviews.
  */
 public class SecondWindow extends UiPart<Stage> {
 
@@ -41,6 +41,5 @@ public class SecondWindow extends UiPart<Stage> {
         listPanelStackPane.getChildren().clear();
         this.getRoot().hide();
     }
-
 
 }

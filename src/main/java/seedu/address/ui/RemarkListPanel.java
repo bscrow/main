@@ -10,6 +10,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.hirelah.Interviewee;
+import seedu.address.model.hirelah.Question;
+import seedu.address.model.hirelah.QuestionRemark;
 import seedu.address.model.hirelah.Remark;
 
 /**
@@ -20,14 +22,15 @@ public class RemarkListPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(RemarkListPanel.class);
 
     private ObservableList<Remark> remarkList;
+    private ObservableList<Question> questions;
 
     @FXML
     private ListView<Remark> remarkCardListView;
 
 
-    public RemarkListPanel(Interviewee interviewee) {
+    public RemarkListPanel(Interviewee interviewee, ObservableList<Question> questions) {
         super(FXML);
-        //remarkList = interviewee.getTranscript().get().getRemarkListView();
+        this.questions = questions;
         if (interviewee.getTranscript().isPresent()) {
             remarkList = interviewee.getTranscript().get().getRemarkListView();
         } else {
@@ -57,7 +60,11 @@ public class RemarkListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new RemarkCard(remark).getRoot());
+                if (remark instanceof QuestionRemark) {
+                    setGraphic(new QuestionRemarkCard(remark, questions).getRoot());
+                } else {
+                    setGraphic(new RemarkCard(remark).getRoot());
+                }
             }
         }
     }

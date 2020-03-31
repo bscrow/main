@@ -99,8 +99,8 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
 
         yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
-        yAxis.setUpperBound(100);
-        yAxis.setTickUnit(25);
+        yAxis.setUpperBound(10);
+        yAxis.setTickUnit(2.5);
         yAxis.setLabel("Scores");
 
         xAxis.setLabel("Attributes");

@@ -10,7 +10,7 @@ public class ModelUtil {
     private static final String MODEL_HAS_BEEN_FINALISED = "This interview session has been finalized. You can no "
             + "longer make changes to attributes and questions.";
     private static final String MODEL_HAS_NOT_BEEN_FINALISED = "This interview session has not been finalized. You "
-            + "can't create metrics and find best interviewees.";
+            + "can't create metrics, conduct interviews, or find best interviewees.";
 
     /**
      * Validates whether the Model isFinalized state, matches to

@@ -2,15 +2,19 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.logic.Logic;
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.hirelah.Interviewee;
 
 /**
@@ -19,7 +23,7 @@ import seedu.address.model.hirelah.Interviewee;
 public class IntervieweeListPanel extends UiPart<Region> {
     private static final String FXML = "CardListView.fxml";
     private final Logger logger = LogsCenter.getLogger(IntervieweeListPanel.class);
-    private Logic logic;
+    private final CommandExecutor commandExecutor;
 
     @FXML
     private ListView<Interviewee> cardListView;
@@ -27,13 +31,36 @@ public class IntervieweeListPanel extends UiPart<Region> {
     @FXML
     private Label title;
 
-    public IntervieweeListPanel(ObservableList<Interviewee> intervieweeList) {
+    public IntervieweeListPanel(ObservableList<Interviewee> intervieweeList, CommandExecutor commandExecutor) {
         super(FXML);
+        this.commandExecutor = commandExecutor;
         title.setText("Interviewees");
         cardListView.setItems(intervieweeList);
         cardListView.setCellFactory(listView -> new IntervieweeListViewCell());
         cardListView.getItems().addListener(
                 (ListChangeListener<Interviewee>) c -> cardListView.scrollTo(c.getList().size() - 1));
+
+//        this.getRoot().setOnKeyPressed(key -> {
+//            KeyCode keyCode = key.getCode();
+//            if (keyCode == KeyCode.ENTER) {
+//                try {
+//                    commandExecutor.execute("open " + this.interviewee.getFullName());
+//                } catch (CommandException | IllegalValueException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+        cardListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Interviewee>() {
+            @Override
+            public void changed(
+                    ObservableValue<? extends Interviewee> observable, Interviewee oldValue, Interviewee newValue) {
+                try {
+                        commandExecutor.execute("open " + newValue.getFullName());
+                    } catch (CommandException | IllegalValueException e) {
+                        e.printStackTrace();
+                    }
+            }
+        });
 
     }
 
@@ -49,7 +76,7 @@ public class IntervieweeListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
-                setGraphic(new IntervieweeCard(interviewee).getRoot());
+                setGraphic(new IntervieweeCard(interviewee, commandExecutor).getRoot());
             }
         }
     }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+
+<VBox fx:id="questionRemarkCardPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox alignment="CENTER" minHeight="20">
+        <children>
+            <Label text=" "/>
+            <Label fx:id="questionHeader" text="Label"/>
+        </children>
+    </HBox>
+</VBox>
