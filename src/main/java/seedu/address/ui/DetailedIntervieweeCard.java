@@ -61,12 +61,15 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
         name.setText("Full Name: " + interviewee.getFullName());
         id.setText("ID:         " + interviewee.getId());
         alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
+        viewResume.setText(interviewee.getResume().isPresent() ? "View Resume" : "No Resume");
 
         initialiseChart();
 
         viewResume.setOnAction(en -> {
-            File resumePath = interviewee.getResume()
-                                            .orElse(new File("./src/main/resources/help/NoResume.pdf"));
+            if (interviewee.getResume().isEmpty()) {
+                return;
+            }
+            File resumePath = interviewee.getResume().get();
             if (Desktop.isDesktopSupported()) {
                 new Thread(() -> {
                     try {
@@ -90,6 +93,7 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
                 .getAttributeToScoreMapView());
         XYChart.Series<String, Double> attributeData = new XYChart.Series<>("Attributes", data);
 
+        // setAll method should be safe in our usage but it raises an Unchecked varargs warning
         attributeScores.getData().setAll(attributeData);
         attributeScores.setLegendVisible(false);
 
@@ -103,7 +107,7 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
         xAxis.setAnimated(false);
         xAxis.setMinWidth(data.size() * 30);
         xAxis.setMaxHeight(30);
-        xAxis.setTickLabelRotation(-45);
+        // xAxis.setTickLabelRotation(-10); Unnecessarrily flattens the BarChart
 
     }
 

@@ -46,6 +46,9 @@ public class MainWindow extends UiPart<Stage> {
     private QuestionListPanel questionListPanel;
     private ResultDisplay resultDisplay;
 
+    // SecondWindow for displaying additional infromation during interview phase.
+    private SecondWindow secondWindow;
+
     // On startup, HireLah shows the list of interviewees
     private ToggleView toggleView = ToggleView.INTERVIEWEE;
 
@@ -83,6 +86,7 @@ public class MainWindow extends UiPart<Stage> {
         attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
         metricListPanel = new MetricListPanel(logic.getMetricListView());
         questionListPanel = new QuestionListPanel(logic.getQuestionListView());
+        secondWindow = new SecondWindow();
     }
 
     public Stage getPrimaryStage() {
@@ -163,9 +167,11 @@ public class MainWindow extends UiPart<Stage> {
             return;
         }
         this.toggleView = toggleView;
-        // Clear the current interviewee if not viewing a report
+
+        // Clear the current interviewee and close SecondWindow if not viewing a report
         if (this.toggleView != ToggleView.TRANSCRIPT) {
             logic.setCurrentInterviewee(null);
+            secondWindow.hide();
         }
 
         listPanelStackPane.getChildren().clear();
@@ -190,8 +196,8 @@ public class MainWindow extends UiPart<Stage> {
             listPanelStackPane.getChildren().addAll(remarkListPanel.getRoot(), detailedIntervieweeCard.getRoot());
             StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
             StackPane.setAlignment(remarkListPanel.getRoot(), Pos.CENTER);
-            // second screen
-            // handleSecondStage();
+            // show second window
+            secondWindow.show(questionListPanel);
             break;
         case BEST_INTERVIEWEE:
             bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView());
@@ -201,13 +207,6 @@ public class MainWindow extends UiPart<Stage> {
             break;
         }
     }
-
-    // /**
-    //  * Opens up a second window to show the question list, as a guide for the interviewee.
-    //  */
-    // private void handleSecondStage() {
-    //     SecondWindow(questionListPanel).show();
-    // }
 
     /**
      * Opens the user guide PDF on help command.

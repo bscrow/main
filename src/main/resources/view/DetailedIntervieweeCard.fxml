@@ -23,7 +23,7 @@
             </rowConstraints>
             <children>
                 <Label fx:id="alias" styleClass="cell_small_label" text="\$alias" />
-                <Button fx:id="viewResume" mnemonicParsing="false" prefHeight="25.0" prefWidth="138.0" text="View Resume" alignment="CENTER_RIGHT" GridPane.columnIndex="1" />
+                <Button fx:id="viewResume" mnemonicParsing="false" prefHeight="25.0" prefWidth="138.0" textAlignment="CENTER" alignment="CENTER_RIGHT" GridPane.columnIndex="1" />
             </children>
         </GridPane>
         <Label fx:id="id" layoutX="20.0" layoutY="35.0" styleClass="cell_small_label" text="\$id" />
