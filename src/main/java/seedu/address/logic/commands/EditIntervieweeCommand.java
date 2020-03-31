@@ -49,7 +49,7 @@ public class EditIntervieweeCommand extends Command {
         } catch (IllegalActionException | IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
-        return new CommandResult(String.format(MESSAGE_EDIT_INTERVIEWEE_SUCCESS, identifier),
+        return new ToggleCommandResult(String.format(MESSAGE_EDIT_INTERVIEWEE_SUCCESS, identifier),
                 ToggleView.INTERVIEWEE);
     }
 

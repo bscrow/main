@@ -3,7 +3,6 @@ package seedu.address.logic.commands.interview;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
-import seedu.address.logic.commands.ToggleView;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.hirelah.Attribute;
@@ -13,7 +12,7 @@ import seedu.address.model.hirelah.Attribute;
  * the currently interviewed interviewee.
  */
 public class ScoreCommand extends Command {
-    public static final String MESSAGE_SUCCESS = "Scored %f to %s";
+    public static final String MESSAGE_SUCCESS = "Scored %.2f to %s";
 
     private String attributePrefix;
     private double score;
@@ -32,7 +31,6 @@ public class ScoreCommand extends Command {
             throw new CommandException(e.getMessage());
         }
         model.getCurrentTranscript().setAttributeScore(attribute, this.score);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, this.score, attribute),
-                ToggleView.TRANSCRIPT);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, this.score, attribute));
     }
 }

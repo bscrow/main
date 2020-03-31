@@ -2,6 +2,7 @@ package seedu.address.logic.commands.interview;
 
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.ToggleCommandResult;
 import seedu.address.logic.commands.ToggleView;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -25,7 +26,7 @@ public class EndCommand extends Command {
                 throw new CommandException(MESSAGE_SCORELESS_ATTRIBUTES);
             }
         }
-        CommandResult result = new CommandResult(String.format(MESSAGE_SUCCESS, model.getCurrentInterviewee()),
+        CommandResult result = new ToggleCommandResult(String.format(MESSAGE_SUCCESS, model.getCurrentInterviewee()),
                 ToggleView.INTERVIEWEE);
         model.endInterview();
         return result;

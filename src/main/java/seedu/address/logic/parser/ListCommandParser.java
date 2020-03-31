@@ -7,7 +7,6 @@ import seedu.address.logic.commands.ListAttributeCommand;
 import seedu.address.logic.commands.ListIntervieweeCommand;
 import seedu.address.logic.commands.ListMetricCommand;
 import seedu.address.logic.commands.ListQuestionCommand;
-import seedu.address.logic.commands.ListSessionCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
@@ -38,9 +37,6 @@ public class ListCommandParser implements Parser<Command> {
 
         case ListQuestionCommand.COMMAND_WORD:
             return new ListQuestionCommand();
-
-        case ListSessionCommand.COMMAND_WORD:
-            return new ListSessionCommand();
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.ModelUtil.validateFinalisation;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -14,7 +15,7 @@ import seedu.address.model.hirelah.AttributeList;
  */
 public class DeleteAttributeCommand extends Command {
     public static final String COMMAND_WORD = "attribute";
-
+    public static final boolean DESIRED_MODEL_FINALIZED_STATE = false;
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the attribute identified by its prefix.\n"
             + "Parameters: PREFIX\n"
@@ -31,14 +32,11 @@ public class DeleteAttributeCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        validateFinalisation(model, DESIRED_MODEL_FINALIZED_STATE);
         AttributeList attributes = model.getAttributeList();
         try {
-            if (model.isFinalisedInterviewProperties()) {
-                throw new CommandException("The interview session's attributes has been finalised."
-                        + " You can no longer delete an attribute.");
-            }
             Attribute attribute = attributes.delete(attributePrefix);
-            return new CommandResult(String.format(MESSAGE_DELETE_ATTRIBUTE_SUCCESS, attribute),
+            return new ToggleCommandResult(String.format(MESSAGE_DELETE_ATTRIBUTE_SUCCESS, attribute),
                     ToggleView.ATTRIBUTE);
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());

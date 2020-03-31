@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.ModelUtil.validateFinalisation;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -15,15 +16,13 @@ import seedu.address.model.hirelah.AttributeList;
 
 public class EditAttributeCommand extends Command {
     public static final String COMMAND_WORD = "attribute";
-
+    public static final boolean DESIRED_MODEL_FINALIZED_STATE = false;
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Edits the attribute identified by its prefix.\n"
             + "Parameters: PREFIX NEW_ATTRIBUTE\n"
             + "Example: update " + COMMAND_WORD + " lea tenacity";
 
     public static final String MESSAGE_EDIT_ATTRIBUTE_SUCCESS = "Successfully edited Attribute with prefix: %s to %s";
-    public static final String MESSAGE_EDIT_DUPLICATE_PREFIX = "There are multiple attributes with prefix: %s";
-    public static final String MESSAGE_EDIT_NO_PREFIX_FOUND = "There is no attribute with the given prefix: %s";
 
     private final String attributePrefix;
     private final String updatedAttribute;
@@ -36,14 +35,11 @@ public class EditAttributeCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        validateFinalisation(model, DESIRED_MODEL_FINALIZED_STATE);
         AttributeList attributes = model.getAttributeList();
         try {
-            if (model.isFinalisedInterviewProperties()) {
-                throw new CommandException("The interview session's attributes has been finalised."
-                        + " You can no longer edit an attribute.");
-            }
             Attribute attribute = attributes.edit(attributePrefix, updatedAttribute);
-            return new CommandResult(String.format(MESSAGE_EDIT_ATTRIBUTE_SUCCESS, attribute, updatedAttribute),
+            return new ToggleCommandResult(String.format(MESSAGE_EDIT_ATTRIBUTE_SUCCESS, attribute, updatedAttribute),
                     ToggleView.ATTRIBUTE);
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());

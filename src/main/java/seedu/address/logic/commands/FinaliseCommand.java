@@ -24,7 +24,7 @@ public class FinaliseCommand extends Command {
     public CommandResult execute(Model model) {
         requireNonNull(model);
         model.finaliseInterviewProperties();
-        return new CommandResult(String.format(MESSAGE_SUCCESS));
+        return new CommandResult(MESSAGE_SUCCESS);
     }
 
     @Override

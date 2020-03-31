@@ -8,7 +8,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.OpenResumeCommand;
 import seedu.address.logic.commands.StartInterviewCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -45,6 +47,10 @@ public class NormalParser {
             put("goto", args -> new NavigationCommandParser().parse(args));
             put("best", args -> new BestCommandParser().parse(args));
             put("interview", args -> new StartInterviewCommand(args.trim()));
+            put("exit", args -> new ExitCommand());
+            put("help", args -> new HelpCommand());
+            put("upload", args -> new UploadResumeCommandParser().parse(args.trim()));
+            put("resume", args -> new OpenResumeCommand(args.trim()));
         }
     };
 

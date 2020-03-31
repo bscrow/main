@@ -35,7 +35,7 @@ public class NavigationQuestionCommand extends Command {
         try {
             int remarkIndex = model.getCurrentTranscript().getIndexOfQuestion(questionIndex);
             return new NavigationCommandResult(String.format(MESSAGE_NAVIGATION_QUESTION_SUCCESS,
-                    questionIndex), ToggleView.TRANSCRIPT, remarkIndex);
+                    questionIndex), remarkIndex);
         } catch (IllegalValueException | IllegalActionException e) {
             throw new CommandException(e.getMessage());
         }

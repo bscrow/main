@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 
 import javafx.scene.image.Image;
 import seedu.address.MainApp;
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.Model;
 
 /**
  * A container for App specific utility functions
@@ -34,6 +36,19 @@ public class AppUtil {
     public static void checkArgument(Boolean condition, String errorMessage) {
         if (!condition) {
             throw new IllegalArgumentException(errorMessage);
+        }
+    }
+
+    /**
+     * Checks that the {@code Model} has been finalised (via finalise command).
+     *
+     * @param model the Model to check.
+     * @param errorMessage the message if the model is finalised.
+     * @throws CommandException if model has been finalised.
+     */
+    public static void checkFinalised(Model model, String errorMessage) throws CommandException {
+        if (model.isFinalisedInterviewProperties()) {
+            throw new CommandException(errorMessage);
         }
     }
 }

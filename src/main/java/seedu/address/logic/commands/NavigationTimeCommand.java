@@ -13,10 +13,10 @@ import seedu.address.model.Model;
  */
 public class NavigationTimeCommand extends Command {
     public static final String COMMAND_WORD = "goto";
-    public static final String MESSAGE_NAVIGATION_TIME_SUCCESS = "Here is the remark at time %d.%d: ";
+    public static final String MESSAGE_NAVIGATION_TIME_SUCCESS = "Here is the remark at time %d.%d";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Navigate to a particular time of an interviewee's interview.\n"
-            + "Parameters: minutes.seconds of the interview\n"
+            + "Parameters: TIME (in the format mm.ss)\n"
             + "Example:  " + COMMAND_WORD + " 30.00";
 
     private final Duration timeQuery;
@@ -35,7 +35,7 @@ public class NavigationTimeCommand extends Command {
         }
         int remarkIndex = model.getCurrentTranscript().getIndexAtTime(timeQuery);
         return new NavigationCommandResult(String.format(MESSAGE_NAVIGATION_TIME_SUCCESS,
-                timeQuery.toMinutes(), timeQuery.toSeconds()), ToggleView.TRANSCRIPT, remarkIndex);
+                timeQuery.toMinutes(), timeQuery.toSecondsPart()), remarkIndex);
     }
 
 

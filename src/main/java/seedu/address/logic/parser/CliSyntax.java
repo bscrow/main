@@ -14,4 +14,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_NAME = new Prefix("-n");
     public static final Prefix PREFIX_METRIC = new Prefix("-m");
     public static final Prefix PREFIX_QUESTION = new Prefix("-q");
+    public static final Prefix PREFIX_PATH = new Prefix("-p");
 }

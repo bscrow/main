@@ -10,7 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
-
 import seedu.address.model.hirelah.AppPhase;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.AttributeList;
@@ -136,6 +135,10 @@ public class ModelManager implements Model {
         return !(this.currentInterviewee == null);
     }
 
+    /**
+     * A utility to get the Transcript of the current Interviewee (guaranteed to exist).
+     * Do not use when there is no interviewee.
+     */
     @Override
     public Transcript getCurrentTranscript() {
         return currentInterviewee.getTranscript().get();

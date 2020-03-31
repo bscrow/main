@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.ModelUtil.validateFinalisation;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -14,7 +15,7 @@ import seedu.address.model.hirelah.QuestionList;
 
 public class AddQuestionCommand extends Command {
     public static final String COMMAND_WORD = "question";
-    public static final String MESSAGE_DUPLICATE_QUESTION = "The question already exists.";
+    public static final boolean DESIRED_MODEL_FINALIZED_STATE = false;
     public static final String MESSAGE_SUCCESS = "New question added: %1$s";
     public static final String MESSAGE_USAGE = "new " + COMMAND_WORD + ": Adds an question to the Question list.\n"
             + "Parameters: DESCRIPTION\n"
@@ -33,18 +34,15 @@ public class AddQuestionCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        validateFinalisation(model, DESIRED_MODEL_FINALIZED_STATE);
         QuestionList questions = model.getQuestionList();
         try {
-            if (model.isFinalisedInterviewProperties()) {
-                throw new CommandException("The interview session's questions has been finalised."
-                        + " You can no longer add a new question.");
-            }
             questions.add(toAdd);
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());
         }
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), ToggleView.QUESTION);
+        return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, toAdd), ToggleView.QUESTION);
     }
 
     @Override

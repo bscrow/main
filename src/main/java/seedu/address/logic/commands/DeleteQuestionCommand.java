@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.ModelUtil.validateFinalisation;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -14,15 +15,13 @@ import seedu.address.model.hirelah.QuestionList;
 
 public class DeleteQuestionCommand extends Command {
     public static final String COMMAND_WORD = "question";
-
+    public static final boolean DESIRED_MODEL_FINALIZED_STATE = false;
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the question identified by its index number in the question list.\n"
             + "Parameters: INDEX\n"
             + "Example: delete " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_DELETE_QUESTION_SUCCESS = "Deleted Question: %1$s";
-    public static final String MESSAGE_DELETE_INDEX_OUT_OF_BOUND = "The index is out of bound: %s";
-    public static final String MESSAGE_DELETE_INDEX_NOT_A_NUMBER = "The index is not a number: %s";
 
     private final int questionIndex;
 
@@ -33,14 +32,11 @@ public class DeleteQuestionCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        validateFinalisation(model, DESIRED_MODEL_FINALIZED_STATE);
         QuestionList questions = model.getQuestionList();
         try {
-            if (model.isFinalisedInterviewProperties()) {
-                throw new CommandException("The interview session's questions has been finalised."
-                        + " You can no longer delete a question.");
-            }
-
-            return new CommandResult(String.format(MESSAGE_DELETE_QUESTION_SUCCESS, questions.delete(questionIndex)),
+            return new ToggleCommandResult(String.format(MESSAGE_DELETE_QUESTION_SUCCESS,
+                    questions.delete(questionIndex)),
                     ToggleView.QUESTION);
         } catch (IllegalValueException e) {
             throw new CommandException(e.getMessage());

@@ -1,6 +1,8 @@
 
 package seedu.address.logic.commands;
 
+import seedu.address.ui.MainWindow;
+
 /**
  * Constructs a {@code NavigationCommandResult} with the specified {@code feedbackToUser},
  * and index as specified to enable ToggleView Transcript to navigate to the particular index.
@@ -15,9 +17,15 @@ public class NavigationCommandResult extends CommandResult {
      * Constructs a {@code CommandResult} with the specified {@code feedbackToUser},
      * and other fields set to their default value.
      */
-    public NavigationCommandResult(String feedbackToUser, ToggleView toggleView, int index) {
-        super(feedbackToUser, false, false, toggleView);
+    public NavigationCommandResult(String feedbackToUser, int index) {
+        super(feedbackToUser);
         this.index = index;
+    }
+
+    @Override
+    public void displayResult(MainWindow mainWindow) {
+        super.displayResult(mainWindow);
+        mainWindow.scrollTranscriptTo(index);
     }
 
     /**

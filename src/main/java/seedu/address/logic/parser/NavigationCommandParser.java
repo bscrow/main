@@ -37,8 +37,8 @@ public class NavigationCommandParser implements Parser<Command> {
             int questionNumber = Integer.parseInt(questionMatcher.group("questionNumber"));
             return new NavigationQuestionCommand(questionNumber);
         } else if (timeMatcher.matches()) {
-            Integer minutes = Integer.parseInt(timeMatcher.group("minutes"));
-            Integer seconds = Integer.parseInt(timeMatcher.group("seconds"));
+            int minutes = Integer.parseInt(timeMatcher.group("minutes"));
+            int seconds = Integer.parseInt(timeMatcher.group("seconds"));
             Duration minutesDuration = Duration.ofMinutes(minutes);
             Duration secondsDuration = Duration.ofSeconds(seconds);
             Duration query = minutesDuration.plus(secondsDuration);

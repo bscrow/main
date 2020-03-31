@@ -23,7 +23,7 @@ public class StartInterviewCommand extends Command {
         try {
             Interviewee interviewee = model.getIntervieweeList().getInterviewee(identifier);
             model.startInterview(interviewee);
-            return new CommandResult(String.format(MESSAGE_SUCCESS, interviewee), ToggleView.TRANSCRIPT);
+            return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, interviewee), ToggleView.TRANSCRIPT);
         } catch (IllegalActionException e) {
             throw new CommandException(e.getMessage());
         }

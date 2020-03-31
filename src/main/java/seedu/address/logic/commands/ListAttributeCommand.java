@@ -27,7 +27,7 @@ public class ListAttributeCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        return new CommandResult(MESSAGE_SUCCESS, ToggleView.ATTRIBUTE);
+        return new ToggleCommandResult(MESSAGE_SUCCESS, ToggleView.ATTRIBUTE);
     }
 
     @Override
