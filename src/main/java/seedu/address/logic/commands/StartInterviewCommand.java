@@ -1,11 +1,11 @@
 package seedu.address.logic.commands;
 
+import static seedu.address.commons.util.ModelUtil.validateFinalisation;
+
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.hirelah.Interviewee;
 import seedu.address.model.hirelah.exceptions.IllegalActionException;
-
-import static seedu.address.commons.util.ModelUtil.validateFinalisation;
 
 /**
  * Changes the app to the interview phase to interview the given interviewee. Fails if no interviewee can

@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -40,16 +39,16 @@ public class IntervieweeListPanel extends UiPart<Region> {
         cardListView.getItems().addListener(
                 (ListChangeListener<Interviewee>) c -> cardListView.scrollTo(c.getList().size() - 1));
 
-//        this.getRoot().setOnKeyPressed(key -> {
-//            KeyCode keyCode = key.getCode();
-//            if (keyCode == KeyCode.ENTER) {
-//                try {
-//                    commandExecutor.execute("open " + this.interviewee.getFullName());
-//                } catch (CommandException | IllegalValueException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+        //this.getRoot().setOnKeyPressed(key -> {
+        //    KeyCode keyCode = key.getCode();
+        //    if (keyCode == KeyCode.ENTER) {
+        //        try {
+        //            commandExecutor.execute("open " + this.interviewee.getFullName());
+        //        } catch (CommandException | IllegalValueException e) {
+        //            e.printStackTrace();
+        //        }
+        //    }
+        //});
         cardListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Interviewee>() {
             @Override
             public void changed(
