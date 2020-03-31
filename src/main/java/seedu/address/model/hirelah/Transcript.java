@@ -129,7 +129,7 @@ public class Transcript {
     }
 
     /**
-     * Sets this interview as complete. 
+     * Sets this interview as complete.
      */
     public void setInterviewComplete() {
         this.isInterviewComplete = true;
