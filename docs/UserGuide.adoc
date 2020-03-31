@@ -513,7 +513,7 @@ the remarks you made during the interview. In addition, you can zoom in
 on a particular moment in the interview by question number, or by the
 interview time.
 
-====== Navigating by Question Number
+===== Navigating by Question Number
 
 Displays the first remark made while the current interviewee was
 answering the given question. The user can scroll up and down to see the
@@ -594,7 +594,7 @@ Here are the best 3 interviewees.
 Here are the best 5 interviewees.
 
 Here are the best 7 interviewees.
-...
+....
 
 == Advanced Features
 
@@ -619,6 +619,27 @@ Then
 * "A" sufficiently identifies "Ambition"
 * "Team" **cannot** identify "Team player" as "Team motivator" shares this prefix
 * To minimally distinguish the 2, you must provide "Team p" or "Team m"
+
+=== GUI Convenience Features
+
+==== Accessing Interviewee Report
+
+It might be tedious opening an interviewee's reports via the Command Line Interface command
+`open <interviewee>`. As such, we have implemented a convenient way of accessing interviewee reports.
+
+In order to open the report of an interviewee, the user can simply navigate view the interviewees, and click on the card of the interviewee the user want to view.
+
+==== Accessing Interviewee Resume
+
+During an interview or while viewing the interview report of an interviewee, the user can open the interviewee's resume easily by clicking on the "View Resume" button. If no resume has been uploaded for the interviewee, the button will say "No Resume" instead.
+
+image::Screenshots/OpenResumeGUI.png[width="400"]
+
+=== Keeping Track of Interview Questions
+
+The user may wish to refer to the list of interview questions created during an interview. As such, a second window showing the list of questions will pop up when the interviewer starts an interview.
+
+image::Screenshots/QuestionListInterview.png[width="300"]
 
 == FAQ
 
