@@ -34,7 +34,7 @@ public class IntervieweeCard extends UiPart<Region> {
     public IntervieweeCard(Interviewee interviewee) {
         super(FXML);
         this.interviewee = interviewee;
-        name.setText("Full Name: " + interviewee.getFullName());
+        name.setText(interviewee.getFullName());
         id.setText("ID:         " + interviewee.getId());
         alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
         if (interviewee.getTranscript().isPresent()) {

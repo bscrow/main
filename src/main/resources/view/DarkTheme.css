@@ -396,7 +396,7 @@
 #detailedIntervieweePane {
     -fx-opacity: 1;
     -fx-background-color: #D9D9D9;
-    -fx-max-height: 300;
+    -fx-max-height: 200;
     -fx-padding: 8;
     -fx-background-radius: 5%, 25%;
 }

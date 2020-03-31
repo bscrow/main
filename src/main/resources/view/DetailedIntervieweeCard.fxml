@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="detailedIntervieweePane" maxHeight="240" minHeight="240" minWidth="${xAxis.minWidth}" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="detailedIntervieweePane" minWidth="${xAxis.minWidth}" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <Label fx:id="name" layoutX="20.0" layoutY="10.0" styleClass="cell_big_label" text="\$first" />
         <GridPane>
@@ -27,7 +27,7 @@
             </children>
         </GridPane>
         <Label fx:id="id" layoutX="20.0" layoutY="35.0" styleClass="cell_small_label" text="\$id" />
-        <BarChart fx:id="attributeScores" layoutX="9.0" layoutY="84.0" prefHeight="200" prefWidth="300">
+        <BarChart fx:id="attributeScores" prefHeight="180" prefWidth="300">
             <xAxis>
                 <CategoryAxis side="BOTTOM" fx:id="xAxis"/>
             </xAxis>

@@ -58,7 +58,7 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
     public DetailedIntervieweeCard(Interviewee interviewee) {
         super(FXML);
         this.interviewee = interviewee;
-        name.setText("Full Name: " + interviewee.getFullName());
+        name.setText(interviewee.getFullName());
         id.setText("ID:         " + interviewee.getId());
         alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
         viewResume.setText(interviewee.getResume().isPresent() ? "View Resume" : "No Resume");
@@ -106,7 +106,7 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
         xAxis.setLabel("Attributes");
         xAxis.setAnimated(false);
         xAxis.setMinWidth(data.size() * 30);
-        xAxis.setMaxHeight(30);
+        xAxis.setMaxHeight(20);
         // xAxis.setTickLabelRotation(-10); Unnecessarrily flattens the BarChart
 
     }
