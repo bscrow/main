@@ -17,12 +17,14 @@ import seedu.address.model.hirelah.exceptions.IllegalActionException;
 public class Transcript {
     private final RemarkList remarkList;
     private final ObservableMap<Attribute, Double> attributeToScoreMap;
+    private boolean isInterviewComplete;
 
     /**
      * Constructs a {@code Transcript} object
      * that are associated with a particular interviewee.
      */
     public Transcript(QuestionList questions, AttributeList attributes) {
+        isInterviewComplete = false;
         this.remarkList = new RemarkList(questions.size());
         this.attributeToScoreMap = FXCollections.observableHashMap();
         for (Attribute attribute : attributes) {
@@ -115,6 +117,22 @@ public class Transcript {
      */
     public int getIndexOfQuestion(int questionIndex) throws IllegalActionException, IllegalValueException {
         return remarkList.getIndexOfQuestion(questionIndex);
+    }
+
+    /**
+     * Gets the completion status of this interview. If false, means that this interview is not yet complete.
+     *
+     * @return boolean the status of this interview.
+     */
+    public boolean getInterviewComplete() {
+        return this.isInterviewComplete;
+    }
+
+    /**
+     * Sets this interview as complete. 
+     */
+    public void setInterviewComplete() {
+        this.isInterviewComplete = true;
     }
 
 }
