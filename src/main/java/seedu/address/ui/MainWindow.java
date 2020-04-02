@@ -193,7 +193,8 @@ public class MainWindow extends UiPart<Stage> {
             break;
         case TRANSCRIPT: // transcript
             Interviewee currentInterviewee = logic.getCurrentInterviewee();
-            DetailedIntervieweeCard detailedIntervieweeCard = new DetailedIntervieweeCard(currentInterviewee);
+            DetailedIntervieweeCard detailedIntervieweeCard =
+                    new DetailedIntervieweeCard(currentInterviewee, this::executeCommand);
             remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
             listPanelStackPane.getChildren().addAll(remarkListPanel.getRoot(), detailedIntervieweeCard.getRoot());
             StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);

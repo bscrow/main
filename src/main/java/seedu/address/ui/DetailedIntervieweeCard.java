@@ -1,12 +1,5 @@
 package seedu.address.ui;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.Map;
 
 import javafx.beans.value.ChangeListener;
@@ -32,6 +25,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.hirelah.Attribute;
 import seedu.address.model.hirelah.Interviewee;
 
@@ -82,7 +77,7 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
     @FXML
     private ListView<Double> scoreList;
 
-    public DetailedIntervieweeCard(Interviewee interviewee) {
+    public DetailedIntervieweeCard(Interviewee interviewee, CommandExecutor commandExecutor) {
         super(FXML);
         this.interviewee = interviewee;
         this.attributes = interviewee.getTranscript().get().getAttributesToBeScored();
@@ -102,18 +97,9 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
 
 
         viewResume.setOnAction(en -> {
-            if (interviewee.getResume().isEmpty()) {
-                return;
-            }
             try {
-                File resumePath = interviewee.getResume().get();
-                Path tempOutput = Files.createTempFile("Temp", ".pdf");
-                tempOutput.toFile().deleteOnExit();
-                System.out.println("tempOutput: " + tempOutput);
-                InputStream is = getClass().getResourceAsStream(resumePath.toString());
-                Files.copy(is, tempOutput, StandardCopyOption.REPLACE_EXISTING);
-                Desktop.getDesktop().open(tempOutput.toFile());
-            } catch (IOException e) {
+                commandExecutor.execute("resume " + this.interviewee.getFullName());
+            } catch (CommandException | IllegalValueException e) {
                 e.printStackTrace();
             }
         });
