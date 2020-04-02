@@ -42,9 +42,9 @@ public class Transcript {
         }
         scores = FXCollections.observableArrayList();
         this.attributes = attributes.getObservableList();
-         for (Attribute attribute : attributes) {
-             scores.add(Double.NaN);
-         }
+        for (Attribute attribute : attributes) {
+            scores.add(Double.NaN);
+        }
     }
 
 
