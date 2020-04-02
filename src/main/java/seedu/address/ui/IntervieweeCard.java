@@ -49,7 +49,7 @@ public class IntervieweeCard extends UiPart<Region> {
         id.setText("ID:         " + interviewee.getId());
         alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
         score.setVisible(false);
-        
+
         if (interviewee.getTranscript().isEmpty()) {
             interviewStatus.setImage(new Image(getClass().getResourceAsStream(STATUS_EMPTY)));
         } else if (interviewee.getTranscript().get().isCompleted()) {

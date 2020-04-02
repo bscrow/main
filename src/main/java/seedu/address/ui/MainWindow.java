@@ -1,7 +1,6 @@
 package seedu.address.ui;
 
 import java.awt.Desktop;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -200,7 +199,7 @@ public class MainWindow extends UiPart<Stage> {
             StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
             StackPane.setAlignment(remarkListPanel.getRoot(), Pos.CENTER);
             // show second window
-            if (currentInterviewee.getTranscript().get().isCompleted()) {
+            if (!currentInterviewee.getTranscript().get().isCompleted()) {
                 secondWindow.show(questionListPanel);
             }
 

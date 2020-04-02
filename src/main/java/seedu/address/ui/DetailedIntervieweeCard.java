@@ -159,7 +159,13 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
         }
 
         for (XYChart.Data<String, Double> bar : data) {
-            displayLabelForData(bar);
+            bar.nodeProperty().addListener(new ChangeListener<Node>() {
+                @Override public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
+                    if (node != null) {
+                        displayLabelForData(bar);
+                    }
+                }
+            });
         }
 
         XYChart.Series<String, Double> attributeData = new XYChart.Series<>("Attributes", data);
@@ -170,7 +176,7 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
 
         yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
-        yAxis.setUpperBound(10.001);
+        yAxis.setUpperBound(12.4);
         yAxis.setTickUnit(2.5);
         yAxis.setLabel("Scores");
 
@@ -207,7 +213,7 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
                 );
                 dataText.setLayoutY(
                         Math.round(
-                                bounds.getMinY() - dataText.prefHeight(-1) * 0.5
+                                bounds.getMinY() - dataText.prefHeight(-1) * 0.2
                         )
                 );
             }
