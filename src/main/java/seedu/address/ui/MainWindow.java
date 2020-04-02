@@ -217,8 +217,8 @@ public class MainWindow extends UiPart<Stage> {
         if (Desktop.isDesktopSupported()) {
             new Thread(() -> {
                 try {
-                    Desktop.getDesktop().open(new File(String.valueOf(getClass()
-                            .getResource("/help/UserGuide.pdf"))));
+                    Desktop.getDesktop().open(
+                            new File(String.valueOf(getClass().getResource("/help/UserGuide.pdf"))));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
