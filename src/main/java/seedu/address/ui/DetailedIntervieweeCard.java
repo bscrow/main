@@ -3,6 +3,10 @@ package seedu.address.ui;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
 
 import javafx.beans.value.ChangeListener;
@@ -101,15 +105,16 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
             if (interviewee.getResume().isEmpty()) {
                 return;
             }
-            File resumePath = interviewee.getResume().get();
-            if (Desktop.isDesktopSupported()) {
-                new Thread(() -> {
-                    try {
-                        Desktop.getDesktop().open(resumePath);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
+            try {
+                File resumePath = interviewee.getResume().get();
+                Path tempOutput = Files.createTempFile("Temp", ".pdf");
+                tempOutput.toFile().deleteOnExit();
+                System.out.println("tempOutput: " + tempOutput);
+                InputStream is = getClass().getResourceAsStream(resumePath.toString());
+                Files.copy(is, tempOutput, StandardCopyOption.REPLACE_EXISTING);
+                Desktop.getDesktop().open(tempOutput.toFile());
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
     }

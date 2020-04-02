@@ -3,6 +3,10 @@ package seedu.address.ui;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -211,18 +215,19 @@ public class MainWindow extends UiPart<Stage> {
     }
 
     /**
-     * Opens the user guide PDF on help command.
+     * Opens the user guide PDF on help command. Adapted from https://stackoverflow.com/questions/15654154.
      */
     public void handleHelp() {
-        if (Desktop.isDesktopSupported()) {
-            new Thread(() -> {
-                try {
-                    Desktop.getDesktop().open(
-                            new File(String.valueOf(getClass().getResource("/help/UserGuide.pdf"))));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }).start();
+        try {
+            String inputPdf = "/help/UserGuide.pdf";
+            Path tempOutput = Files.createTempFile("Temp", ".pdf");
+            tempOutput.toFile().deleteOnExit();
+            System.out.println("tempOutput: " + tempOutput);
+            InputStream is = getClass().getResourceAsStream(inputPdf);
+            Files.copy(is, tempOutput, StandardCopyOption.REPLACE_EXISTING);
+            Desktop.getDesktop().open(tempOutput.toFile());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
