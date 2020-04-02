@@ -167,11 +167,10 @@ public class MainWindow extends UiPart<Stage> {
             return;
         }
         this.toggleView = toggleView;
-
+        secondWindow.hide();
         // Clear the current interviewee and close SecondWindow if not viewing a report
         if (this.toggleView != ToggleView.TRANSCRIPT) {
             logic.setCurrentInterviewee(null);
-            secondWindow.hide();
         }
 
         listPanelStackPane.getChildren().clear();
@@ -197,7 +196,10 @@ public class MainWindow extends UiPart<Stage> {
             StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
             StackPane.setAlignment(remarkListPanel.getRoot(), Pos.CENTER);
             // show second window
-            secondWindow.show(questionListPanel);
+            if (currentInterviewee.getTranscript().get().isCompleted()) {
+                secondWindow.show(questionListPanel);
+            }
+
             break;
         case BEST_INTERVIEWEE:
             bestNIntervieweesPanel = new IntervieweeListPanel(logic.getBestNIntervieweesView(), this::executeCommand);
@@ -215,7 +217,8 @@ public class MainWindow extends UiPart<Stage> {
         if (Desktop.isDesktopSupported()) {
             new Thread(() -> {
                 try {
-                    Desktop.getDesktop().open(new File("./src/main/resources/help/UserGuide.pdf"));
+                    Desktop.getDesktop().open(new File(String.valueOf(getClass()
+                            .getResource("/help/UserGuide.pdf"))));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -237,6 +240,7 @@ public class MainWindow extends UiPart<Stage> {
                 (int) primaryStage.getX(), (int) primaryStage.getY());
         logic.setGuiSettings(guiSettings);
         primaryStage.hide();
+        secondWindow.hide();
     }
 
     /**
