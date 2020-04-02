@@ -117,7 +117,8 @@ public class Transcript {
      */
     public boolean isAttributeScored(Attribute attribute) {
         //return this.attributeToScoreMap.containsKey(attribute);
-        return !scores.get(attributes.indexOf(attribute)).isNaN();
+        //return !scores.get(attributes.indexOf(attribute)).isNaN();
+        return !this.attributeToScoreMap.get(attribute).isNaN();
     }
 
     /**
