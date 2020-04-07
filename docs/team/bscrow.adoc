@@ -62,18 +62,17 @@ paragraphs of text or resizing the application, and ensure that the UI still dis
 
 ** Project management
 *** Created issues for v1.3 and v1.4
-*** Assigned members to issues upon discovery of bugs (Examples: https://github.com/AY1920S2-CS2103-W15-2/main/issues/15[#15], https://github.com/AY1920S2-CS2103-W15-2/main/issues/83[#83])
-*** Reviewed Pull Requests (Examples: https://github.com/AY1920S2-CS2103-W15-2/main/pull/57[#57], https://github.com/AY1920S2-CS2103-W15-2/main/pull/121[#121],
-https://github.com/AY1920S2-CS2103-W15-2/main/pull/173[#173])
+
 
 ** Enhancements to existing features:
 *** Refactored list commands https://github.com/AY1920S2-CS2103-W15-2/main/pull/56[#56]
-*** Edited Transcript class to have a complete property
+*** Edited Transcript class to have a complete property https://github.com/AY1920S2-CS2103-W15-2/main/pull/113[#113]
 
 ** Documentation:
 *** Updated UserGuide for Metrics https://github.com/AY1920S2-CS2103-W15-2/main/pull/66[#66] and advanced GUI features +
 https://github.com/AY1920S2-CS2103-W15-2/main/pull/112[#112]
 *** Updated Architecture Diagram for UI in the Developer Guide
+
 == Contributions to the User Guide
 
 
