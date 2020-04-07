@@ -68,7 +68,7 @@ public class InterviewPanel extends UiPart<Region> {
      */
     private void fillInnerParts() {
         intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeListView(), commandExecutor);
-        setAnchor(intervieweeListPanel.getRoot(), 0.0, 0.0, 5.0, 0.0);
+        setAnchor(intervieweeListPanel.getRoot(), 0.0, 0.0, 5.0, 5.0);
         intervieweePane.getChildren().add(intervieweeListPanel.getRoot());
         sessionInformationCard = new SessionInformationCard();
         setAnchor(sessionInformationCard.getRoot(), 0.0, 0.0, 5.0, Double.NaN);
@@ -108,7 +108,7 @@ public class InterviewPanel extends UiPart<Region> {
                 BestIntervieweeListPanel bestNIntervieweesPanel = new BestIntervieweeListPanel(logic.getBestNIntervieweesView(),
                         commandExecutor);
                 intervieweePane.getChildren().add(bestNIntervieweesPanel.getRoot());
-                setAnchor(bestNIntervieweesPanel.getRoot(), 0.0, Double.NaN, 5.0, 0.0);
+                setAnchor(bestNIntervieweesPanel.getRoot(), 0.0, Double.NaN, 5.0, 5.0);
                 break;
 
 
@@ -123,7 +123,7 @@ public class InterviewPanel extends UiPart<Region> {
                 setAnchor(remarkListPanel.getRoot(), 5.0, 0.0, 5.0, 0.0);
 
                 transcriptPane.getChildren().add(detailedIntervieweeCard.getRoot());
-                setAnchor(detailedIntervieweeCard.getRoot(), Double.NaN, 0.0, Double.NaN, 0.0);
+                setAnchor(detailedIntervieweeCard.getRoot(), Double.NaN, 0.0, Double.NaN, 5.0);
 
                 break;
 

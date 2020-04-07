@@ -76,13 +76,13 @@
 .cell_big_label {
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-size: 19px;
-    -fx-text-fill: #010504;
+    -fx-text-fill: white;
 }
 
 .cell_small_label {
     -fx-font-family: "Segoe UI";
     -fx-font-size: 13px;
-    -fx-text-fill: #010504;
+    -fx-text-fill: white;
 }
 
 .stack-pane {
@@ -189,6 +189,7 @@
 /* Interviewee List Panel */
 
 #intervieweeListPanel {
+    -fx-background-radius: 10;
     -fx-effect: dropshadow(three-pass-box, derive(#1d1d1d, 15%), 0, 0, 3, 4);
 }
 
@@ -237,20 +238,49 @@
 
 #detailedIntervieweePane {
     -fx-opacity: 1;
-    -fx-background-color: #D9D9D9;
-    -fx-max-height: 180;
     -fx-padding: 8;
-    -fx-background-radius: 5, 25%, 5, 25%;
+    -fx-background-radius: 10;
+    -fx-background-color: derive(#1d1d1d, 30%);
+    -fx-effect: dropshadow(three-pass-box, derive(#1d1d1d, 15%), 0, 0, 3, 4);
 }
 
-#xAxis {
-    -fx-tick-label-font-size: 1.1em;
-    -fx-tick-label-fill: #914800;
-    -fx-tick-label-font-family: "Tahoma";
+#scoreChart {
+    -fx-background-color: derive(#1d1d1d, 25%);
+    -fx-padding: 3;
+    -fx-background-insets: 5 0 0 0;
+    -fx-background-radius: 5;
+}
+
+#scoreChart .chart-plot-background {
+    -fx-background-color: derive(#1d1d1d, 20%);
+}
+
+#scoreChart .chart-title {
+    -fx-text-fill: white;
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-padding: 0;
+}
+
+#scoreChart .chart-bar {
+    -fx-bar-fill: #7092BE;
 }
 
 #yAxis {
+    -fx-tick-label-font-size: 1.1em;
+    -fx-tick-label-fill: white;
+    -fx-tick-label-font-family: "Segoe UI Light";
+}
+
+#xAxis {
+    -fx-tick-label-fill: white;
     -fx-tick-label-font-size: 1.01em;
+}
+
+#chartLabel {
+    -fx-fill: white;
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Light";
 }
 
 /* Remark List */
@@ -283,15 +313,16 @@
 }
 
 #content {
-    -fx-padding: 10;
+    -fx-padding: 1 5 5 7;
     -fx-font-size: 12pt;
+    -fx-text-alignment: Justify;
     -fx-font-family: "Segoe UI";
 
 }
 
 #timestamp {
-    -fx-padding: 5;
-    -fx-font-size: 13pt;
+    -fx-padding: 5 0 0 7;
+    -fx-font-size: 10pt;
     -fx-font-family: "Roboto Light";
     -fx-text-fill: #82B8D9;
 }
@@ -473,6 +504,7 @@
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-size: 11pt;
     -fx-text-fill: #d8d8d8;
+    -fx-text-alignment: center;
     -fx-background-insets: 0 0 0 0, 0, 1, 2;
 }
 

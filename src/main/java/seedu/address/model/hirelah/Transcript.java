@@ -6,6 +6,7 @@ import java.time.Instant;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.scene.chart.XYChart.Data;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.hirelah.exceptions.IllegalActionException;
 
@@ -20,6 +21,7 @@ public class Transcript {
     private final ObservableMap<Attribute, Double> attributeToScoreMap;
     private final ObservableList<Attribute> attributes;
     private final ObservableList<Double> scores;
+    private final ObservableList<Data<Double, String>> attributeToScoreData;
     private boolean completed;
 
     /**
@@ -36,9 +38,11 @@ public class Transcript {
     public Transcript(QuestionList questions, AttributeList attributes, Instant startTime) {
         this.remarkList = new RemarkList(questions.size(), startTime);
         this.attributeToScoreMap = FXCollections.observableHashMap();
+        this.attributeToScoreData = FXCollections.observableArrayList();
         this.completed = false;
         for (Attribute attribute : attributes) {
             attributeToScoreMap.put(attribute, Double.NaN);
+            attributeToScoreData.add(new Data<>(Double.NaN, attribute.toString()));
         }
         scores = FXCollections.observableArrayList();
         this.attributes = attributes.getObservableList();
@@ -86,6 +90,9 @@ public class Transcript {
         return FXCollections.unmodifiableObservableList(scores);
     }
 
+    public ObservableList<Data<Double, String>> getAttributeToScoreData() {
+        return FXCollections.unmodifiableObservableList(attributeToScoreData);
+    }
 
     /**
      * Sets an {@code Attribute} of this {@code Interviewee} to have a certain score.
@@ -96,6 +103,11 @@ public class Transcript {
     public void setAttributeScore (Attribute attribute, Double score) {
         this.attributeToScoreMap.put(attribute, score);
         this.scores.set(this.attributes.indexOf(attribute), score);
+        for (Data<Double, String> attributeData : attributeToScoreData) {
+            if (attributeData.getYValue().equals(attribute.toString())) {
+                attributeData.setXValue(score);
+            }
+        }
     }
 
     /**

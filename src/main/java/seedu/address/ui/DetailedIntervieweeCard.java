@@ -20,7 +20,6 @@ import javafx.scene.chart.XYChart.Data;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -40,6 +39,7 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
     public final Interviewee interviewee;
     private final ObservableList<Attribute> attributes;
     private final ObservableList<Double> scores;
+    private final ObservableList<Data<Double, String>> attributeToScoreData;
 
     @FXML
     private VBox detailedIntervieweePane;
@@ -60,41 +60,28 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
     private StackPane attributeScore;
 
     @FXML
-    private CategoryAxis xAxis;
+    private CategoryAxis yAxis;
 
     @FXML
-    private NumberAxis yAxis;
+    private NumberAxis xAxis;
 
     @FXML
-    private BarChart<String, Double> scoreChart;
-
-    @FXML
-    private VBox listContainer;
-
-    @FXML
-    private ListView<Attribute> attributeList;
-
-    @FXML
-    private ListView<Double> scoreList;
+    private BarChart<Double, String> scoreChart;
 
     public DetailedIntervieweeCard(Interviewee interviewee, CommandExecutor commandExecutor) {
         super(FXML);
         this.interviewee = interviewee;
         this.attributes = interviewee.getTranscript().get().getAttributesToBeScored();
         this.scores = interviewee.getTranscript().get().getAttributeScores();
+        this.attributeToScoreData = interviewee.getTranscript().get().getAttributeToScoreData();
+
         name.setText(interviewee.getFullName());
         id.setText("ID:         " + interviewee.getId());
         alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
         viewResume.setText(interviewee.getResume().isPresent() ? "View Resume" : "No Resume");
 
-        if (interviewee.getTranscript().get().isCompleted()) {
-            attributeScore.getChildren().remove(listContainer);
-            initialiseChart(attributes, scores);
-        } else {
-            attributeScore.getChildren().remove(scoreChart);
-            initialiseLists(attributes, scores);
-        }
-
+        //initialiseChart(attributes, scores);
+        initialiseChart(attributeToScoreData);
 
         viewResume.setOnAction(en -> {
             try {
@@ -106,45 +93,13 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
     }
 
     /**
-     * Initialises the ListViews for the attribute scores for this card. A listener is added to the ObservableMap so
-     * that the change made by any put operation is reflected in the ListViews.
-     */
-    private void initialiseLists(ObservableList<Attribute> attributes, ObservableList<Double> scores) {
-        // ObservableList<String> attributes = FXCollections.observableArrayList();
-        // ObservableList<String> scores = FXCollections.observableArrayList();
-        // for (Map.Entry<Attribute, Double> entry : attributeToScoreMapView.entrySet()) {
-        //    attributes.add(truncateAttributeName(entry.getKey().toString()));
-        //    scores.add(scoreToString(entry.getValue()));
-        //}
-
-        attributeList.setItems(attributes);
-        attributeList.setCellFactory(listView -> new AttributeToBeScoredViewCell());
-        scoreList.setItems(scores);
-        scoreList.setCellFactory(listView -> new AttributeScoresViewCell());
-
-        //attributeToScoreMapView.addListener((MapChangeListener<Attribute, Double>) change -> {
-        //    if (change.wasAdded()) {
-        //        String attributeAdded = truncateAttributeName(change.getKey().toString());
-        //        String newScore = scoreToString(change.getValueAdded());
-        //        scores.set(attributes.indexOf(attributeAdded), newScore);
-        //    }
-        //});
-
-    }
-
-    /**
      * Initialises the BarChart for this card.
      */
     @SuppressWarnings("unchecked")
-    private void initialiseChart(ObservableList<Attribute> attributes, ObservableList<Double> scores) {
-        // ObservableList<XYChart.Data<String, Double>> data = convertMapToList(attributeToScoreMapView);
-        ObservableList<XYChart.Data<String, Double>> data = FXCollections.observableArrayList();
-        for (Attribute attribute : attributes) {
-            data.add(new Data<>(truncateAttributeName(attribute.toString()),
-                    scores.get(attributes.indexOf(attribute))));
-        }
+    private void initialiseChart(ObservableList<Data<Double, String>> data) {
+        XYChart.Series<Double, String> attributeSeries = new XYChart.Series<>("Attributes", data);
 
-        for (XYChart.Data<String, Double> bar : data) {
+        for (XYChart.Data<Double, String> bar : data) {
             bar.nodeProperty().addListener(new ChangeListener<Node>() {
                 @Override public void changed(ObservableValue<? extends Node> ov, Node oldNode, final Node node) {
                     if (node != null) {
@@ -154,22 +109,17 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
             });
         }
 
-        XYChart.Series<String, Double> attributeData = new XYChart.Series<>("Attributes", data);
-
-        // setAll method should be safe in our usage but it raises an Unchecked varargs warning
-        scoreChart.getData().setAll(attributeData);
+        scoreChart.getData().setAll(attributeSeries);
         scoreChart.setLegendVisible(false);
+        scoreChart.setTitle("Scores");
+        scoreChart.setHorizontalGridLinesVisible(false);
+        scoreChart.setVerticalGridLinesVisible(false);
+        xAxis.setAutoRanging(false);
+        xAxis.setLowerBound(0);
+        xAxis.setUpperBound(10);
+        xAxis.setTickUnit(2);
+        xAxis.setMinWidth(80);
 
-        yAxis.setAutoRanging(false);
-        yAxis.setLowerBound(0);
-        yAxis.setUpperBound(12.4);
-        yAxis.setTickUnit(2.5);
-        yAxis.setLabel("Scores");
-
-        xAxis.setLabel("Attributes");
-        xAxis.setAnimated(false);
-        xAxis.setMinWidth(data.size() * 30);
-        xAxis.setMaxHeight(20);
 
 
     }
@@ -180,9 +130,10 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
      *
      * @param data the Data object representing a bar in the BarChart.
      */
-    private void displayLabelForData(XYChart.Data<String, Double> data) {
+    private void displayLabelForData(XYChart.Data<Double, String> data) {
         final Node node = data.getNode();
-        final Text dataText = new Text(data.getYValue() + "");
+        final Text dataText = new Text(String.format("%.3f", data.getXValue()));
+        dataText.setId("chartLabel");
         node.parentProperty().addListener(new ChangeListener<Parent>() {
             @Override public void changed(ObservableValue<? extends Parent> ov, Parent oldParent, Parent parent) {
                 Group parentGroup = (Group) parent;
@@ -193,14 +144,14 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
         node.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
             @Override public void changed(ObservableValue<? extends Bounds> ov, Bounds oldBounds, Bounds bounds) {
                 dataText.setLayoutX(
-                        Math.round(
-                                bounds.getMinX() + bounds.getWidth() / 2 - dataText.prefWidth(-1) / 2
-                        )
+                    Math.round(
+                            bounds.getMinX() + dataText.prefWidth(-1) * 0.3
+                    )
                 );
                 dataText.setLayoutY(
-                        Math.round(
-                                bounds.getMinY() - dataText.prefHeight(-1) * 0.2
-                        )
+                    Math.round(
+                            bounds.getMinY() + bounds.getHeight() / 2 + dataText.prefHeight(-1) * 0.5
+                    )
                 );
             }
         });
