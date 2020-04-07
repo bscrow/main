@@ -710,6 +710,7 @@ HireLah! also provides this convenient function for other things that require
 typing names, such as the metric names. Questions are referenced by their question number
 and interviewees can use their interviewee ID, and a short alias can be given so the feature is not provided.
 
+// tag::gui[]
 === GUI Convenience Features
 
 ==== Accessing Interviewee Report
@@ -730,6 +731,7 @@ image::Screenshots/OpenResumeGUI.png[width="400"]
 The user may wish to refer to the list of interview questions created during an interview. As such, a second window showing the list of questions will pop up when the interviewer starts an interview.
 
 image::Screenshots/QuestionListInterview.png[width="300"]
+// end::gui[]
 
 == FAQ
 
