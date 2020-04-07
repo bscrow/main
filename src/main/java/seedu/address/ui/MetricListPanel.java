@@ -21,12 +21,8 @@ public class MetricListPanel extends UiPart<Region> {
     @FXML
     private ListView<Metric> cardListView;
 
-    @FXML
-    private Label title;
-
     public MetricListPanel(ObservableList<Metric> metricList) {
         super(FXML);
-        title.setText("Metrics");
         cardListView.setItems(metricList);
         cardListView.setCellFactory(listView -> new MetricListPanel.MetricListViewCell());
         // cardListView.getItems().addListener(

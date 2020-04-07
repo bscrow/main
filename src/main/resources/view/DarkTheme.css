@@ -1,79 +1,170 @@
+/*******************************************************************************
+ *                                                                             *
+ *                           HireLah! StyleSheet                               *
+ *                                                                             *
+ * Stylesheet adapted from the following sources:                              *
+ *    - Address Book (Level 3), which HireLah! is based on                     *
+ *        https://github.com/nus-cs2103-AY1920S2/addressbook-level3            *
+ *    - JMetro Themed UI Elements (Copyright Notice retained below)            *
+ *        Author: Pedro Duque Vieira                                           *
+ *        https://github.com/JFXtras/jfxtras-styles                            *
+ ******************************************************************************/
+
+/*
+ * Copyright (c) 2011-2019 JFXtras
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
+ *      * Redistributions of source code must retain the above copyright
+ *        notice, this list of conditions and the following disclaimer.
+ *      * Redistributions in binary form must reproduce the above copyright
+ *        notice, this list of conditions and the following disclaimer in the
+ *        documentation and/or other materials provided with the distribution.
+ *      * Neither the name of the organization nor the
+ *        names of its contributors may be used to endorse or promote products
+ *        derived from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ *  DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+ *  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+
 .background {
     -fx-background-color: derive(#1d1d1d, 20%);
-    background-color: #383838; /* Used in the default.html file */
 }
 
-.label {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: #555555;
+/*******************************************************************************
+ *                               Title Pane                                    *
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ *                                Menu Bar                                     *
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ *                               Split Pane                                    *
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ *                          Interviewee List View                              *
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ *                             Transcript Pane                                 *
+ ******************************************************************************/
+
+/* Empty Transcript Pane Label */
+
+#emptyTranscriptPaneLabel {
+    -fx-font-size: 14pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #999999;
     -fx-opacity: 0.9;
 }
 
-.label-bright {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
+/* Detailed Interviewee Card */
+
+/* Remark List */
+
+/*******************************************************************************
+ *                              Rubrics Pane                                   *
+ ******************************************************************************/
+
+.tab-pane {
+    -fx-tab-min-height: 34;
+    -fx-tab-max-height: 34;
 }
 
-.label-header {
-    -fx-font-size: 32pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
+.tab-pane > .tab-header-area {
+    -fx-padding: 0 2 0 2;
 }
+
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: derive(#1d1d1d, 19%);
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-background-radius: 2 2 2 2;
+    -fx-border-color: derive(#1d1d1d, 15%);
+    -fx-border-width: 0 0 5 2;
+    -fx-border-radius: 2;
+    -fx-padding: 1 11 1 11;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-color: derive(#1d1d1d, 30%);
+    -fx-background-radius: 2 2 2 2;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+    -fx-font-family: "Segoe UI Light";
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:hover > .tab-container > .tab-label {
+    -fx-text-fill: #82B8D9;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected > .tab-container > .tab-label {
+    -fx-text-fill: #82B8D9;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab:selected:hover > .tab-container > .tab-label {
+    -fx-text-fill: #82B8D9;
+}
+
+.tab-pane > .tab-header-area > .tab-header-background {
+
+    -fx-background-insets: 1 1 0 1, 0 0 1 0, 1;
+}
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-width: 0, 0;
+    -fx-border-color: transparent, transparent;
+}
+
+.tab-down-button {
+    -fx-padding: 0;
+}
+
+.tab-down-button .arrow {
+    -fx-padding: 0;
+}
+
+/*******************************************************************************
+ *                             Result Display                                  *
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ *                               Command Box                                   *
+ ******************************************************************************/
+
+/*******************************************************************************
+ *                               Status Bar                                    *
+ ******************************************************************************/
+
+
 
 .text-field {
     -fx-font-size: 12pt;
     -fx-font-family: "Segoe UI Semibold";
-}
-
-.tab-pane {
-    -fx-padding: 0 0 0 1;
-}
-
-.tab-pane .tab-header-area {
-    -fx-padding: 0 0 0 0;
-    -fx-min-height: 0;
-    -fx-max-height: 0;
-}
-
-.table-view {
-    -fx-base: #1d1d1d;
-    -fx-control-inner-background: #1d1d1d;
-    -fx-background-color: #1d1d1d;
-    -fx-table-cell-border-color: transparent;
-    -fx-table-header-border-color: transparent;
-    -fx-padding: 5;
-}
-
-.table-view .column-header-background {
-    -fx-background-color: transparent;
-}
-
-.table-view .column-header, .table-view .filler {
-    -fx-size: 35;
-    -fx-border-width: 0 0 1 0;
-    -fx-background-color: transparent;
-    -fx-border-color:
-        transparent
-        transparent
-        derive(-fx-base, 80%)
-        transparent;
-    -fx-border-insets: 0 10 1 0;
-}
-
-.table-view .column-header .label {
-    -fx-font-size: 20pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
-    -fx-alignment: center-left;
-    -fx-opacity: 1;
-}
-
-.table-view:focused .table-row-cell:filled:focused:selected {
-    -fx-background-color: -fx-focus-color;
 }
 
 .split-pane:horizontal .split-pane-divider {
@@ -99,17 +190,17 @@
     -fx-padding: 0 0 0 0;
 }
 
-#cardListView .list-cell:filled:even {
+#intervieweeListView .list-cell:filled:even {
     -fx-background-color: #3c3e3f;
 }
 
-#cardListView .list-cell:filled:odd {
+#intervieweeListView .list-cell:filled:odd {
     -fx-background-color: #515658;
 }
 
 #textListView .list-view {
     -fx-padding: 8;
-    -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-background-color: derive(#1d1d1d, 80%);
 }
 
 #textListView .list-cell:filled {
@@ -119,7 +210,7 @@
     -fx-text-fill: white;
     -fx-font-size: 12pt;
     -fx-font-family: "Segoe UI";
-    -fx-background-color: #3c3e3f;
+    -fx-background-color: derive(#1d1d1d, 20%);
     -fx-background-radius: 5, 20, 5;
     -fx-effect: dropshadow(three-pass-box, #515658, 10, 0, 0, 0);
 }
@@ -323,6 +414,42 @@
 .scroll-bar:horizontal .increment-arrow, .scroll-bar:horizontal .decrement-arrow {
     -fx-padding: 8 1 8 1;
 }
+/*
+.tab .tab-label {
+    -fx-alignment: center;
+    -fx-background-color: transparent;
+    -fx-text-fill: red;
+    -fx-font-size: 14pt;
+    -fx-font-family: "Segoe UI Light";
+
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-effect: dropshadow(gaussian, #1d1d1d, 20, 0.2, 0, 10);
+}
+
+.tab:hover .tab-label {
+    -fx-text-fill: blue;
+}
+
+.tab:selected .tab-label, .tab:selected .tab-header-area{
+    -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-text-fill: brown;
+}
+
+
+.tab-pane {
+    -fx-background-color: #3a3a3a;
+    -fx-border-style: solid;
+    -fx-border-color: transparent;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, #1d1d1d, 20, 0.2, 0, 10);
+    -fx-padding: 0 0 1 0
+
+}
+*/
+
 
 #cardPane {
     -fx-background-color: transparent;
@@ -361,9 +488,9 @@
     -fx-font-style: oblique;
     -fx-font-weight: 700;
     -fx-text-fill: white;
-    -fx-border-color: white, transparent, white;
-    -fx-border-width: 0 0 1 0, 0 0 1 0, 0 0 1 0;
-    -fx-border-insets: 0 0 1 0, 0 0 2 0, 0 0 3 0;
+    -fx-border-color: white, transparent, white, transparent;
+    -fx-border-width: 0 0 1 0, 0 0 1 0, 0 0 1 0, 0 0 3 0;
+    -fx-border-insets: 0 0 1 0, 0 0 2 0, 0 0 3 0, 0 0 5 0;
     -fx-label-margin: 8px;
 }
 

@@ -6,12 +6,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<!--For ListViews that displays list of cards-->
-
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <BorderPane VBox.vgrow="ALWAYS">
       <center>
-         <ListView fx:id="cardListView" prefWidth="150" />
+         <ListView fx:id="intervieweeListView" prefWidth="330" prefHeight="475"/>
       </center>
       <top>
          <HBox prefHeight="25.0" prefWidth="200.0">

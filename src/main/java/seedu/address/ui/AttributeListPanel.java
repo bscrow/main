@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
@@ -21,12 +20,8 @@ public class AttributeListPanel extends UiPart<Region> {
     @FXML
     private ListView<Attribute> textListView;
 
-    @FXML
-    private Label title;
-
     public AttributeListPanel(ObservableList<Attribute> attributeList) {
         super(FXML);
-        title.setText("Attributes");
         textListView.setItems(attributeList);
         // Below solution adapted from https://stackoverflow.com/questions/31992698/
         textListView.getItems().addListener(

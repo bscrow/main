@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.input.KeyCombination;
@@ -25,7 +24,6 @@ import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.ToggleView;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.hirelah.Interviewee;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -41,16 +39,9 @@ public class MainWindow extends UiPart<Stage> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private IntervieweeListPanel intervieweeListPanel;
-    private BestIntervieweeListPanel bestNIntervieweesPanel;
-    private RemarkListPanel remarkListPanel;
-    private AttributeListPanel attributeListPanel;
-    private MetricListPanel metricListPanel;
-    private QuestionListPanel questionListPanel;
     private ResultDisplay resultDisplay;
-
-    // SecondWindow for displaying additional information during interview phase.
-    private SecondWindow secondWindow;
+    private SessionPanel sessionPanel;
+    private InterviewPanel interviewPanel;
 
     // On startup, HireLah shows the list of interviewees
     private ToggleView toggleView = ToggleView.INTERVIEWEE;
@@ -68,8 +59,6 @@ public class MainWindow extends UiPart<Stage> {
     @FXML
     private StackPane resultDisplayPlaceholder;
 
-    @FXML
-    private StackPane statusbarPlaceholder;
 
     public MainWindow(Stage primaryStage, Logic logic) {
         super(FXML, primaryStage);
@@ -80,16 +69,9 @@ public class MainWindow extends UiPart<Stage> {
 
         // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
-
         setAccelerators();
+        //sessionPanel = new SessionPanel();
 
-        attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
-        intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeListView(), this::executeCommand);
-        bestNIntervieweesPanel = new BestIntervieweeListPanel(logic.getBestNIntervieweesView(), this::executeCommand);
-        attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
-        metricListPanel = new MetricListPanel(logic.getMetricListView());
-        questionListPanel = new QuestionListPanel(logic.getQuestionListView());
-        secondWindow = new SecondWindow();
     }
 
     public Stage getPrimaryStage() {
@@ -102,6 +84,7 @@ public class MainWindow extends UiPart<Stage> {
 
     /**
      * Sets the accelerator of a MenuItem.
+     *
      * @param keyCombination the KeyCombination value of the accelerator
      */
     private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
@@ -130,17 +113,27 @@ public class MainWindow extends UiPart<Stage> {
         });
     }
 
+    private void showSessionPanel() {
+        listPanelStackPane.getChildren().clear();
+        listPanelStackPane.getChildren().add(sessionPanel.getRoot());
+    }
+
+    private void showInterviewPanel() {
+        listPanelStackPane.getChildren().clear();
+        interviewPanel = new InterviewPanel(logic, this::executeCommand);
+        listPanelStackPane.getChildren().add(interviewPanel.getRoot());
+
+    }
+
     /**
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        listPanelStackPane.getChildren().add(intervieweeListPanel.getRoot());
+        // showSessionPanel(); // To be added after Session is created
+        showInterviewPanel();
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
-
-        StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getSessionsDirectory());
-        statusbarPlaceholder.getChildren().add(statusBarFooter.getRoot());
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
@@ -164,55 +157,8 @@ public class MainWindow extends UiPart<Stage> {
      * @param toggleView enum representing what should be displayed
      */
     public void handleToggle(ToggleView toggleView) {
-        // Short circuit if no change to the view, unless currently viewing transcript
-        // which may change if it is a different interviewee's transcript
-        if (this.toggleView == toggleView && toggleView != ToggleView.TRANSCRIPT) {
-            return;
-        }
-        this.toggleView = toggleView;
-        secondWindow.hide();
-        // Clear the current interviewee and close SecondWindow if not viewing a report
-        if (this.toggleView != ToggleView.TRANSCRIPT) {
-            logic.setCurrentInterviewee(null);
-        }
-
-        listPanelStackPane.getChildren().clear();
-        switch (toggleView) {
-        case ATTRIBUTE: // attribute
-            listPanelStackPane.getChildren().add(attributeListPanel.getRoot());
-            break;
-        case INTERVIEWEE: // interviewee
-            listPanelStackPane.getChildren().add(intervieweeListPanel.getRoot());
-            break;
-
-        case METRIC: // metrics
-            listPanelStackPane.getChildren().add(metricListPanel.getRoot());
-            break;
-        case QUESTION: // questions
-            listPanelStackPane.getChildren().add(questionListPanel.getRoot());
-            break;
-        case TRANSCRIPT: // transcript
-            Interviewee currentInterviewee = logic.getCurrentInterviewee();
-            DetailedIntervieweeCard detailedIntervieweeCard =
-                    new DetailedIntervieweeCard(currentInterviewee, this::executeCommand);
-            remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
-            listPanelStackPane.getChildren().addAll(remarkListPanel.getRoot(), detailedIntervieweeCard.getRoot());
-            StackPane.setAlignment(detailedIntervieweeCard.getRoot(), Pos.TOP_CENTER);
-            StackPane.setAlignment(remarkListPanel.getRoot(), Pos.CENTER);
-            // show second window
-            if (!currentInterviewee.getTranscript().get().isCompleted()) {
-                secondWindow.show(questionListPanel);
-            }
-
-            break;
-        case BEST_INTERVIEWEE:
-            bestNIntervieweesPanel = new BestIntervieweeListPanel(logic.getBestNIntervieweesView(),
-                    this::executeCommand);
-            listPanelStackPane.getChildren().add(bestNIntervieweesPanel.getRoot());
-            break;
-        default:
-            break;
-        }
+        // if toggle == SESSION showSessionPanel else
+        interviewPanel.handleToggle(toggleView);
     }
 
     /**
@@ -246,7 +192,6 @@ public class MainWindow extends UiPart<Stage> {
                 (int) primaryStage.getX(), (int) primaryStage.getY());
         logic.setGuiSettings(guiSettings);
         primaryStage.hide();
-        secondWindow.hide();
     }
 
     /**
@@ -264,7 +209,7 @@ public class MainWindow extends UiPart<Stage> {
      * @param index the index to scroll to.
      */
     public void scrollTranscriptTo(int index) {
-        remarkListPanel.scrollTo(index);
+        interviewPanel.scrollTo(index);
     }
 
 

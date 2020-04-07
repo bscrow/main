@@ -1,53 +1,25 @@
 package seedu.address.ui;
 
-import java.util.logging.Logger;
-
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.model.hirelah.Metric;
+
+import java.util.logging.Logger;
 
 /**
- * Panel containing the list of metrics.
+ * Panel showing the sessions available.
  */
-public class MetricListPanel extends UiPart<Region> {
-    private static final String FXML = "CardListView.fxml";
-    private final Logger logger = LogsCenter.getLogger(MetricListPanel.class);
-
-    @FXML
-    private ListView<Metric> cardListView;
-
-    @FXML
-    private Label title;
-
-    public MetricListPanel(ObservableList<Metric> metricList) {
-        super(FXML);
-        title.setText("Metrics");
-        cardListView.setItems(metricList);
-        cardListView.setCellFactory(listView -> new MetricListPanel.MetricListViewCell());
-        // cardListView.getItems().addListener(
-        //         (ListChangeListener<Metric>) c -> cardListView.scrollTo(c.getList().size()-1));
-    }
+public class SessionPanel extends UiPart<Region> {
+    private static final String FXML = "SessionPanel.fxml";
+    private final Logger logger = LogsCenter.getLogger(SessionPanel.class);
 
     /**
-     * Custom {@code ListCell} that displays the graphics of a {@code Metric} using a {@code MetricCard}.
+     * Constructs a SessionPanel which displays the information regarding a session.
+     *
+     * TODO: 6/4/2020  implement SessionPanel based on an ObservableList of Sessions once ready.
      */
-    class MetricListViewCell extends ListCell<Metric> {
-        @Override
-        protected void updateItem(Metric metric, boolean empty) {
-            super.updateItem(metric, empty);
-
-            if (empty || metric == null) {
-                setGraphic(null);
-                setText(null);
-            } else {
-                setGraphic(new MetricCard(metric).getRoot());
-            }
-        }
+    public SessionPanel() {
+        super(FXML);
     }
+
 }
 
