@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class InterviewPanel extends UiPart<Region> {
     private static final String FXML = "InterviewPanel.fxml";
     private final Logger logger = LogsCenter.getLogger(InterviewPanel.class);
-    private static final String proTip = "Pro Tip:\n"
+    private static final String PRO_TIP = "Pro Tip:\n"
             + "      Start by setting some interview rubrics (questions, \n"
             + "        attributes, metrics) to evaluate interviewees. \n"
             + "      Type \"interview <interviewee identifier>\" to start.\n"
@@ -35,6 +35,7 @@ public class InterviewPanel extends UiPart<Region> {
     private MetricListPanel metricListPanel;
     private QuestionListPanel questionListPanel;
     private RemarkListPanel remarkListPanel;
+    private SessionInformationCard sessionInformationCard;
 
     @FXML
     private AnchorPane intervieweePane;
@@ -69,8 +70,11 @@ public class InterviewPanel extends UiPart<Region> {
         intervieweeListPanel = new IntervieweeListPanel(logic.getFilteredIntervieweeListView(), commandExecutor);
         setAnchor(intervieweeListPanel.getRoot(), 0.0, 0.0, 5.0, 0.0);
         intervieweePane.getChildren().add(intervieweeListPanel.getRoot());
+        sessionInformationCard = new SessionInformationCard();
+        setAnchor(sessionInformationCard.getRoot(), 0.0, 0.0, 5.0, Double.NaN);
+        intervieweePane.getChildren().add(sessionInformationCard.getRoot());
 
-        emptyTranscriptPaneLabel.setText(proTip);
+        emptyTranscriptPaneLabel.setText(PRO_TIP);
 
         setAnchor(rubricsPane, 0.0, 0.0, 3.0, 0.0);
         attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
@@ -104,7 +108,7 @@ public class InterviewPanel extends UiPart<Region> {
                 BestIntervieweeListPanel bestNIntervieweesPanel = new BestIntervieweeListPanel(logic.getBestNIntervieweesView(),
                         commandExecutor);
                 intervieweePane.getChildren().add(bestNIntervieweesPanel.getRoot());
-                setAnchor(bestNIntervieweesPanel.getRoot(), 0.0, 0.0, 5.0, 0.0);
+                setAnchor(bestNIntervieweesPanel.getRoot(), 0.0, Double.NaN, 5.0, 0.0);
                 break;
 
 
@@ -115,11 +119,12 @@ public class InterviewPanel extends UiPart<Region> {
                         new DetailedIntervieweeCard(currentInterviewee, commandExecutor);
                 RemarkListPanel remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
 
+                transcriptPane.getChildren().add(remarkListPanel.getRoot());
+                setAnchor(remarkListPanel.getRoot(), 5.0, 0.0, 5.0, 0.0);
+
                 transcriptPane.getChildren().add(detailedIntervieweeCard.getRoot());
                 setAnchor(detailedIntervieweeCard.getRoot(), Double.NaN, 0.0, Double.NaN, 0.0);
 
-                transcriptPane.getChildren().add(remarkListPanel.getRoot());
-                setAnchor(remarkListPanel.getRoot(), 5.0, 0.0, 5.0, 0.0);
                 break;
 
             case ATTRIBUTE: // attribute
