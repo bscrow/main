@@ -5,8 +5,7 @@ import java.time.Instant;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
-import javafx.scene.chart.XYChart.Data;
+import javafx.util.Pair;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.hirelah.exceptions.IllegalActionException;
 
@@ -18,10 +17,7 @@ import seedu.address.model.hirelah.exceptions.IllegalActionException;
  */
 public class Transcript {
     private final RemarkList remarkList;
-    private final ObservableMap<Attribute, Double> attributeToScoreMap;
-    private final ObservableList<Attribute> attributes;
-    private final ObservableList<Double> scores;
-    private final ObservableList<Data<Double, String>> attributeToScoreData;
+    private final ObservableList<Pair<Attribute, Double>> attributeToScoreData;
     private boolean completed;
 
     /**
@@ -37,17 +33,10 @@ public class Transcript {
      */
     public Transcript(QuestionList questions, AttributeList attributes, Instant startTime) {
         this.remarkList = new RemarkList(questions.size(), startTime);
-        this.attributeToScoreMap = FXCollections.observableHashMap();
         this.attributeToScoreData = FXCollections.observableArrayList();
         this.completed = false;
         for (Attribute attribute : attributes) {
-            attributeToScoreMap.put(attribute, Double.NaN);
-            attributeToScoreData.add(new Data<>(Double.NaN, attribute.toString()));
-        }
-        scores = FXCollections.observableArrayList();
-        this.attributes = attributes.getObservableList();
-        for (Attribute attribute : attributes) {
-            scores.add(Double.NaN);
+            attributeToScoreData.add(new Pair<>(attribute, Double.NaN));
         }
     }
 
@@ -76,21 +65,9 @@ public class Transcript {
     /**
      * Returns an unmodifiable view of the attributes and scores associated with this {@code Transcript}.
      *
-     * @return An {@code ObservableMap} tracking changes to the scores.
+     * @return An {@code ObservableList} tracking changes to the scores.
      */
-    public ObservableMap<Attribute, Double> getAttributeToScoreMapView() {
-        return FXCollections.unmodifiableObservableMap(attributeToScoreMap);
-    }
-
-    public ObservableList<Attribute> getAttributesToBeScored() {
-        return FXCollections.unmodifiableObservableList(attributes);
-    }
-
-    public ObservableList<Double> getAttributeScores() {
-        return FXCollections.unmodifiableObservableList(scores);
-    }
-
-    public ObservableList<Data<Double, String>> getAttributeToScoreData() {
+    public ObservableList<Pair<Attribute, Double>> getAttributeToScoreData() {
         return FXCollections.unmodifiableObservableList(attributeToScoreData);
     }
 
@@ -101,24 +78,27 @@ public class Transcript {
      * @param score The score of this {@code Attribute}.
      */
     public void setAttributeScore (Attribute attribute, Double score) {
-        this.attributeToScoreMap.put(attribute, score);
-        this.scores.set(this.attributes.indexOf(attribute), score);
-        for (Data<Double, String> attributeData : attributeToScoreData) {
-            if (attributeData.getYValue().equals(attribute.toString())) {
-                attributeData.setXValue(score);
+        for(int i = 0; i < attributeToScoreData.size(); i++) {
+            if (attributeToScoreData.get(i).getKey().equals(attribute)) {
+                attributeToScoreData.set(i, new Pair<>(attribute, score));
+                break;
             }
         }
     }
 
     /**
-     * Retrieves the score of this {@code Attribute} of this {@code Interviewee}.
+     * Retrieves the score of this {@code Attribute} of this {@code Interviewee}. If attribute is not found, return -1.
      *
      * @param attribute The attribute whose score is to be retrieved.
      * @return The score of the given attribute as recorded in the interview.
      */
     public double getAttributeScore(Attribute attribute) {
-        // return this.attributeToScoreMap.get(attribute);
-        return scores.get(attributes.indexOf(attribute));
+        for (Pair<Attribute, Double> attributeData : attributeToScoreData) {
+            if (attributeData.getKey().equals(attribute)) {
+                return attributeData.getValue();
+            }
+        }
+        return -1;
     }
 
     /**
@@ -128,9 +108,12 @@ public class Transcript {
      * @return true if attribute has a score, false otherwise.
      */
     public boolean isAttributeScored(Attribute attribute) {
-        //return this.attributeToScoreMap.containsKey(attribute);
-        //return !scores.get(attributes.indexOf(attribute)).isNaN();
-        return !this.attributeToScoreMap.get(attribute).isNaN();
+        for (Pair<Attribute, Double> attributeData : attributeToScoreData) {
+            if (attributeData.getKey().equals(attribute)) {
+                return !attributeData.getValue().isNaN();
+            }
+        }
+        return false;
     }
 
     /**
