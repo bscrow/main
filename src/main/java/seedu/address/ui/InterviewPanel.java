@@ -102,13 +102,15 @@ public class InterviewPanel extends UiPart<Region> {
             case INTERVIEWEE: // interviewee
                 intervieweePane.getChildren().clear();
                 intervieweePane.getChildren().add(intervieweeListPanel.getRoot());
+                intervieweePane.getChildren().add(sessionInformationCard.getRoot());
                 break;
             case BEST_INTERVIEWEE:
                 intervieweePane.getChildren().clear();
                 BestIntervieweeListPanel bestNIntervieweesPanel = new BestIntervieweeListPanel(logic.getBestNIntervieweesView(),
                         commandExecutor);
-                intervieweePane.getChildren().add(bestNIntervieweesPanel.getRoot());
                 setAnchor(bestNIntervieweesPanel.getRoot(), 0.0, Double.NaN, 5.0, 5.0);
+                intervieweePane.getChildren().add(bestNIntervieweesPanel.getRoot());
+                intervieweePane.getChildren().add(sessionInformationCard.getRoot());
                 break;
 
 
@@ -120,7 +122,7 @@ public class InterviewPanel extends UiPart<Region> {
                 RemarkListPanel remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
 
                 transcriptPane.getChildren().add(remarkListPanel.getRoot());
-                setAnchor(remarkListPanel.getRoot(), 5.0, 0.0, 5.0, 0.0);
+                setAnchor(remarkListPanel.getRoot(), 5.0, 0.0, 5.0, 5.0);
 
                 transcriptPane.getChildren().add(detailedIntervieweeCard.getRoot());
                 setAnchor(detailedIntervieweeCard.getRoot(), Double.NaN, 0.0, Double.NaN, 5.0);

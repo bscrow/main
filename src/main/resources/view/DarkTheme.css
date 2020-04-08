@@ -5,37 +5,7 @@
  * Stylesheet adapted from the following sources:                              *
  *    - Address Book (Level 3), which HireLah! is based on                     *
  *        https://github.com/nus-cs2103-AY1920S2/addressbook-level3            *
- *    - JMetro Themed UI Elements (Copyright Notice retained below)            *
- *        Author: Pedro Duque Vieira                                           *
- *        https://github.com/JFXtras/jfxtras-styles                            *
  ******************************************************************************/
-
-/*
- * Copyright (c) 2011-2019 JFXtras
- *  All rights reserved.
- *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *      * Redistributions of source code must retain the above copyright
- *        notice, this list of conditions and the following disclaimer.
- *      * Redistributions in binary form must reproduce the above copyright
- *        notice, this list of conditions and the following disclaimer in the
- *        documentation and/or other materials provided with the distribution.
- *      * Neither the name of the organization nor the
- *        names of its contributors may be used to endorse or promote products
- *        derived from this software without specific prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- *  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- *  DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
- *  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- *  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- *  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
 
 /*******************************************************************************
  *                                 General                                     *
@@ -244,9 +214,18 @@
     -fx-effect: dropshadow(three-pass-box, derive(#1d1d1d, 15%), 0, 0, 3, 4);
 }
 
+#chartLabel .chart-plot-background {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+#chartLabel .chart-vertical-zero-line, #chartLabel .chart-horizontal-zero-line {
+    -fx-stroke: transparent;
+}
+
 #scoreChart {
     -fx-background-color: derive(#1d1d1d, 25%);
-    -fx-padding: 3;
+    -fx-padding: 3 3 3 0;
     -fx-background-insets: 5 0 0 0;
     -fx-background-radius: 5;
 }
@@ -257,9 +236,9 @@
 
 #scoreChart .chart-title {
     -fx-text-fill: white;
-    -fx-font-size: 12pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-padding: 0;
+    -fx-font-size: 13pt;
+    -fx-font-family: "Segoe UI";
+    -fx-padding: 2 0 0 0;
 }
 
 #scoreChart .chart-bar {
@@ -441,13 +420,68 @@
 #metricName {
     -fx-rotate: 270;
     -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-text-alignment: center;
 }
 
-#cardPane {
+#metricCardPane {
+    -fx-background-color: derive(#1d1d1d, 25%);
+    -fx-border-width: 5;
+    -fx-padding: 8;
+    -fx-background-radius: 10;
+    -fx-background-insets: 5px;
+    -fx-effect: dropshadow(three-pass-box, #515658, 10, 0, 0, 0);
+}
+
+#metricCardListView .list-cell:filled {
+    -fx-padding: 8 3 8 3;
+    -fx-background-color: derive(#1d1d1d, 20%);
+
+}
+
+.table-cell {
     -fx-background-color: transparent;
-    -fx-border-width: 0;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI Light";
+    -fx-font-size: 13;
 }
 
+.table-row-cell {
+    -fx-background-color: transparent;
+}
+
+.table-view {
+    -fx-background-color: derive(#1d1d1d, 30%);
+    -fx-background-radius: 10;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-border-color: derive(#1d1d1d, 80%);
+}
+
+.table-view .placeholder {
+    -fx-background-color: derive(#1d1d1d, 30%);
+}
+
+.table-view .column-header .label {
+     -fx-padding: 6 18 6 9;
+     -fx-text-fill: white;
+     -fx-font-family: "Segoe UI";
+     -fx-font-size: 14;
+ }
+
+.table-view .column-header-background {
+    -fx-background-color: derive(#1d1d1d, 15%);
+    -fx-background-radius: 10;
+    -fx-border-width: 0 1 2 0;
+    -fx-border-color: derive(#1d1d1d, 80%);
+
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-border-width: 0 0 0 2;
+    -fx-background-color: transparent;
+}
 
 /*******************************************************************************
  *                             Result Display                                  *

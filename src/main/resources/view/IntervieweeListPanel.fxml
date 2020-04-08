@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 
 <VBox id="intervieweeListPanel" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <Pane minHeight="120" BorderPane.alignment="CENTER" />
+   <Pane minHeight="120" />
    <BorderPane VBox.vgrow="ALWAYS">
       <center>
          <ListView fx:id="intervieweeListView" prefHeight="350" prefWidth="330" />

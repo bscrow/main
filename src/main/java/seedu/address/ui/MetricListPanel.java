@@ -2,9 +2,9 @@ package seedu.address.ui;
 
 import java.util.logging.Logger;
 
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
@@ -15,18 +15,18 @@ import seedu.address.model.hirelah.Metric;
  * Panel containing the list of metrics.
  */
 public class MetricListPanel extends UiPart<Region> {
-    private static final String FXML = "CardListView.fxml";
+    private static final String FXML = "MetricCardListView.fxml";
     private final Logger logger = LogsCenter.getLogger(MetricListPanel.class);
 
     @FXML
-    private ListView<Metric> cardListView;
+    private ListView<Metric> metricCardListView;
 
     public MetricListPanel(ObservableList<Metric> metricList) {
         super(FXML);
-        cardListView.setItems(metricList);
-        cardListView.setCellFactory(listView -> new MetricListPanel.MetricListViewCell());
-        // cardListView.getItems().addListener(
-        //         (ListChangeListener<Metric>) c -> cardListView.scrollTo(c.getList().size()-1));
+        metricCardListView.setItems(metricList);
+        metricCardListView.setCellFactory(listView -> new MetricListPanel.MetricListViewCell());
+        metricCardListView.getItems().addListener(
+                 (ListChangeListener<Metric>) c -> metricCardListView.scrollTo(c.getList().size()-1));
     }
 
     /**
