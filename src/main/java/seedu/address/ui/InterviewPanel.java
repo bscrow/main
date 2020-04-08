@@ -1,5 +1,7 @@
 package seedu.address.ui;
 
+import java.util.logging.Logger;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -12,22 +14,20 @@ import seedu.address.logic.Logic;
 import seedu.address.logic.commands.ToggleView;
 import seedu.address.model.hirelah.Interviewee;
 
-import java.util.logging.Logger;
-
 /**
  * InterviewPanel which contains all the information regarding an interview session.
  */
 public class InterviewPanel extends UiPart<Region> {
     private static final String FXML = "InterviewPanel.fxml";
-    private final Logger logger = LogsCenter.getLogger(InterviewPanel.class);
     private static final String PRO_TIP = "Pro Tip:\n"
             + "      Start by setting some interview rubrics (questions, \n"
             + "        attributes, metrics) to evaluate interviewees. \n"
             + "      Type \"interview <interviewee identifier>\" to start.\n"
             + "      Type \"help\" to get help.";
 
-    private Logic logic;
+    private final Logger logger = LogsCenter.getLogger(InterviewPanel.class);
     private final CommandExecutor commandExecutor;
+    private final Logic logic;
 
     // Independent Ui parts residing in this Ui container
     private IntervieweeListPanel intervieweeListPanel;
@@ -99,48 +99,48 @@ public class InterviewPanel extends UiPart<Region> {
 
         switch (toggleView) {
 
-            case INTERVIEWEE: // interviewee
-                intervieweePane.getChildren().clear();
-                intervieweePane.getChildren().add(intervieweeListPanel.getRoot());
-                intervieweePane.getChildren().add(sessionInformationCard.getRoot());
-                break;
-            case BEST_INTERVIEWEE:
-                intervieweePane.getChildren().clear();
-                BestIntervieweeListPanel bestNIntervieweesPanel = new BestIntervieweeListPanel(logic.getBestNIntervieweesView(),
-                        commandExecutor);
-                setAnchor(bestNIntervieweesPanel.getRoot(), 0.0, Double.NaN, 5.0, 5.0);
-                intervieweePane.getChildren().add(bestNIntervieweesPanel.getRoot());
-                intervieweePane.getChildren().add(sessionInformationCard.getRoot());
-                break;
+        case INTERVIEWEE: // interviewee
+            intervieweePane.getChildren().clear();
+            intervieweePane.getChildren().add(intervieweeListPanel.getRoot());
+            intervieweePane.getChildren().add(sessionInformationCard.getRoot());
+            break;
+        case BEST_INTERVIEWEE:
+            intervieweePane.getChildren().clear();
+            BestIntervieweeListPanel bestNIntervieweesPanel =
+                    new BestIntervieweeListPanel(logic.getBestNIntervieweesView(), commandExecutor);
+            setAnchor(bestNIntervieweesPanel.getRoot(), 0.0, Double.NaN, 5.0, 5.0);
+            intervieweePane.getChildren().add(bestNIntervieweesPanel.getRoot());
+            intervieweePane.getChildren().add(sessionInformationCard.getRoot());
+            break;
 
 
-            case TRANSCRIPT: // transcript
-                transcriptPane.getChildren().clear();
-                Interviewee currentInterviewee = logic.getCurrentInterviewee();
-                DetailedIntervieweeCard detailedIntervieweeCard =
-                        new DetailedIntervieweeCard(currentInterviewee, commandExecutor);
-                RemarkListPanel remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
+        case TRANSCRIPT: // transcript
+            transcriptPane.getChildren().clear();
+            Interviewee currentInterviewee = logic.getCurrentInterviewee();
+            DetailedIntervieweeCard detailedIntervieweeCard =
+                    new DetailedIntervieweeCard(currentInterviewee, commandExecutor);
+            RemarkListPanel remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
 
-                transcriptPane.getChildren().add(remarkListPanel.getRoot());
-                setAnchor(remarkListPanel.getRoot(), 5.0, 0.0, 5.0, 5.0);
+            transcriptPane.getChildren().add(remarkListPanel.getRoot());
+            setAnchor(remarkListPanel.getRoot(), 5.0, 0.0, 5.0, 5.0);
 
-                transcriptPane.getChildren().add(detailedIntervieweeCard.getRoot());
-                setAnchor(detailedIntervieweeCard.getRoot(), Double.NaN, 0.0, Double.NaN, 5.0);
+            transcriptPane.getChildren().add(detailedIntervieweeCard.getRoot());
+            setAnchor(detailedIntervieweeCard.getRoot(), Double.NaN, 0.0, Double.NaN, 5.0);
 
-                break;
+            break;
 
-            case ATTRIBUTE: // attribute
-                rubricsPane.getSelectionModel().select(attributesTab);
-                break;
-            case METRIC: // metrics
-                rubricsPane.getSelectionModel().select(metricsTab);
-                break;
-            case QUESTION: // questions
-                rubricsPane.getSelectionModel().select(questionsTab);
-                break;
+        case ATTRIBUTE: // attribute
+            rubricsPane.getSelectionModel().select(attributesTab);
+            break;
+        case METRIC: // metrics
+            rubricsPane.getSelectionModel().select(metricsTab);
+            break;
+        case QUESTION: // questions
+            rubricsPane.getSelectionModel().select(questionsTab);
+            break;
 
-            default:
-                break;
+        default:
+            break;
         }
     }
 

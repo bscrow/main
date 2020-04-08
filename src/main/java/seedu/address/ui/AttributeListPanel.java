@@ -10,7 +10,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.hirelah.Attribute;
-import seedu.address.model.hirelah.Question;
 
 /**
  * Panel containing the list of attributes.

@@ -1,10 +1,9 @@
 package seedu.address.ui;
 
-import javafx.scene.layout.Region;
-import seedu.address.commons.core.LogsCenter;
-
 import java.util.logging.Logger;
 
+import javafx.scene.layout.Region;
+import seedu.address.commons.core.LogsCenter;
 /**
  * Panel showing the sessions available.
  */

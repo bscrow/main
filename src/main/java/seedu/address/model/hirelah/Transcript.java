@@ -78,7 +78,7 @@ public class Transcript {
      * @param score The score of this {@code Attribute}.
      */
     public void setAttributeScore (Attribute attribute, Double score) {
-        for(int i = 0; i < attributeToScoreData.size(); i++) {
+        for (int i = 0; i < attributeToScoreData.size(); i++) {
             if (attributeToScoreData.get(i).getKey().equals(attribute)) {
                 attributeToScoreData.set(i, new Pair<>(attribute, score));
                 break;

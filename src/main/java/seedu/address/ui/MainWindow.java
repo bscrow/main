@@ -113,11 +113,17 @@ public class MainWindow extends UiPart<Stage> {
         });
     }
 
+    /**
+     * Displays the {@code SessionPanel} for the user to manage interview sessions.
+     */
     private void showSessionPanel() {
         listPanelStackPane.getChildren().clear();
         listPanelStackPane.getChildren().add(sessionPanel.getRoot());
     }
 
+    /**
+     * Displays the {@code InterviewPanel} for a selected interview session.
+     */
     private void showInterviewPanel() {
         listPanelStackPane.getChildren().clear();
         interviewPanel = new InterviewPanel(logic, this::executeCommand);

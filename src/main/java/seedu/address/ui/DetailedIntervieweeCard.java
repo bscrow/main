@@ -143,10 +143,11 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
     }
 
     private String setValueLabels(Double value) {
-        return Double.isNaN(value) ? String.format("%.3f", value) :"-";
+        return Double.isNaN(value) ? String.format("%.3f", value) : "-";
     }
 
-    //private ObservableList<Data<Number, String>> convertPairToDataLabels(ObservableList<Pair<Attribute, Double>> attributeToScoreData) {
+    //private ObservableList<Data<Number, String>> convertPairToDataLabels(
+    // ObservableList<Pair<Attribute, Double>> attributeToScoreData) {
     //    ObservableList<Data<Number, String>> attributeList = FXCollections.observableArrayList();
     //    for (Pair<Attribute, Double> attributeDoublePair : attributeToScoreData) {
     //        attributeList.add(new Data<>(0, setValueLabels(attributeDoublePair.getValue())));
@@ -187,11 +188,11 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
                     Double oldScore = updatedPair.getValue();
                     Double newScore = change.getAddedSubList().get(0).getValue();
                     Data<Double, String> newData = new Data<>(newScore, attributeUpdated);
-                    for(int i = 0; i < data.size(); i++ ) {
-                        if (data.get(i).getYValue().equals(attributeUpdated) &&
-                                data.get(i).getXValue().equals(oldScore)) {
+                    for (int i = 0; i < data.size(); i++) {
+                        if (data.get(i).getYValue().equals(attributeUpdated)
+                                && data.get(i).getXValue().equals(oldScore)) {
                             data.set(i, newData);
-                        //    dataLabels.set(i, new Data<>((Number) 0, setValueLabels(newScore)));
+                            //dataLabels.set(i, new Data<>((Number) 0, setValueLabels(newScore)));
                         }
                     }
                 }

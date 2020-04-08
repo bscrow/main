@@ -26,7 +26,7 @@ public class MetricListPanel extends UiPart<Region> {
         metricCardListView.setItems(metricList);
         metricCardListView.setCellFactory(listView -> new MetricListPanel.MetricListViewCell());
         metricCardListView.getItems().addListener(
-                 (ListChangeListener<Metric>) c -> metricCardListView.scrollTo(c.getList().size()-1));
+                 (ListChangeListener<Metric>) c -> metricCardListView.scrollTo(c.getList().size() - 1));
     }
 
     /**
