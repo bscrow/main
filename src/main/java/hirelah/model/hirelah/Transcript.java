@@ -2,6 +2,7 @@ package hirelah.model.hirelah;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
 
 import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.model.hirelah.exceptions.IllegalActionException;
@@ -169,6 +170,24 @@ public class Transcript {
      */
     public int getIndexOfQuestion(int questionIndex) throws IllegalActionException, IllegalValueException {
         return remarkList.getIndexOfQuestion(questionIndex);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(completed, attributeToScoreData,
+                remarkList);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) { // short circuit if same object
+            return true;
+        } else if (!(other instanceof Transcript)) {
+            return false;
+        }
+        Transcript comparison = (Transcript) other;
+        return (comparison.completed == completed)
+                && comparison.attributeToScoreData.equals(getAttributeToScoreData())
+                && comparison.remarkList.equals(remarkList);
     }
 
 }
