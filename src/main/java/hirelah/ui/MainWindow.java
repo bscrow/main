@@ -121,7 +121,7 @@ public class MainWindow extends UiPart<Stage> {
     private void showSessionPanel() {
         try {
             listPanelStackPane.getChildren().clear();
-            sessionPanel = new SessionPanel(logic.getAvailableSessions());
+            sessionPanel = new SessionPanel(logic.getAvailableSessions(), this::executeCommand);
             listPanelStackPane.getChildren().add(sessionPanel.getRoot());
         } catch (IOException e) {
             logger.info(e.getMessage());

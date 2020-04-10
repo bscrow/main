@@ -15,6 +15,8 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
+import static java.util.Objects.requireNonNull;
+
 
 /**
  * InterviewPanel which contains all the information regarding an interview session.
@@ -24,7 +26,7 @@ public class InterviewPanel extends UiPart<Region> {
     private static final String PRO_TIP = "Pro Tip:\n"
             + "      Start by setting some interview rubrics (questions, \n"
             + "        attributes, metrics) to evaluate interviewees. \n"
-            + "      Type \"interview <interviewee>\" to start.\n"
+            + "      Type \"interview <interviewee>\" to start an interview.\n"
             + "      Type \"help\" to get help.";
 
     private final Logger logger = LogsCenter.getLogger(InterviewPanel.class);
@@ -72,7 +74,10 @@ public class InterviewPanel extends UiPart<Region> {
         intervieweeListPanel = new IntervieweeListPanel(logic.getIntervieweeListView(), commandExecutor);
         setAnchor(intervieweeListPanel.getRoot(), 0.0, 0.0, 5.0, 5.0);
         intervieweePane.getChildren().add(intervieweeListPanel.getRoot());
-        sessionInformationCard = new SessionInformationCard();
+        requireNonNull(logic.getCurrentSession());
+        sessionInformationCard = new SessionInformationCard(logic.getCurrentSession().get(),
+                logic.getIntervieweeListView(),
+                logic.isFinalisedInterviewProperties());
         setAnchor(sessionInformationCard.getRoot(), 0.0, 0.0, 5.0, Double.NaN);
         intervieweePane.getChildren().add(sessionInformationCard.getRoot());
 
@@ -97,13 +102,15 @@ public class InterviewPanel extends UiPart<Region> {
         if (toggleView != ToggleView.TRANSCRIPT) {
             logic.setCurrentInterviewee(null);
         }
-
-
         switch (toggleView) {
-
         case INTERVIEWEE: // interviewee
             intervieweePane.getChildren().clear();
             intervieweePane.getChildren().add(intervieweeListPanel.getRoot());
+            requireNonNull(logic.getCurrentSession());
+            sessionInformationCard = new SessionInformationCard(logic.getCurrentSession().get(),
+                    logic.getIntervieweeListView(),
+                    logic.isFinalisedInterviewProperties());
+            setAnchor(sessionInformationCard.getRoot(), 0.0, 0.0, 5.0, Double.NaN);
             intervieweePane.getChildren().add(sessionInformationCard.getRoot());
             break;
         case BEST_INTERVIEWEE:
@@ -114,23 +121,17 @@ public class InterviewPanel extends UiPart<Region> {
             intervieweePane.getChildren().add(bestNIntervieweesPanel.getRoot());
             intervieweePane.getChildren().add(sessionInformationCard.getRoot());
             break;
-
-
         case TRANSCRIPT: // transcript
             transcriptPane.getChildren().clear();
             Interviewee currentInterviewee = logic.getCurrentInterviewee();
             DetailedIntervieweeCard detailedIntervieweeCard =
                     new DetailedIntervieweeCard(currentInterviewee, commandExecutor);
-            RemarkListPanel remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
-
+            remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
             transcriptPane.getChildren().add(remarkListPanel.getRoot());
             setAnchor(remarkListPanel.getRoot(), 5.0, 0.0, 5.0, 5.0);
-
             transcriptPane.getChildren().add(detailedIntervieweeCard.getRoot());
             setAnchor(detailedIntervieweeCard.getRoot(), Double.NaN, 0.0, Double.NaN, 5.0);
-
             break;
-
         case ATTRIBUTE: // attribute
             rubricsPane.getSelectionModel().select(attributesTab);
             break;

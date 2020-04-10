@@ -1,5 +1,6 @@
 package hirelah.ui;
 
+import hirelah.commons.core.LogsCenter;
 import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.logic.commands.exceptions.CommandException;
 import hirelah.model.hirelah.Attribute;
@@ -16,6 +17,10 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.util.logging.Logger;
+
 
 /**
  * An UI component that displays information of a {@code Interviewee}.
@@ -24,6 +29,7 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
 
     private static final String FXML = "DetailedIntervieweeCard.fxml";
 
+    private final Logger logger = LogsCenter.getLogger(DetailedIntervieweeCard.class);
     public final Interviewee interviewee;
 
     @FXML
@@ -57,10 +63,14 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
         alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
         viewResume.setText(interviewee.getResume().isPresent() ? "View Resume" : "No Resume");
         viewResume.setOnAction(en -> {
-            try {
-                commandExecutor.execute("resume " + this.interviewee.getFullName());
-            } catch (CommandException | IllegalValueException e) {
-                e.printStackTrace();
+            if (Desktop.isDesktopSupported() && interviewee.getResume().isPresent()) {
+                new Thread(() -> {
+                    try {
+                        Desktop.getDesktop().open(interviewee.getResume().get());
+                    } catch (IOException e) {
+                        logger.info(e.getMessage());
+                    }
+                }).start();
             }
         });
 

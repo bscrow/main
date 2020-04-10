@@ -26,7 +26,7 @@ public class FinaliseCommand extends Command {
     public CommandResult execute(Model model, Storage storage) {
         requireNonNull(model);
         model.finaliseInterviewProperties();
-        return new CommandResult(MESSAGE_SUCCESS);
+        return new ToggleCommandResult(MESSAGE_SUCCESS, ToggleView.INTERVIEWEE);
     }
 
     @Override
