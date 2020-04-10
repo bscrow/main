@@ -1,5 +1,7 @@
 package hirelah.ui;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.logging.Logger;
 
 import hirelah.commons.core.LogsCenter;
@@ -15,7 +17,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
-import static java.util.Objects.requireNonNull;
+
 
 
 /**

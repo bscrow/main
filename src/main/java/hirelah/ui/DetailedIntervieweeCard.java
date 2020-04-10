@@ -1,8 +1,10 @@
 package hirelah.ui;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.util.logging.Logger;
+
 import hirelah.commons.core.LogsCenter;
-import hirelah.commons.exceptions.IllegalValueException;
-import hirelah.logic.commands.exceptions.CommandException;
 import hirelah.model.hirelah.Attribute;
 import hirelah.model.hirelah.Interviewee;
 
@@ -17,10 +19,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.util.logging.Logger;
-
 
 /**
  * An UI component that displays information of a {@code Interviewee}.
@@ -29,8 +27,8 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
 
     private static final String FXML = "DetailedIntervieweeCard.fxml";
 
-    private final Logger logger = LogsCenter.getLogger(DetailedIntervieweeCard.class);
     public final Interviewee interviewee;
+    private final Logger logger = LogsCenter.getLogger(DetailedIntervieweeCard.class);
 
     @FXML
     private VBox detailedIntervieweePane;

@@ -1,12 +1,13 @@
 package hirelah.ui;
 
+import java.nio.file.Path;
+
 import hirelah.model.hirelah.Interviewee;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 
-import java.nio.file.Path;
 
 /**
  * An UI component that displays meta information of an Interview Session.
