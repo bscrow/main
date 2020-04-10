@@ -13,8 +13,6 @@ public class SessionPanel extends UiPart<Region> {
 
     /**
      * Constructs a SessionPanel which displays the information regarding a session.
-     *
-     * TODO: 6/4/2020  implement SessionPanel based on an ObservableList of Sessions once ready.
      */
     public SessionPanel() {
         super(FXML);

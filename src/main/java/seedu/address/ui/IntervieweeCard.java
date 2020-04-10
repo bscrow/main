@@ -47,7 +47,7 @@ public class IntervieweeCard extends UiPart<Region> {
         this.commandExecutor = commandExecutor;
         name.setText(interviewee.getFullName());
         id.setText("ID:         " + interviewee.getId());
-        alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias has been set."));
+        alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias."));
         score.setVisible(false);
 
         if (interviewee.getTranscript().isEmpty()) {
