@@ -22,7 +22,7 @@ public class InterviewPanel extends UiPart<Region> {
     private static final String PRO_TIP = "Pro Tip:\n"
             + "      Start by setting some interview rubrics (questions, \n"
             + "        attributes, metrics) to evaluate interviewees. \n"
-            + "      Type \"interview <interviewee identifier>\" to start.\n"
+            + "      Type \"interview <interviewee>\" to start.\n"
             + "      Type \"help\" to get help.";
 
     private final Logger logger = LogsCenter.getLogger(InterviewPanel.class);

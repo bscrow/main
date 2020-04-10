@@ -262,6 +262,10 @@
     -fx-font-family: "Segoe UI Light";
 }
 
+#viewResume {
+    -fx-margin: 10 5 10 5;
+}
+
 /* Remark List */
 
 
@@ -352,7 +356,7 @@
     -fx-border-color: derive(#1d1d1d, 15%);
     -fx-border-width: 0 0 5 2;
     -fx-border-radius: 2;
-    -fx-padding: 1 11 1 11;
+    -fx-padding: 1 10 1 10;
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab:selected {
@@ -445,6 +449,8 @@
     -fx-text-fill: white;
     -fx-font-family: "Segoe UI Light";
     -fx-font-size: 13;
+    -fx-border-color: derive(#1d1d1d, 80%);
+    -fx-border-width: 0.5;
 }
 
 .table-row-cell {
@@ -457,6 +463,7 @@
     -fx-border-width: 2;
     -fx-border-radius: 10;
     -fx-border-color: derive(#1d1d1d, 80%);
+    -fx-effect: dropshadow(three-pass-box, #515658, 10, 0, 0, 0);
 }
 
 .table-view .placeholder {

@@ -5,28 +5,15 @@
 <?import javafx.scene.layout.*?>
 
 <VBox fx:id="detailedIntervieweePane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      maxWidth="250" minHeight="490" minWidth="250" prefHeight="490" >
+      maxWidth="250" minHeight="490" minWidth="250" prefHeight="490" spacing="4">
     <Label fx:id="name" layoutX="20.0" layoutY="10.0" styleClass="cell_big_label" text="\$first" />
      <Label fx:id="alias" styleClass="cell_small_label" text="\$alias" />
     <Label fx:id="id" layoutX="20.0" layoutY="35.0" styleClass="cell_small_label" text="\$id" />
      <Button fx:id="viewResume" mnemonicParsing="false" prefHeight="25.0" textAlignment="CENTER" />
-    <StackPane>
-        <BarChart fx:id="chartLabel">
-            <xAxis>
-                <NumberAxis side="BOTTOM"/>
-            </xAxis>
-            <yAxis>
-                <CategoryAxis side="LEFT"/>
-            </yAxis>
-        </BarChart>
-        <BarChart fx:id="scoreChart">
-            <xAxis>
-                <NumberAxis side="BOTTOM" fx:id="xAxis"/>
-            </xAxis>
-            <yAxis>
-                <CategoryAxis fx:id="yAxis" side="LEFT"/>
-            </yAxis>
-        </BarChart>
-    </StackPane>
-
+    <TableView fx:id="attributeToScoreTable" prefWidth="200">
+        <columns>
+            <TableColumn text="Attribute" minWidth="130" prefWidth="130"/>
+            <TableColumn text="Weight" minWidth="60" maxWidth="60"/>
+        </columns>
+    </TableView>
 </VBox>
