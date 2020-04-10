@@ -1,47 +1,77 @@
-= bscrow - Project Portfolio
+= Yan Boshen - Project Portfolio for HireLah!
 :site-section: AboutUs
+:icons: font
 :imagesDir: ../images
 :stylesDir: ../stylesheets
+:xrefstyle: full
+:experimental:
 
-== PROJECT: HireLah!
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:warning-caption: :warning:
+endif::[]
 
----
 
-== Overview
+== About the Project
 
-AddressBook - Level 3 is a desktop address book application used for teaching Software Engineering principles. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 10 kLoC.
+HireLah! is targeted to bring greater convenience to interviewers who can type quickly and prefer typing over mouse +
+commands. Additionally, we included customised features in our desktop apps to help interviewers to manage interviews.
+
+=== My Role
+
+My role was to design and write codes to create the Graphical User Interface (GUI) of HireLah!, such that the GUI is +
+elegant and convenient to use. I will elaborate on my contributions in the following sections.
+
+Listed in the table below are some notations that are used throughout the document.
+
+.Legend table
+[#Legend]
+[width="100%",cols="^15%,85%",options="header"]
+|===
+a| *Icon* | *Description*
+a| `command` | Command that can be executed, or a component, class or object in the architecture of the application
+a| icon:lightbulb-o[role="icon-tip", size="2x"] | Tips that might be helpful in navigating the application
+a| icon:info-circle[role="icon-note blue", size="2x"] | Important information that should be noted
+a| ====
+==== | Useful information for a deeper understanding of the command
+|===
+
+As shown in <<Legend>>, these icons associated to their following descriptions, such as commands, tips, important information and useful information, enable greater clarity in understanding the document. Note that useful information will have text enclosed in its box.
 
 == Summary of contributions
 
-* *Major enhancement*: added *the ability to undo/redo previous commands*
-** What it does: allows the user to undo all previous commands one at a time. Preceding undo commands can be reversed by using the redo command.
-** Justification: This feature improves the product significantly because a user can make mistakes in commands and the app should provide a convenient way to rectify them.
-** Highlights: This enhancement affects existing commands and commands to be added in future. It required an in-depth analysis of design alternatives. The implementation too was challenging as it required changes to existing commands.
-** Credits: _{mention here if you reused any code/ideas from elsewhere or if a third-party library is heavily used in the feature so that a reader can make a more accurate judgement of how much effort went into the feature}_
+This section shows a summary of my contributions to the team project.
 
-* *Minor enhancement*: added a history command that allows the user to navigate to previous commands using up/down keys.
+* *Major enhancement #1*: Designed and implemented the UI components of HireLah!
+** What it does: It enables users to view all the information relevant to an interview, including the list of +
+interviewees, lists of rubrics (including attributes, questions and metrics), as well as the transcript of each +
+interviewee after an interview. This can be done via the `list` as well as `open` commands.
 
-* *Code contributed*: [https://github.com[Functional code]] [https://github.com[Test code]] _{give links to collated code files}_
+** Justification: This feature allows an user to easily navigate between and find the information that he/she needs in +
+order to conduct an interview, without the hassle of cross-referencing various sources of information.
+** Highlights: This feature depends on the backend implementation of HireLah! and therefore requires consistent
+communication with the rest of my teammates in order to correctly display features implemented by them. This is not +
+easy as I have to take into account the constraints of the UI elements and possible use cases, such as inputting long +
+paragraphs of text or resizing the application, and ensure that the UI still displays correctly.
 
-* *Other contributions*:
 
-** Project management:
-*** Managed releases `v1.3` - `v1.5rc` (3 releases) on GitHub
+* *Code contributed*: The code that I have contributed to HireLah! can be found [https://nus-cs2103-ay1920s2.github.io/tp-dashboard/#search=mario7lorenzo[here]].
+
+== Other contributions
+
+** Project management
+*** Created issues for v1.3 and v1.4
+
+
 ** Enhancements to existing features:
-*** Updated the GUI color scheme (Pull requests https://github.com[#33], https://github.com[#34])
-*** Wrote additional tests for existing features to increase coverage from 88% to 92% (Pull requests https://github.com[#36], https://github.com[#38])
-** Documentation:
-*** Did cosmetic tweaks to existing contents of the User Guide: https://github.com[#14]
-** Community:
-*** PRs reviewed (with non-trivial review comments): https://github.com[#12], https://github.com[#32], https://github.com[#19], https://github.com[#42]
-*** Contributed to forum discussions (examples:  https://github.com[1], https://github.com[2], https://github.com[3], https://github.com[4])
-*** Reported bugs and suggestions for other teams in the class (examples:  https://github.com[1], https://github.com[2], https://github.com[3])
-*** Some parts of the history feature I added was adopted by several other class mates (https://github.com[1], https://github.com[2])
-** Tools:
-*** Integrated a third party library (Natty) to the project (https://github.com[#42])
-*** Integrated a new Github plugin (CircleCI) to the team repo
+*** Refactored list commands https://github.com/AY1920S2-CS2103-W15-2/main/pull/56[#56]
+*** Edited Transcript class to have a complete property https://github.com/AY1920S2-CS2103-W15-2/main/pull/113[#113]
 
-_{you can add/remove categories in the list above}_
+** Documentation:
+*** Updated UserGuide for Metrics https://github.com/AY1920S2-CS2103-W15-2/main/pull/66[#66] and advanced GUI features +
+https://github.com/AY1920S2-CS2103-W15-2/main/pull/112[#112]
+*** Updated Architecture Diagram for UI in the Developer Guide
 
 == Contributions to the User Guide
 
@@ -50,9 +80,7 @@ _{you can add/remove categories in the list above}_
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
 
-include::../UserGuide.adoc[tag=delete]
-
-include::../UserGuide.adoc[tag=dataencryption]
+include::../UserGuide.adoc[tag=gui]
 
 == Contributions to the Developer Guide
 
@@ -60,9 +88,7 @@ include::../UserGuide.adoc[tag=dataencryption]
 |_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
 
-include::../DeveloperGuide.adoc[tag=undoredo]
-
-include::../DeveloperGuide.adoc[tag=dataencryption]
+image::UiClassDiagram.png[]
 
 
 == PROJECT: PowerPointLabs

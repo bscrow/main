@@ -1,0 +1,38 @@
+= CornCobs - Project Portfolio
+:site-section: AboutUs
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== PROJECT: HireLah!
+
+---
+
+== Overview
+
+HireLah! is an app that helps interviewers manage their interviewees, the attributes
+you look out for in these interviewees, and the questions to ask during the interviews.
+As a complete solution for interviewers, HireLah! also helps interviewers conduct interviews
+on the app and identify the best interviewees.
+
+== Summary of contributions
+
+* *Major enhancement*: Added the ability to conduct interviews from within the app itself.
+** What it does: Allows the user to give the command `interview <interviewee>` to turn HireLah! into
+   a note-taking app to take down comments and remarks while interviewing the candidate. Also allows
+   the user to score candidates on the created attributes, and indicate when questions were asked for
+   easy retrieval later.
+** Justification: This is a critical feature for the app as without it, our app would only be
+   a list keeping app (similar to the address book) which is specialized to interviewers (tracking questions,
+   attributes and interviewees). By allowing the user to conduct the interview within the app, the app can make
+   use of the attributes and questions the interviewer has prepared beforehand to aid the interviewer in reminding
+   the interviewer on what to appraise the interviewees on during the interview. #TODO
+** Highlights: #TODO
+** Credits: Team mate Agnes Natasya for creating the Transcript class and providing a clear API for the interview
+   commands to consume, thus making the implementation of the commands simpler.
+
+* *Major enhancement*: Added the ability to manage multiple interview sessions from within the app.
+** What it does: When the app starts, rather than loading a default session, the app shows the user his/her
+   available sessions, and allows them to choose to open a previous session or start a new one.
+** Justification: This feature significantly improves the user experience of the app as previously, to change sessions,
+   one would have to manually modify the `preferences.json` file before starting the app, a feature which some users
+   would not be able to discover while using the app

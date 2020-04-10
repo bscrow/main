@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox fx:id="detailedIntervieweePane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+<VBox fx:id="detailedIntervieweePane" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
       maxWidth="250" minHeight="490" minWidth="250" prefHeight="490" spacing="4">
     <Label fx:id="name" layoutX="20.0" layoutY="10.0" styleClass="cell_big_label" text="\$first" />
      <Label fx:id="alias" styleClass="cell_small_label" text="\$alias" />

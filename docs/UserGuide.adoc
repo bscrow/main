@@ -77,6 +77,7 @@ _Action:_ This user guide is opened as a PDF with your system's default PDF view
 
 === Initialization Phase
 
+// tag::interviewees[]
 ==== Add, Edit and Delete Interviewees
 
 HireLah! allows you to manage your list of candidates from within the app. You can add interviewees to the list
@@ -166,10 +167,12 @@ _Action:_ Jane Doe's resume is opened.
 _Output:_
 
 ....
-Opening resume...
+Resume of Jane Doe opened.
 ....
+// end::interviewees[]
 
 [[Attributes]]
+// tag::attributes[]
 ==== Add, Edit and Delete Attributes
 
 In an interview, you often look out for a particular set of attributes in your candidates.
@@ -212,7 +215,9 @@ Deleted attribute: teamwork
 ....
 
 image::Screenshots/Attribute.png[]
+// end::attributes[]
 
+// tag::questions[]
 ==== Add, Edit and Delete Interview Questions
 
 Before the interview process, the interviewer may one to review the
@@ -246,6 +251,8 @@ _Output:_
 ....
 New question added: What are your relevant experiences?
 
+New question added: What are your strengths?
+
 Edited question 1 to What do you hope to accomplish in 5 years?
 
 Edited question 2 to How can you add value to the company?
@@ -254,6 +261,8 @@ Deleted question: What do you hope to accomplish in 5 years?
 ....
 
 image::Screenshots/Question.png[]
+
+// end::questions[]
 
 ==== Switching views
 
@@ -486,6 +495,7 @@ image::Screenshots/EndInterview.png[]
 === Decision Phase
 
 [[Metrics]]
+// tag::metrics[]
 ==== Add, Edit and Delete Metrics
 
 After the interview process, the interviewer may want to compare the interviewed interviewees by
@@ -532,7 +542,9 @@ New metric added: extremeLeader
 ....
 
 image::Screenshots/Metric.png[]
+// end::metrics[]
 
+// tag::report[]
 ==== Viewing Interviewee Reports
 
 After interviewing a candidate, you can view the interview transcript any
@@ -561,7 +573,9 @@ Successfully opened Interviewee report: Jane Doe
 ....
 
 image::Screenshots/Report.png[]
+// end::report[]
 
+// tag::navigation[]
 ==== Working in an Interviewee Report
 
 After opening a report, you can scroll up and down to navigate through
@@ -618,7 +632,9 @@ Here is the remark at time 1.00!
 ....
 
 image::Screenshots/NavigationTime.png[]
+// end::navigation[]
 
+// tag::best[]
 ==== Find Best Candidates
 
 After interviewing all the candidates, HireLah! can help you analyse the candidates and show
@@ -670,6 +686,8 @@ Here are the best 3 interviewees.
 
 image::Screenshots/Best.png[]
 
+// end::best[]
+
 == Advanced Features
 
 === Typing shortcuts - Prefix matching
@@ -698,6 +716,7 @@ HireLah! also provides this convenient function for other things that require
 typing names, such as the metric names. Questions are referenced by their question number
 and interviewees can use their interviewee ID, and a short alias can be given so the feature is not provided.
 
+// tag::gui[]
 === GUI Convenience Features
 
 ==== Accessing Interviewee Report
@@ -718,6 +737,7 @@ image::Screenshots/OpenResumeGUI.png[width="400"]
 The user may wish to refer to the list of interview questions created during an interview. As such, a second window showing the list of questions will pop up when the interviewer starts an interview.
 
 image::Screenshots/QuestionListInterview.png[width="300"]
+// end::gui[]
 
 == FAQ
 
@@ -767,6 +787,7 @@ the `interview <interviewee>` command again. Note that you cannot perform the us
 decision phase commands (finding best interviewee, viewing report) on an interviewee whose
 interview is incomplete!
 
+// tag::summary[]
 == Command Summary
 
 
@@ -823,3 +844,4 @@ e.g. `add metric -a ambition -w 0.9 -a leadership -w 0.1`
 e.g. `best 3 -a strength`
 * Find the Best N candidates based on a metric: `best <no_of_candidates> -m <metric>` +
 e.g. `best 5 -m extremeDictatorship`
+//end::summary[]

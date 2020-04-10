@@ -1,0 +1,107 @@
+= Mario Lorenzo - Project Portfolio for HireLah!
+:site-section: AboutUs
+:icons: font
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+:xrefstyle: full
+:experimental:
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:warning-caption: :warning:
+endif::[]
+
+== About the Project
+
+HireLah! is targeted to bring greater convenience to interviewers who can type quickly and prefer typing over mouse +
+commands. Additionally, we included customised features in our desktop apps to help interviewers to manage interviews.
+
+=== My Role
+
+My role was to create the building blocks of the components of HireLah! such as the attribute, questions, metrics,
+etc. I have also contributed in creating the CRUD commands for attributes, questions, and metrics. I have also created
+for the Find Best N Interviewees feature. The section that follows the document will follow in more detailed discussion.
+
+I have also made notable contributions to the User Guide and Developer Guide.
+
+Listed in the table below are some notations that are used throughout the document.
+
+.Legend table
+[#Legend]
+[width="100%",cols="^15%,85%",options="header"]
+|===
+a| *Icon* | *Description*
+a| `command` | Command that can be executed, or a component, class or object in the architecture of the application
+a| icon:lightbulb-o[role="icon-tip", size="2x"] | Tips that might be helpful in navigating the application
+a| icon:info-circle[role="icon-note blue", size="2x"] | Important information that should be noted
+a| ====
+==== | Useful information for a deeper understanding of the command
+|===
+
+As shown in <<Legend>>, these icons associated to their following descriptions, such as commands, tips, important information and useful information, enable greater clarity in understanding the document. Note that useful information will have text enclosed in its box.
+
+== Summary of contributions
+
+This section shows a summary of my contributions to the team project.
+
+* *Major enhancement #1*: Implemented *create, update, and delete* feature for attributes, questions, and metrics
+** What it does: It allows the user to perform create, update, and delete commands for attributes, questions, and metrics
+as fundamental components in interviewing and assessing the capabilities of the interviewees.
+
+** Justification: It enables the users to take note of which attributes that they want to find in the interviewees they
+want to interview, questions that would like to be asked, as well as the metrics that could be used as a parameter to
+systematically rank the interviewees.
+** Highlights: This enhancement is an upgrade of the existing commands from the initial codebase.
+
+* *Major enhancement #2*: Implemented *Find Best N Interviewees* feature
+** What it does: It allows users to list the best N interviewees in the decreasing order, based on a certain parameter,
+or overall score.
+** Justification: It enables users to determine the top N interviewees that the interviewer wants to hire, either based
+on overall score, a particular attribute, or even a weighted score.
+** Highlights: This enhancement is relatively challenging, since it is a whole new feature that requires a well-designed
+strategy to execute the plan.
+
+* *Code contributed*: [https://nus-cs2103-ay1920s2.github.io/tp-dashboard/#search=mario7lorenzo[Collated code]]
+
+== Other contributions
+
+** Project management
+*** Created several milestones on GitHub page
+*** Assigned members to issues upon discovery of bugs (Examples: https://github.com/AY1920S2-CS2103-W15-2/main/issues/15[#15], https://github.com/AY1920S2-CS2103-W15-2/main/issues/83[#83])
+*** Reviewed Pull Requests (Examples: https://github.com/AY1920S2-CS2103-W15-2/main/pull/57[#57], https://github.com/AY1920S2-CS2103-W15-2/main/pull/121[#121],
+https://github.com/AY1920S2-CS2103-W15-2/main/pull/173[#173])
+
+** Enhancements to existing features:
+*** Refactored and modified existing classes, to satisfy the requirements of the application
+
+** Documentation:
+*** Cleaned up the User Guide and Developer Guide (Examples: https://github.com/AY1920S2-CS2103-W15-2/main/pull/10[#10],
+https://github.com/AY1920S2-CS2103-W15-2/main/pull/27[27], https://github.com/AY1920S2-CS2103-W15-2/main/pull/84[84])
+
+** Community:
+*** Offered suggestions for other teams in the class (Examples: https://github.com/nus-cs2103-AY1920S2/addressbook-level3/pull/12[12])
+
+== Contributions to the User Guide
+
+Listed below are sections I contributed to the User Guide, which includes the create, edit, and delete commands feature
+for attributes, questions, and metrics, as well as finding the best N interviewees from a certain parameter.
+
+
+include::../UserGuide.adoc[tag=attributes]
+
+include::../UserGuide.adoc[tag=questions]
+
+include::../UserGuide.adoc[tag=metrics]
+
+include::../UserGuide.adoc[tag=best]
+
+include::../UserGuide.adoc[tag=summary]
+
+
+== Contributions to the Developer Guide
+
+Listed below are sections I contributed to the Developer Guide, which includes the logic components, which includes the
+UML diagram, as well as the sequence diagram for an add attribute command.
+
+include::../DeveloperGuide.adoc[tag=logic]

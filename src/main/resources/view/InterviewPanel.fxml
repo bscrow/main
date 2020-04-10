@@ -6,7 +6,8 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<SplitPane dividerPositions="0.5, 0.5" prefHeight="500" prefWidth="1300" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+           dividerPositions="0.5, 0.5" prefHeight="500" prefWidth="1300" >
     <AnchorPane fx:id="intervieweePane" minHeight="490" minWidth="330" prefHeight="490" prefWidth="330" />
     <AnchorPane fx:id="transcriptPane" minHeight="490" minWidth="640" prefHeight="490" prefWidth="640">
         <Label fx:id="emptyTranscriptPaneLabel" layoutX="120.0" layoutY="154.0" text="empty"/>
