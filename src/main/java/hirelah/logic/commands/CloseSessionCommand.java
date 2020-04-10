@@ -18,7 +18,7 @@ public class CloseSessionCommand extends Command {
     public CommandResult execute(Model model, Storage storage) throws CommandException {
         model.setAppPhase(AppPhase.PRE_SESSION);
         Path session = model.getCurrentSession().get().getFileName();
-        model.setSessionsDirectory(null);
+        model.setCurrentSession(null);
         return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, session), ToggleView.SESSION);
     }
 }

@@ -1,6 +1,5 @@
 package hirelah.ui;
 
-import hirelah.ui.UiPart;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;

@@ -21,7 +21,7 @@ public class SessionPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(SessionPanel.class);
 
     @FXML
-    ListView<File> sessionsList;
+    private ListView<File> sessionsList;
 
     /**
      * Constructs a SessionPanel which displays the information regarding a session.

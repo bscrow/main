@@ -14,9 +14,9 @@
       </AnchorPane>
    </center>
    <top>
-      <VBox alignment="CENTER" spacing="5" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" spacing="20" BorderPane.alignment="CENTER">
          <Label styleClass="welcome_label" text="Welcome to HireLah!" textAlignment="CENTER" />
-         <Label styleClass="instructions_label" text="Please create or select an interview session to start" textAlignment="CENTER" />
+         <Label styleClass="instructions_label" text="Please create or select an interview session to start:" />
       </VBox>
    </top>
 </BorderPane>
