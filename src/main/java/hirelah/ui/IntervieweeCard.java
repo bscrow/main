@@ -3,16 +3,12 @@ package hirelah.ui;
 import java.util.logging.Logger;
 
 import hirelah.commons.core.LogsCenter;
-import hirelah.commons.exceptions.IllegalValueException;
-import hirelah.logic.commands.exceptions.CommandException;
-import hirelah.logic.parser.OpenReportCommandParser;
 import hirelah.model.hirelah.Interviewee;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 
@@ -70,24 +66,6 @@ public class IntervieweeCard extends UiPart<Region> {
         } else {
             resumeStatus.setImage(new Image(getClass().getResourceAsStream(STATUS_EMPTY)));
         }
-        this.getRoot().setOnKeyPressed(key -> {
-            KeyCode keyCode = key.getCode();
-            if (keyCode == KeyCode.ENTER) {
-                try {
-                    commandExecutor.execute("open " + this.interviewee.getFullName());
-                } catch (IllegalValueException | CommandException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        this.getRoot().setOnMouseClicked(event -> {
-            try {
-                new OpenReportCommandParser().parse(this.interviewee.getFullName());
-                commandExecutor.execute("open " + this.interviewee);
-            } catch (IllegalValueException | CommandException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
     public IntervieweeCard(Interviewee interviewee, CommandExecutor commandExecutor, double score) {

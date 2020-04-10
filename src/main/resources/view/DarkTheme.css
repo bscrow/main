@@ -136,6 +136,12 @@
     -fx-opacity: 0.9;
 }
 
+#sessionsList {
+    -fx-padding: 5;
+    -fx-effect: dropshadow(three-pass-box, derive(#1d1d1d, 15%), 1, 0, 5, 8);
+    -fx-background-radius: 5;
+}
+
 #sessionsList .list-cell:filled:even {
     -fx-background-color: #3c3e3f;
 }
@@ -146,14 +152,16 @@
 
 #sessionsList .list-cell:filled:selected {
     -fx-border-color: #3e7b91;
-    -fx-border-width: 1;
+    -fx-border-width: 2;
 }
 
 #sessionsList .list-cell{
-    -fx-font-size: 14pt;
+    -fx-font-size: 18pt;
     -fx-font-family: "Segoe UI Light";
     -fx-text-fill: white;
     -fx-label-padding: 3 20 3 20;
+    -fx-border-width:2;
+    -fx-border-color: derive(#1d1d1d, 20%);
 }
 
 /*******************************************************************************
