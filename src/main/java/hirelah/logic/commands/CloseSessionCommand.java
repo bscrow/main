@@ -4,6 +4,7 @@ import java.nio.file.Path;
 
 import hirelah.logic.commands.exceptions.CommandException;
 import hirelah.model.Model;
+import hirelah.model.hirelah.AppPhase;
 import hirelah.storage.Storage;
 
 /**
