@@ -119,8 +119,13 @@ public class MainWindow extends UiPart<Stage> {
      * Displays the {@code SessionPanel} for the user to manage interview sessions.
      */
     private void showSessionPanel() {
-        listPanelStackPane.getChildren().clear();
-        listPanelStackPane.getChildren().add(sessionPanel.getRoot());
+        try {
+            listPanelStackPane.getChildren().clear();
+            sessionPanel = new SessionPanel(logic.getAvailableSessions());
+            listPanelStackPane.getChildren().add(sessionPanel.getRoot());
+        } catch (IOException e) {
+            logger.info(e.getMessage());
+        }
     }
 
     /**
@@ -137,8 +142,8 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        // showSessionPanel(); // To be added after Session is created
-        showInterviewPanel();
+        showSessionPanel();
+        //showInterviewPanel();
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -165,8 +170,13 @@ public class MainWindow extends UiPart<Stage> {
      * @param toggleView enum representing what should be displayed
      */
     public void handleToggle(ToggleView toggleView) {
-        // if toggle == SESSION showSessionPanel else
-        interviewPanel.handleToggle(toggleView);
+        if (toggleView == ToggleView.SESSION) {
+            showSessionPanel();
+        } else if (toggleView == ToggleView.INTERVIEW) {
+            showInterviewPanel();
+        } else {
+            interviewPanel.handleToggle(toggleView);
+        }
     }
 
     /**
@@ -182,7 +192,7 @@ public class MainWindow extends UiPart<Stage> {
             Files.copy(is, tempOutput, StandardCopyOption.REPLACE_EXISTING);
             Desktop.getDesktop().open(tempOutput.toFile());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("User Guide cannot be opened! \n" + e.getMessage());
         }
     }
 

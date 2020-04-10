@@ -55,6 +55,13 @@
     -fx-text-fill: white;
 }
 
+.instructions_label {
+    -fx-font-size: 14pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #999999;
+    -fx-opacity: 0.9;
+}
+
 .stack-pane {
      -fx-background-color: derive(#1d1d1d, 20%);
 }
@@ -116,6 +123,37 @@
 
 .context-menu .label {
     -fx-text-fill: white;
+}
+
+/*******************************************************************************
+ *                            Session Panel                                    *
+ ******************************************************************************/
+
+.welcome_label {
+    -fx-font-size: 28pt;
+    -fx-font-family: "Helvetica";
+    -fx-text-fill: white;
+    -fx-opacity: 0.9;
+}
+
+#sessionsList .list-cell:filled:even {
+    -fx-background-color: #3c3e3f;
+}
+
+#sessionsList .list-cell:filled:odd {
+    -fx-background-color: #515658;
+}
+
+#sessionsList .list-cell:filled:selected {
+    -fx-border-color: #3e7b91;
+    -fx-border-width: 1;
+}
+
+#sessionsList .list-cell{
+    -fx-font-size: 14pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+    -fx-label-padding: 3 20 3 20;
 }
 
 /*******************************************************************************
@@ -195,14 +233,6 @@
  *                             Transcript Pane                                 *
  ******************************************************************************/
 
-/* Empty Transcript Pane Label */
-
-#emptyTranscriptPaneLabel {
-    -fx-font-size: 14pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: #999999;
-    -fx-opacity: 0.9;
-}
 
 /* Detailed Interviewee Card */
 
