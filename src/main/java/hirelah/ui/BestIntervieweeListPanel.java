@@ -22,7 +22,7 @@ public class BestIntervieweeListPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(BestIntervieweeListPanel.class);
 
     @FXML
-    protected Label title;
+    private Label title;
     @FXML
     private ListView<IntervieweeToScore> intervieweeListView;
 
