@@ -23,11 +23,8 @@ public class IntervieweeCard extends UiPart<Region> {
     private static final String STATUS_PENDING = "/images/pending.png";
     private static final String STATUS_EMPTY = "/images/empty.png";
 
-
     public final Interviewee interviewee;
-
     private final Logger logger = LogsCenter.getLogger(IntervieweeCard.class);
-    private CommandExecutor commandExecutor;
 
     @FXML
     private HBox cardPane;
@@ -44,10 +41,9 @@ public class IntervieweeCard extends UiPart<Region> {
     @FXML
     private ImageView resumeStatus;
 
-    public IntervieweeCard(Interviewee interviewee, CommandExecutor commandExecutor) {
+    public IntervieweeCard(Interviewee interviewee) {
         super(FXML);
         this.interviewee = interviewee;
-        this.commandExecutor = commandExecutor;
         name.setText(interviewee.getFullName());
         id.setText("ID:         " + interviewee.getId());
         alias.setText("Alias:     " + interviewee.getAlias().orElse("No alias."));
@@ -68,8 +64,8 @@ public class IntervieweeCard extends UiPart<Region> {
         }
     }
 
-    public IntervieweeCard(Interviewee interviewee, CommandExecutor commandExecutor, double score) {
-        this(interviewee, commandExecutor);
+    public IntervieweeCard(Interviewee interviewee, double score) {
+        this(interviewee);
         this.score.setVisible(true);
         this.score.setText("Score:     " + score);
     }

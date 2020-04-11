@@ -3,6 +3,7 @@ package hirelah.ui;
 import hirelah.model.hirelah.Question;
 import hirelah.model.hirelah.QuestionRemark;
 import hirelah.model.hirelah.Remark;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

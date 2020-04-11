@@ -7,6 +7,7 @@ import hirelah.model.hirelah.Interviewee;
 import hirelah.model.hirelah.Question;
 import hirelah.model.hirelah.QuestionRemark;
 import hirelah.model.hirelah.Remark;
+
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,7 +27,6 @@ public class RemarkListPanel extends UiPart<Region> {
 
     @FXML
     private ListView<Remark> remarkCardListView;
-
 
     public RemarkListPanel(Interviewee interviewee, ObservableList<Question> questions) {
         super(FXML);

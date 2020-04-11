@@ -45,19 +45,12 @@ public class MainWindow extends UiPart<Stage> {
     private SessionPanel sessionPanel;
     private InterviewPanel interviewPanel;
 
-    // On startup, HireLah shows the list of interviewees
-    private ToggleView toggleView = ToggleView.INTERVIEWEE;
-
-
     @FXML
     private StackPane commandBoxPlaceholder;
-
     @FXML
     private MenuItem helpMenuItem;
-
     @FXML
     private StackPane listPanelStackPane;
-
     @FXML
     private StackPane resultDisplayPlaceholder;
 
@@ -72,8 +65,6 @@ public class MainWindow extends UiPart<Stage> {
         // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
         setAccelerators();
-        //sessionPanel = new SessionPanel();
-
     }
 
     public Stage getPrimaryStage() {
@@ -135,7 +126,6 @@ public class MainWindow extends UiPart<Stage> {
         listPanelStackPane.getChildren().clear();
         interviewPanel = new InterviewPanel(logic, this::executeCommand);
         listPanelStackPane.getChildren().add(interviewPanel.getRoot());
-
     }
 
     /**
@@ -143,7 +133,6 @@ public class MainWindow extends UiPart<Stage> {
      */
     void fillInnerParts() {
         showSessionPanel();
-        //showInterviewPanel();
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());

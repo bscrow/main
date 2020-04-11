@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import hirelah.commons.core.LogsCenter;
 import hirelah.model.hirelah.Question;
+
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -28,7 +29,6 @@ public class QuestionListPanel extends UiPart<Region> {
         textListView.getItems().addListener(
                 (ListChangeListener<Question>) c -> textListView.scrollTo(c.getList().size() - 1));
     }
-
 
     /**
      * Custom {@code ListCell} that displays the Question text with the question number.

@@ -18,8 +18,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
 
-
-
 /**
  * InterviewPanel which contains all the information regarding an interview session.
  */
@@ -45,12 +43,10 @@ public class InterviewPanel extends UiPart<Region> {
 
     @FXML
     private AnchorPane intervieweePane;
-
     @FXML
     private AnchorPane transcriptPane;
     @FXML
     private Label emptyTranscriptPaneLabel;
-
     @FXML
     private TabPane rubricsPane;
     @FXML
@@ -65,74 +61,101 @@ public class InterviewPanel extends UiPart<Region> {
         this.logic = logic;
         this.commandExecutor = commandExecutor;
 
+        intervieweeListPanel = new IntervieweeListPanel(logic.getIntervieweeListView());
+        attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
+        questionListPanel = new QuestionListPanel(logic.getQuestionListView());
+        metricListPanel = new MetricListPanel(logic.getMetricListView());
         fillInnerParts();
 
     }
 
     /**
-     * Fills up all the placeholders of this window.
+     * Fills up this window with all the UI components that will be shown by default.
      */
     private void fillInnerParts() {
-        intervieweeListPanel = new IntervieweeListPanel(logic.getIntervieweeListView(), commandExecutor);
+        loadIntervieweePanel();
+        loadSessionInformationCard();
+
+        emptyTranscriptPaneLabel.setText(PRO_TIP);
+
+        setAnchor(rubricsPane, 0.0, 0.0, 3.0, 0.0);
+        attributesTab.setContent(attributeListPanel.getRoot());
+        questionsTab.setContent(questionListPanel.getRoot());
+        metricsTab.setContent(metricListPanel.getRoot());
+    }
+
+    /**
+     * Loads the intervieweePane on the left side of the window with the list of all interviewees.
+     */
+    private void loadIntervieweePanel() {
+        intervieweePane.getChildren().clear();
         setAnchor(intervieweeListPanel.getRoot(), 0.0, 0.0, 5.0, 5.0);
         intervieweePane.getChildren().add(intervieweeListPanel.getRoot());
+    }
+
+    /**
+     * Loads the intervieweePane on the left side of the window with the list of the best n interviewees based on the
+     * user's metric.
+     */
+    private void loadBestIntervieweePanel() {
+        intervieweePane.getChildren().clear();
+        BestIntervieweeListPanel bestNIntervieweesPanel =
+                new BestIntervieweeListPanel(logic.getBestNIntervieweesView());
+        setAnchor(bestNIntervieweesPanel.getRoot(), 0.0, Double.NaN, 5.0, 5.0);
+        intervieweePane.getChildren().add(bestNIntervieweesPanel.getRoot());
+        intervieweePane.getChildren().add(sessionInformationCard.getRoot());
+    }
+
+    /**
+     * Loads the {@code Transcript} of an {@code Interviewee} selected by the user.
+     *
+     * @param currentInterviewee Interviewee selected by the user.
+     */
+    private void loadTranscript(Interviewee currentInterviewee) {
+        transcriptPane.getChildren().clear();
+        DetailedIntervieweeCard detailedIntervieweeCard =
+                new DetailedIntervieweeCard(currentInterviewee);
+        remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
+        transcriptPane.getChildren().add(remarkListPanel.getRoot());
+        setAnchor(remarkListPanel.getRoot(), 5.0, 0.0, 5.0, 5.0);
+        transcriptPane.getChildren().add(detailedIntervieweeCard.getRoot());
+        setAnchor(detailedIntervieweeCard.getRoot(), Double.NaN, 0.0, Double.NaN, 5.0);
+    }
+
+    /**
+     * Loads a pane showing information about the current interview session.
+     */
+    private void loadSessionInformationCard() {
         requireNonNull(logic.getCurrentSession());
         sessionInformationCard = new SessionInformationCard(logic.getCurrentSession().get(),
                 logic.getIntervieweeListView(),
                 logic.isFinalisedInterviewProperties());
         setAnchor(sessionInformationCard.getRoot(), 0.0, 0.0, 5.0, Double.NaN);
         intervieweePane.getChildren().add(sessionInformationCard.getRoot());
-
-        emptyTranscriptPaneLabel.setText(PRO_TIP);
-
-        setAnchor(rubricsPane, 0.0, 0.0, 3.0, 0.0);
-        attributeListPanel = new AttributeListPanel(logic.getAttributeListView());
-        attributesTab.setContent(attributeListPanel.getRoot());
-        questionListPanel = new QuestionListPanel(logic.getQuestionListView());
-        questionsTab.setContent(questionListPanel.getRoot());
-        metricListPanel = new MetricListPanel(logic.getMetricListView());
-        metricsTab.setContent(metricListPanel.getRoot());
     }
 
     /**
      * Sets what is displayed in the listPanelStackPane based on the toggle.
      *
-     * @param toggleView enum representing what should be displayed
+     * @param toggleView enum representing what should be displayed.
      */
     public void handleToggle(ToggleView toggleView) {
-        // Clear the current interviewee
-        if (toggleView != ToggleView.TRANSCRIPT) {
-            logic.setCurrentInterviewee(null);
-        }
         switch (toggleView) {
         case INTERVIEWEE: // interviewee
-            intervieweePane.getChildren().clear();
-            intervieweePane.getChildren().add(intervieweeListPanel.getRoot());
-            requireNonNull(logic.getCurrentSession());
-            sessionInformationCard = new SessionInformationCard(logic.getCurrentSession().get(),
-                    logic.getIntervieweeListView(),
-                    logic.isFinalisedInterviewProperties());
-            setAnchor(sessionInformationCard.getRoot(), 0.0, 0.0, 5.0, Double.NaN);
-            intervieweePane.getChildren().add(sessionInformationCard.getRoot());
+            loadIntervieweePanel();
+            loadSessionInformationCard();
             break;
-        case BEST_INTERVIEWEE:
-            intervieweePane.getChildren().clear();
-            BestIntervieweeListPanel bestNIntervieweesPanel =
-                    new BestIntervieweeListPanel(logic.getBestNIntervieweesView(), commandExecutor);
-            setAnchor(bestNIntervieweesPanel.getRoot(), 0.0, Double.NaN, 5.0, 5.0);
-            intervieweePane.getChildren().add(bestNIntervieweesPanel.getRoot());
-            intervieweePane.getChildren().add(sessionInformationCard.getRoot());
+        case BEST_INTERVIEWEE: // best interviewees
+            loadBestIntervieweePanel();
             break;
-        case TRANSCRIPT: // transcript
+        case TRANSCRIPT: // showing a transcript
+            loadTranscript(logic.getCurrentInterviewee());
+            break;
+        case CLOSE_TRANSCRIPT: // closing the currently shown transcript
             transcriptPane.getChildren().clear();
-            Interviewee currentInterviewee = logic.getCurrentInterviewee();
-            DetailedIntervieweeCard detailedIntervieweeCard =
-                    new DetailedIntervieweeCard(currentInterviewee, commandExecutor);
-            remarkListPanel = new RemarkListPanel(currentInterviewee, logic.getQuestionListView());
-            transcriptPane.getChildren().add(remarkListPanel.getRoot());
-            setAnchor(remarkListPanel.getRoot(), 5.0, 0.0, 5.0, 5.0);
-            transcriptPane.getChildren().add(detailedIntervieweeCard.getRoot());
-            setAnchor(detailedIntervieweeCard.getRoot(), Double.NaN, 0.0, Double.NaN, 5.0);
+            transcriptPane.getChildren().add(emptyTranscriptPaneLabel);
+            logic.setCurrentInterviewee(null);
+            loadSessionInformationCard();
             break;
         case ATTRIBUTE: // attribute
             rubricsPane.getSelectionModel().select(attributesTab);
@@ -143,7 +166,6 @@ public class InterviewPanel extends UiPart<Region> {
         case QUESTION: // questions
             rubricsPane.getSelectionModel().select(questionsTab);
             break;
-
         default:
             break;
         }

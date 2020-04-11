@@ -32,24 +32,19 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
 
     @FXML
     private VBox detailedIntervieweePane;
-
     @FXML
     private Label name;
-
     @FXML
     private Label id;
-
     @FXML
     private Label alias;
-
     @FXML
     private Button viewResume;
-
     @FXML
     private TableView<Pair<Attribute, Double>> attributeToScoreTable;
 
 
-    public DetailedIntervieweeCard(Interviewee interviewee, CommandExecutor commandExecutor) {
+    public DetailedIntervieweeCard(Interviewee interviewee) {
         super(FXML);
         this.interviewee = interviewee;
         ObservableList<Pair<Attribute, Double>> attributeToScoreData = interviewee.getTranscript()
@@ -71,43 +66,56 @@ public class DetailedIntervieweeCard extends UiPart<Region> {
                 }).start();
             }
         });
+        loadAttributeToScoreTable(attributeToScoreData);
+    }
 
+    /**
+     * Loads the table showing the score the user assigned to each Attribute for an Interviewee.
+     *
+     * @param attributeToScoreData An ObservableList of Attribute to score pairs.
+     */
+    private void loadAttributeToScoreTable(ObservableList<Pair<Attribute, Double>> attributeToScoreData) {
         attributeToScoreTable.setItems(attributeToScoreData);
 
         TableColumn<Pair<Attribute, Double>, String> attributeColumn = new TableColumn<>("Attribute:");
         attributeColumn.setCellValueFactory(p ->
                 new SimpleObjectProperty<>(truncateAttributeName(p.getValue().getKey().toString())));
-
         attributeToScoreTable.getColumns().set(0, attributeColumn);
 
         TableColumn<Pair<Attribute, Double>, String> scoreColumn = new TableColumn<>("Score:");
         scoreColumn.setCellValueFactory(p -> new SimpleObjectProperty<>(setValueLabels(p.getValue().getValue())));
-
         attributeToScoreTable.getColumns().set(1, scoreColumn);
 
         attributeColumn.prefWidthProperty().bind(attributeToScoreTable.widthProperty().multiply(0.58));
         scoreColumn.prefWidthProperty().bind(attributeToScoreTable.widthProperty().multiply(0.31));
-
         attributeColumn.setResizable(false);
         scoreColumn.setResizable(false);
         attributeToScoreTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     /**
-     * Truncates the input xTicks if it is longer than 20 characters.
+     * Truncates the input Attribute Name if it is longer than 18 characters.
      *
-     * @param xTick String representing a tick on the X axis.
+     * @param attributeName String representing a tick on the X axis.
      *
-     * @return String of the tick after truncation.
+     * @return String of the attributeName after truncation.
      */
-    private String truncateAttributeName(String xTick) {
-        if (xTick.length() > 14) {
-            return xTick.substring(0, 12) + "...";
+    private String truncateAttributeName(String attributeName) {
+        if (attributeName.length() > 18) {
+            return attributeName.substring(0, 15) + "...";
         } else {
-            return xTick;
+            return attributeName;
         }
     }
 
+    /**
+     * Formats a score to 3 decimal places.
+     * If score has not been assigned yet (it is equal to NaN), it will be replaced by "-".
+     *
+     * @param value Double value of the score for an attribute.
+     *
+     * @return String representation of the score.
+     */
     private String setValueLabels(Double value) {
         return !Double.isNaN(value) ? String.format("%.3f", value) : "-";
     }

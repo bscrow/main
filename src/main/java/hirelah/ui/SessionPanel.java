@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import hirelah.commons.core.LogsCenter;
-
 import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.logic.commands.exceptions.CommandException;
+
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
@@ -20,6 +20,7 @@ import javafx.scene.layout.Region;
  */
 public class SessionPanel extends UiPart<Region> {
     private static final String FXML = "SessionPanel.fxml";
+
     private final Logger logger = LogsCenter.getLogger(SessionPanel.class);
     private final CommandExecutor commandExecutor;
 
@@ -36,14 +37,11 @@ public class SessionPanel extends UiPart<Region> {
         this.commandExecutor = commandExecutor;
         sessionsList.setCellFactory(listView -> new SessionListViewCell());
 
-
         sessionsList.setItems(FXCollections.observableList(availableSessions));
         AnchorPane.setTopAnchor(sessionsList, 50.0);
         AnchorPane.setRightAnchor(sessionsList, 100.0);
         AnchorPane.setBottomAnchor(sessionsList, 50.0);
         AnchorPane.setLeftAnchor(sessionsList, 100.0);
-
-
     }
 
     /**

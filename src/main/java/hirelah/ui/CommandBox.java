@@ -2,6 +2,7 @@ package hirelah.ui;
 
 import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.logic.commands.exceptions.CommandException;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

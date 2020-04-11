@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import hirelah.commons.core.LogsCenter;
 import hirelah.model.hirelah.Attribute;
+
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

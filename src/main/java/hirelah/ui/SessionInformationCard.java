@@ -18,10 +18,8 @@ public class SessionInformationCard extends UiPart<Region> {
 
     @FXML
     private Label sessionName;
-
     @FXML
     private Label interviews;
-
     @FXML
     private Label finaliseStatus;
 
