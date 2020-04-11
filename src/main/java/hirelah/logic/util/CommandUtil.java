@@ -13,7 +13,8 @@ public class CommandUtil {
     public static final String SAVE_INTERVIEWEE_ERROR_MESSAGE = "Could not save the updated interviewees to file: ";
     public static final String SAVE_METRICS_ERROR_MESSAGE = "Could not save the updated metrics to file: ";
     public static final String SAVE_QUESTIONS_ERROR_MESSAGE = "Could not save the updated questions to file: ";
-    public static final String SAVE_MODEL_ERROR_MESSAGE = "Could not save the updated model status to file: ";
+    public static final String SAVE_MODEL_ERROR_MESSAGE = "Could not save the updated finalise status to file: ";
+    public static final String SAVE_TRANSCRIPT_ERROR_MESSAGE = "Could not save the updated transcript to file: ";
     /**
      * Saves the updated AttributeList to the storage
      */
@@ -57,12 +58,26 @@ public class CommandUtil {
             throw new CommandException(SAVE_METRICS_ERROR_MESSAGE + ioe, ioe);
         }
     }
-    /**Save the finalised state of the model in the storage*/
+
+    /**
+     * Save the finalised state of the model in the storage
+     */
     public static void saveModel(Model model, Storage storage) throws CommandException {
         try {
             storage.saveModel(model.isFinalisedInterviewProperties());
         } catch (IOException ioe) {
             throw new CommandException(SAVE_MODEL_ERROR_MESSAGE + ioe, ioe);
+        }
+    }
+
+    /**
+     * Save the updated Transcript to the storage
+     */
+    public static void saveTranscript(Model model, Storage storage) throws CommandException {
+        try {
+            storage.saveTranscript(model.getCurrentInterviewee());
+        } catch (IOException ioe) {
+            throw new CommandException(SAVE_TRANSCRIPT_ERROR_MESSAGE + ioe, ioe);
         }
     }
 }

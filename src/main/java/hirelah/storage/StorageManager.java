@@ -70,6 +70,12 @@ public class StorageManager implements Storage {
 
     @Override
     public void loadSession(Model model, Path session) throws DataConversionException {
+        try {
+            Files.createDirectories(session);
+        } catch (IOException e) {
+            logger.severe("Unable to create sessions directory : " + StringUtil.getDetails(e));
+        }
+
         this.intervieweeStorage = new IntervieweeStorage(session.resolve("interviewee.json"));
         this.attributeStorage = new AttributeStorage(session.resolve("attribute.json"));
         this.questionStorage = new QuestionStorage(session.resolve("question.json"));

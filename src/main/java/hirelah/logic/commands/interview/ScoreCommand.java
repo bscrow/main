@@ -1,6 +1,6 @@
 package hirelah.logic.commands.interview;
 
-import java.io.IOException;
+import static hirelah.logic.util.CommandUtil.saveTranscript;
 
 import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.logic.commands.Command;
@@ -40,11 +40,7 @@ public class ScoreCommand extends Command {
             throw new CommandException(e.getMessage());
         }
         model.getCurrentTranscript().setAttributeScore(attribute, this.score);
-        try {
-            storage.saveTranscript(model.getCurrentInterviewee());
-        } catch (IOException e) {
-            throw new CommandException("Error occurred while saving data!");
-        }
+        saveTranscript(model, storage);
         return new CommandResult(String.format(MESSAGE_SUCCESS, this.score, attribute));
     }
 

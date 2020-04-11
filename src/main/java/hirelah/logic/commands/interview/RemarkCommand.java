@@ -1,6 +1,6 @@
 package hirelah.logic.commands.interview;
 
-import java.io.IOException;
+import static hirelah.logic.util.CommandUtil.saveTranscript;
 
 import hirelah.logic.commands.Command;
 import hirelah.logic.commands.CommandResult;
@@ -27,11 +27,7 @@ public class RemarkCommand extends Command {
             throw new CommandException("Remark can not be blank.");
         }
         model.getCurrentTranscript().addRemark(this.remark);
-        try {
-            storage.saveTranscript(model.getCurrentInterviewee());
-        } catch (IOException e) {
-            throw new CommandException("Error occurred while saving data!");
-        }
+        saveTranscript(model, storage);
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }
