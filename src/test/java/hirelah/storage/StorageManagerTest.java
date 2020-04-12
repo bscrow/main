@@ -63,7 +63,7 @@ public class StorageManagerTest {
     /** The following tests check if all the different components of Storage can save and retrieve the
      * various fields accurately.*/
     @Test
-    public void prefsReadSave() throws Exception {
+    public void prefsReadSave_validUserPrefs_success() throws Exception {
         /*
          * Note: This is an integration test that verifies the StorageManager is properly wired to the
          * {@link JsonUserPrefsStorage} class.
@@ -77,7 +77,7 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void intervieweesReadSave() throws Exception {
+    public void intervieweesReadSave_validIntervieweeList_success() throws Exception {
         storageManager.saveInterviewee(getIntervieweeList());
         List<Interviewee> data = getIntervieweeList().getObservableList();
         for (int i = 0; i < data.size(); i++) {
@@ -89,28 +89,28 @@ public class StorageManagerTest {
     }
 
     @Test
-    public void attributesReadSave() throws Exception {
+    public void attributesReadSave_validAttributeList_success() throws Exception {
         storageManager.saveAttribute(getTypicalAttributes());
         AttributeList retrieved = storageManager.readAttribute().get();
         assertEquals(getTypicalAttributes(), retrieved);
     }
 
     @Test
-    public void metricsReadSave() throws Exception {
+    public void metricsReadSave_validMetricList_success() throws Exception {
         storageManager.saveMetric(getMetricList());
         MetricList retrieved = storageManager.readMetric().get();
         assertEquals(getMetricList(), retrieved);
     }
 
     @Test
-    public void modelSaveRead() throws Exception {
+    public void modelSaveRead_validModel_success() throws Exception {
         storageManager.saveModel(model);
         boolean retrieved = storageManager.readModel().get();
         assertEquals(model, retrieved);
     }
 
     @Test
-    public void qnsSaveRead() throws Exception {
+    public void qnsSaveRead_validQuestionList_success() throws Exception {
         QuestionList questionList = getTypicalQns();
         storageManager.saveQuestion(questionList);
         QuestionList retrived = storageManager.readQuestion().get();
@@ -122,27 +122,27 @@ public class StorageManagerTest {
      */
 
     @Test
-    public void getModelPath() {
+    public void getModelPath_null_success() {
         assertNotNull(storageManager.getModelDirectory());
     }
 
     @Test
-    public void getIntervieweePath() {
+    public void getIntervieweePath_null_success() {
         assertNotNull(storageManager.getIntervieweeDirectory());
     }
 
     @Test
-    public void getQuestionsPath() {
+    public void getQuestionsPath_null_success() {
         assertNotNull(storageManager.getQuestionDirectory());
     }
 
     @Test
-    public void getAttributesPath() {
+    public void getAttributesPath_null_success() {
         assertNotNull(storageManager.getAttributeDirectory());
     }
 
     @Test
-    public void getUserPrefsPath() {
+    public void getUserPrefsPath_null_success() {
         assertNotNull(storageManager.getUserPrefsFilePath());
     }
 }
