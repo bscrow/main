@@ -915,6 +915,17 @@ the `interview <interviewee>` command again. Note that you cannot perform the us
 decision phase commands (finding best interviewee, viewing report) on an interviewee whose
 interview is incomplete!
 
+{empty} +
+[.big]##*Q*##: After an interview, can I check how the interviewee would score under metric X? +
+[.big]##*A*##: Yes you can! You can use the use the best interviewees command:
+
+`interviewee -best <total number of interviewees> -m X`
+
+The interviewee's scores would be shown in the best interviewees list, as shown below:
+
+image::Screenshots/QnASeeMetricScore.png[]
+
+
 // tag::summary[]
 == Command Summary
 
