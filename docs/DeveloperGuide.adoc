@@ -107,16 +107,34 @@ image::UiClassDiagram.png[]
 
 *API* : link:{repoURL}/blob/master/src/main/java/hirelah/ui/Ui.java[`Ui.java`]
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
+The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `SessionPanel`,
+`InterviewPanel` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
 
-The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the link:{repoURL}/blob/master/src/main/java/hirelah/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/blob/master/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`]
+The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml`
+files that are in the `src/main/resources/view` folder. For example, the layout of the
+link:{repoURL}/blob/master/src/main/java/hirelah/ui/MainWindow.java[`MainWindow`] is specified in
+link:{repoURL}/blob/master/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`].
 
 The `UI` component,
 
-* Executes user commands using the `Logic` component.
+* Executes user commands using the `Logic` component through the `CommandExecutor` functional interface.
 * After executing each command, performs command-specific view updates as instructed
   by the CommandResult returned by that command.
 * Listens for changes to `Model` data so that the UI can be updated with the modified data.
+
+When the app is launched, `SessionPanel` is displayed to allow the user to manage interview sessions. When an interview
+session is selected, `SessionPanel` becomes hidden, and the `InterviewPanel` is displayed to allow the user to conduct
+interviews. This process is summarised in <<SwitchPanel>>. The structure of the `InterviewPanel` is shown in <<InterviewPanel>>.
+
+[[SwitchPanel]]
+.Activity Diagram showing the toggling between SessionPanel and InterviewPanel
+image::UiSwitchPanelActivityDiagram.png[]
+
+[[InterviewPanel]]
+.Structure of the InterviewPanel used to display an interview session
+image::UiInterviewPanelClassDiagram.png[]
+
+
 
 [[Design-Logic]]
 // tag::logic[]
