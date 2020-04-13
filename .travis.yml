@@ -7,9 +7,9 @@ services:
   - xvfb
 
 script: >-
-    ./config/travis/run-checks.sh &&
-    ./gradlew clean checkstyleMain checkstyleTest headless test coverage coveralls asciidoctor
-
+  ./config/travis/run-checks.sh &&
+  ./gradlew clean checkstyleMain checkstyleTest headless &&
+  ./gradlew test coverage coveralls asciidoctor
 deploy:
   skip_cleanup: true
   provider: script

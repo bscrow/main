@@ -107,7 +107,9 @@ task headless {
                     'java.awt.headless': 'true',
                     'testfx.robot': 'glass',
                     'testfx.headless': 'true',
-
+                    'prism.order': 'sw',
+                    'prism.text': 't2k',
+                    'headless.geometry': '1600x1200-32'
             ]
         }
     }
