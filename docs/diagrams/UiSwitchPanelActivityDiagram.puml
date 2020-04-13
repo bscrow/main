@@ -1,0 +1,13 @@
+@startuml
+
+start
+:HireLah! is launched;
+repeat :SessionPanel is displayed;
+:User creates or selects an interview session
+  :SessionPanel is hidden\nInterviewPanel is created and displayed;
+backward:InterviewPanel is hidden\nSessionPanel is created and displayed;
+
+repeat while (User closes the interview session)
+
+stop
+@enduml

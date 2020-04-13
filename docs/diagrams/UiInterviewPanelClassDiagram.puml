@@ -1,0 +1,89 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor UI_COLOR_T4
+skinparam classBackgroundColor UI_COLOR
+
+package UI <<Rectangle>>{
+Class "{abstract}\nUiPart" as UiPart
+Class MainWindow
+Class InterviewPanel
+Class Hidden #FFFFFF
+Class Hidden1 #FFFFFF
+Class Hidden2 #FFFFFF
+Class Hidden3 #FFFFFF
+Class Hidden4 #FFFFFF
+
+package Interviewee {
+Class SessionInformationCard
+Class IntervieweeListPanel
+Class BestIntervieweeListPanel
+Class IntervieweeCard
+}
+package Transcript {
+Class DetailedIntervieweeCard
+Class RemarkListPanel
+Class RemarkCard
+Class QuestionRemarkCard
+}
+package Rubrics {
+Class AttributeListPanel
+Class MetricListPanel
+class MetricCard
+Class QuestionListPanel
+}
+
+
+
+}
+package Model <<Rectangle>> {
+Class HiddenModel #FFFFFF
+}
+
+package Logic <<Rectangle>> {
+Class HiddenLogic #FFFFFF
+}
+
+Class HiddenOutside #FFFFFF
+MainWindow -up-> Logic
+
+MainWindow *-down-> InterviewPanel
+
+InterviewPanel *--> IntervieweeListPanel
+InterviewPanel *--> BestIntervieweeListPanel
+InterviewPanel *--> SessionInformationCard
+IntervieweeListPanel "1" *--> "*" IntervieweeCard
+BestIntervieweeListPanel "1" *--> "*" IntervieweeCard
+
+InterviewPanel *--> DetailedIntervieweeCard
+InterviewPanel *--> RemarkListPanel
+DetailedIntervieweeCard .left[Hidden].> RemarkListPanel
+RemarkListPanel "1" *--> "*" RemarkCard
+RemarkListPanel "1" *--> "*" QuestionRemarkCard
+
+InterviewPanel *--> MetricListPanel
+MetricListPanel "1" *--> "*" MetricCard
+InterviewPanel *--> AttributeListPanel
+InterviewPanel *--> QuestionListPanel
+
+Hidden -down-|> UiPart
+Hidden -down-|> UiPart
+Hidden -down-|> UiPart
+MainWindow .right[Hidden].> Hidden4
+Hidden4 .right[Hidden].> Hidden3
+Hidden3 .right[Hidden].> Hidden2
+Hidden2 .right[Hidden].> Hidden1
+Hidden1 .right[Hidden].> Hidden
+
+IntervieweeCard .down.> Model
+DetailedIntervieweeCard .left.> Model
+SessionInformationCard ..> Model
+RemarkCard ..> Model
+QuestionRemarkCard ..> Model
+AttributeListPanel ..> Model
+QuestionListPanel ..> Model
+MetricCard ..> Model
+
+
+
+@enduml
