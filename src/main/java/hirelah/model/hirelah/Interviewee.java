@@ -141,7 +141,7 @@ public class Interviewee {
      * @param identifier the alias or name to validate.
      * @throws IllegalValueException if identifier is empty, or is a valid number
      */
-    private void checkValidIdentifier(String identifier) throws IllegalValueException {
+    public static void checkValidIdentifier(String identifier) throws IllegalValueException {
         try {
             Integer.parseUnsignedInt(identifier);
 

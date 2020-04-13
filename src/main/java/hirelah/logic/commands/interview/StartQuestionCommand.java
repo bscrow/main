@@ -17,6 +17,10 @@ import hirelah.storage.Storage;
  */
 public class StartQuestionCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Marked the start of question %d";
+    public static final String MESSAGE_FORMAT = ":start q<question number>";
+    public static final String MESSAGE_USAGE = MESSAGE_FORMAT
+            + ": marks the beginning of a question.\n"
+            + "Example: :start q1";
 
     private final int questionNumber;
 

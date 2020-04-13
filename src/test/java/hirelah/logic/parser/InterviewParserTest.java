@@ -8,7 +8,6 @@ import static hirelah.logic.commands.CommandTestUtility.VALID_ATTRIBUTE_PERSISTE
 import static hirelah.logic.commands.CommandTestUtility.VALID_ATTRIBUTE_SCORE_1;
 import static hirelah.logic.commands.CommandTestUtility.VALID_ATTRIBUTE_SCORE_2;
 import static hirelah.logic.commands.CommandTestUtility.VALID_COMMAND_RESUME;
-import static hirelah.logic.commands.CommandTestUtility.VALID_INTERVIEWEE_JANE;
 import static hirelah.logic.commands.CommandTestUtility.VALID_INTERVIEW_COMMAND_ATTRIBUTES;
 import static hirelah.logic.commands.CommandTestUtility.VALID_INTERVIEW_COMMAND_END;
 import static hirelah.logic.commands.CommandTestUtility.VALID_INTERVIEW_COMMAND_METRICS;
@@ -39,14 +38,8 @@ class InterviewParserTest {
 
     @Test
     void parseCommand_openResume_success() throws ParseException {
-        Command result = parser.parseCommand(VALID_COMMAND_RESUME + WHITESPACE + VALID_INTERVIEWEE_JANE);
-        assertEquals(result, new OpenResumeCommand("Jane Doe"));
-    }
-
-    @Test
-    void parseCommand_openResume_failure() throws ParseException {
-        Command result = parser.parseCommand(VALID_COMMAND_RESUME + WHITESPACE);
-        assertEquals(result, new OpenResumeCommand(""));
+        Command result = parser.parseCommand(":" + VALID_COMMAND_RESUME);
+        assertEquals(result, new OpenResumeCommand());
     }
 
     @Test
@@ -81,14 +74,17 @@ class InterviewParserTest {
 
     @Test
     void parseCommand_startQuestion_failure() throws ParseException {
-        Assert.assertThrows(ParseException.class, Messages.INVALID_QUESTION_NUMBER_MESSAGE, () ->
+        String expectedErrorMessage =
+                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, StartQuestionCommand.MESSAGE_USAGE);
+
+        Assert.assertThrows(ParseException.class, expectedErrorMessage, () ->
                 parser.parseCommand(VALID_INTERVIEW_COMMAND_START + WHITESPACE + INVALID_QUESTION_NUMBER_1));
 
-        Assert.assertThrows(ParseException.class, Messages.INVALID_QUESTION_NUMBER_MESSAGE, () ->
+        Assert.assertThrows(ParseException.class, expectedErrorMessage, () ->
                 parser.parseCommand(VALID_INTERVIEW_COMMAND_START
                         + WHITESPACE + INVALID_QUESTION_NUMBER_1 + INVALID_DUMMY_VALUE));
 
-        Assert.assertThrows(ParseException.class, Messages.INVALID_QUESTION_NUMBER_MESSAGE, () ->
+        Assert.assertThrows(ParseException.class, expectedErrorMessage, () ->
                 parser.parseCommand(VALID_INTERVIEW_COMMAND_START
                         + WHITESPACE + INVALID_QUESTION_BLANK));
     }

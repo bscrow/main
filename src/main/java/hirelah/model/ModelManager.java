@@ -50,10 +50,6 @@ public class ModelManager implements Model {
 
         this.appPhase = AppPhase.PRE_SESSION;
 
-        this.intervieweeList = new IntervieweeList();
-        this.attributeList = new AttributeList();
-        this.questionList = new QuestionList();
-        this.metricList = new MetricList();
         this.userPrefs = new UserPrefs(userPrefs);
         this.bestNIntervieweeList = FXCollections.observableArrayList();
     }
@@ -62,20 +58,6 @@ public class ModelManager implements Model {
         this(new UserPrefs());
     }
 
-    public ModelManager(ReadOnlyUserPrefs userPrefs, IntervieweeList initialInterviewees,
-                        AttributeList initialAttributes, QuestionList initialQuestions,
-                        MetricList initialMetrics, Boolean finalised) {
-        logger.fine("Initializing with user prefs " + userPrefs);
-
-        this.appPhase = AppPhase.PRE_SESSION;
-        this.finalisedInterviewProperties = finalised;
-        this.userPrefs = new UserPrefs(userPrefs);
-        this.intervieweeList = initialInterviewees;
-        this.attributeList = initialAttributes;
-        this.questionList = initialQuestions;
-        this.metricList = initialMetrics;
-        this.bestNIntervieweeList = FXCollections.observableArrayList();
-    }
 
     //=========== UserPrefs ==================================================================================
 
@@ -276,6 +258,7 @@ public class ModelManager implements Model {
     /**
      * Finalizes the questions and attributes so they do not change between interviews.
      */
+    @Override
     public void finaliseInterviewProperties() {
         this.finalisedInterviewProperties = true;
     }

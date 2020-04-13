@@ -60,7 +60,9 @@ The *_Architecture Diagram_* given above explains the high-level design of the A
 The `.puml` files used to create diagrams in this document can be found in the link:{repoURL}/docs/diagrams/[diagrams] folder.
 Refer to the <<UsingPlantUml#, Using PlantUML guide>> to learn how to create and edit diagrams.
 
+
 `Main` has two classes called link:{repoURL}/blob/master/src/main/java/hirelah/Main.java[`Main`] and link:{repoURL}/blob/master/src/main/java/hirelah/MainApp.java[`MainApp`]. It is responsible for,
+
 
 * At app launch: Initializes the components in the correct sequence, and connects them up with each other.
 * At shut down: Shuts down the components and invokes cleanup method where necessary.
@@ -112,6 +114,8 @@ The `UI` component uses JavaFx UI framework. The layout of these UI parts are de
 The `UI` component,
 
 * Executes user commands using the `Logic` component.
+* After executing each command, performs command-specific view updates as instructed
+  by the CommandResult returned by that command.
 * Listens for changes to `Model` data so that the UI can be updated with the modified data.
 
 [[Design-Logic]]
@@ -125,11 +129,13 @@ image::LogicClassDiagram.png[]
 *API* :
 link:{repoURL}/blob/master/src/main/java/hirelah/logic/Logic.java[`Logic.java`]
 
+
 .  `Logic` uses either the `NormalParser` or `InterviewParser` class to parse the user command, depending on the app phase stored in the Model.
 .  This results in a `Command` object which is executed by the `LogicManager`.
 .  The command execution can affect the `Model` (e.g. adding an attribute).
+.  The command execution may also call the storage to save the Model if the command modified the Model.
 .  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
-.  In addition, the `CommandResult` object can also instruct the `Ui` to perform certain actions, such as displaying the
+.  The `CommandResult` object then instructs the `Ui` to perform certain actions, such as displaying the
 list of the current attribute.
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("add attribute leadership")` API call.
@@ -137,7 +143,9 @@ Given below is the Sequence Diagram for interactions within the `Logic` componen
 .Interactions Inside the Logic Component for the `add attribute leadership` Command
 image::AddSequenceDiagram.png[]
 
-NOTE: The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+NOTE: The lifeline for `AddCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram. +
+The exact details of how `AddAttributeCommand` gets the `AttributeList` from `Model`, then modifies the list, then passes the `AttributeList` to `Storage` is left
+out in this diagram.
 
 // end::logic[]
 
@@ -153,7 +161,10 @@ image::ModelClassDiagram.png[]
 The `Model`,
 
 * stores a `UserPref` object that represents the user's preferences.
-* stores the interview data, including the current interview session, questions, attributes, metrics, and interviewees.
+* stores the session data including questions, attributes, metrics, and interviewees including their interview transcripts.
+* stores the current app state, including whether the user has finalised the attributes and questions, the current phase that
+  the app is in (pre-session, in the normal phase or in an interview), the current session and the current interviewee in focus,
+  whether being interviewed or whose report is being viewed.
 * exposes an unmodifiable `ObservableList<Attribute>`, `ObservableList<Question>`, `ObservableList<Metric>`, `ObservableList<Interviewee>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 // end::model[]
 
@@ -185,6 +196,83 @@ Classes used by multiple components are in the `hirelah.commons` package.
 == Implementation
 
 This section describes some noteworthy details on how certain features are implemented.
+
+=== Session Feature
+
+HireLah! differs from AddressBook significantly in that a single user will likely have many sessions,
+as compared to just owning a single address book. The app thus provides means of managing multiple sessions from
+within the app itself, instead of having to change `preferences.json` to create a new session or switch between sessions.
+
+==== Proposed Implementation
+
+Having multiple sessions and changing between them from within the app means that HireLah! cannot load data from storage
+on app startup.
+
+Instead, when the app starts, the ModelManager does not have its components (`IntervieweeList`, `AttributeList`, etc.) loaded,
+only `UserPrefs`, and the AppPhase is set to `PRE_SESSION`.
+
+UI displays the `SessionPanel` which shows the available sessions in the "sessionsDirectory" folder.
+
+In `PRE_SESSION` phase, logic uses the `PreSessionParser` which accepts commands to open an existing session or create a new one.
+
+Once a session is chosen, the command calls `Storage#loadSession` which creates new Storage components for the new session
+(`IntervieweeStorage`, `AttributeStorage` etc.) that save to the correct session directory. `loadSession` then calls
+`Storage#initModelManager`, which loads new Model components (`IntervieweeList`, `AttributeList` etc.), then replaces
+the current `ModelManager` components. `AppPhase` is then set to `NORMAL` at which the app starts its usual behavior (adding interviewees etc.).
+
+Finally after refreshing the `ModelManager`, then a new UI `InterviewPanel` is created that observes the new `Model` components.
+Since the Model's components have been replaced (a different set of ObservableLists), the UI can only be created at this point else the UI
+would be data binding to the wrong lists.
+
+The following activity diagram shows the sequence of initialization of components when a session is opened.
+
+image::SessionActivityDiagram.png[]
+
+From the `NORMAL` phase, the close session command can be given, which simply un-sets the current session in `Model` and returns the
+AppPhase to `PRE_SESSION`. Thus the app is ready to open a new session, by resetting the storage components and the Model components,
+then creating a new UI `InterviewPanel` again.
+
+==== Design Considerations
+
+===== Aspect: How sessions are stored in the app
+
+* **Alternative 1 (current choice):** Do not store information about sessions in Model. Directly read available sessions
+from the `/data` directory (or whatever the user set the "sessionsDirectory" to in `preferences.json`). Scan the
+directory again every time the SessionPanel is displayed.
+** Pros: Information about the available directories is always synchronized with the filesystem.
+It is possible to copy a session from somewhere else into the "sessionsDirectory" and the app will detect it.
+** Cons: Simplistic - app naively treats all directories in the "sessionsDirectory" directory as sessions and displays
+them as available sessions to the user. If a folder is created externally with invalid data, it will also be treated
+as a session, only failing when the user tries to load it.
+* **Alternative 2:** Model contains a `SessionList` which tracks what sessions have been created or deleted.
+** Pros: User cannot create/delete sessions outside the app, changes to the sessions (new session/delete session)
+can be tracked within the app itself rather than repeatedly making IO calls to the filesystem.
+** Cons: There is no "single source of truth" as both the file system and the app have a list of sessions, and it is not
+straightforward to ensure both are synchronized, eg. if a session data directory is deleted on the file system, the app
+will not be aware of it.
+
+
+===== Aspect: How session data is loaded and saved
+
+* **Alternative 1 (current choice):** Load session only when a command is given to open a session from a directory.
+** Pros: Most user friendly, managing sessions is performed through the same CLI. Memory efficient - data is loaded only
+exactly when needed.
+** Cons: Complex to implement
+* **Alternative 2:** Load all data for all sessions into memory when the app starts, open session
+merely selects the current session in focus and displays UI with current session data.
+** Pros: Straightforward to implement (All data can be loaded on app starting, need not change implementation from
+AddressBook). Switching between sessions is very straightforward.
+** Cons: Will be memory intensive as all data even from non-active sessions and past sessions will be loaded. As HireLah!
+may include large amounts of data in interview Transcripts, loading all the Transcripts from previous sessions will likely
+negatively impact startup timing. Furthermore, it is unlikely that an interviewer needs to access previous interview sessions
+data in a current interview, making a lot of the memory consumption wasteful.
+** Relevance consideration: It is not often that an interviewer would need to switch between sessions while interviewing for a
+specific thing, for example a role in the company.
+* **Alternative 3:** Require the user to configure the session to load before app starts up, in `preferences.json`
+** Pros: Simplest to implement, yet memory efficient as only the relevant data is loaded
+** Cons: Not user friendly - functionality cannot be performed within the app. User cannot discover the functionality on how
+to start a new session without consulting the user guide.
+
 
 // tag::findbestfeature[]
 === Find Best Interviewees Feature
@@ -267,12 +355,6 @@ best interviewees list to point to this list, and the MainWindow's BestInterview
 
 // end::findbestfeature[]
 
-// tag::dataencryption[]
-=== [Proposed] Data Encryption
-
-_{Explain here how the data encryption feature will be implemented}_
-
-// end::dataencryption[]
 
 === Logging
 
@@ -311,7 +393,8 @@ Refer to the guide <<DevOps#, here>>.
 
 *Target user profile*:
 
-* has a need to manage a significant number of contacts
+* an interviewer, or anyone who needs to conduct interviews
+* has a need to manage and a large number of interviewees, their resumes and interview transcripts in an organized manner.
 * prefer desktop apps over other types
 * can type fast
 * prefers typing over mouse input
@@ -334,57 +417,62 @@ questions specific to this interview session.
 
 |`* * *` |Interviewer |Add a new interviewee to an interview session | Keep track of interviewees applying for a job opening
 
-|`* * *` |Interviewer |View the list of interviewees and their interview status|Remember their names and interview those who have not been interviewed
+|`* * *` |Forgetful Interviewer |View the list of interviewees and their interview status|Remember their names and interview those who have not been interviewed
 
 |`* * *` |Interviewer |Delete an interviewee from an interview session|Remove interviewees who withdrew their job application
 
 |`* *` |Interviewer |Update the information of interviewees |Ensure that I have the most up to date information about the interviewees
 
-|`* * *` |Interviewer |Add a new `attribute`|Customize the interview session rubrics
+|`* *` |Interviewer |Add the interviewees' resumes in the app |Not need to manage the resumes externally, possibly missing out on some interviewees and making it more difficult to access
 
-|`* * *` |Interviewer |Delete any irrelevant `attribute`|Update the interview session's rubrics as needed
+|`* * *` |Interviewer |Make a list of attributes|Remind myself of what to look out for in the interviewees while interviewing them
 
-|`* *` |Busy Interviewer |Refer to my interviewees by both their interview ID as well as their name / alias |Do not have
+|`* * *` |Interviewer |Modify the list of attributes|Update the interview session's rubrics as needed
+
+|`* * *` |Interviewer |Make a list of questions to ask|Ask each interviewee the same set of questions
+
+|`* * *` |Fickle minded Interviewer |Modify the list of questions|Make necessary changes if I decide I want to ask different questions.
+
+|`* *` |Busy Interviewer |Have an easy way to refer to each interviewee |Do not have
 to remember the full name / ID of each interviewee
 
-|`* * *` |Interviewer |Finalise the attributes and questions for an interview session|Avoid changing the rubrics for the interview session between interviews
+|`* * *` |Interviewer |Finalise the attributes and questions for an interview session|Assess all interviewees fairly based on the same attributes and asked the same questions
 
-|`* * *` |Interviewer |See the list of attributes and questions that are preset before the interview session|Refer back
+|`* * *` |Interviewer |See the list of attributes and questions during an interview|Refer back
 to the list of attributes and questions and assess all interviewees according to these exact parameters.
 
 |`* * *` |Interviewer |Record the remarks of my interviewees during the interview session|Recall details that happened during the interview
 
-|`* * *` |Interviewer |Group the remarks as an answer of a particular preset question|Assess and review the interviewee’s
+|`* * *` |Interviewer |Indicate when a question was asked during the interview |Assess and review the interviewee’s
 answers to a particular question
 
-|`* *` |Interviewer |Have an audio recording for every interview session |Refer back to it to minimize missing details
+|`* * *` |Interviewer |Score the interviewee for each attribute during the interview| Have some basis to compare interviewees later.
 
-|`* * *` |Interviewer |Want to toggle between different phrases of the interview |Make it more convenient during the interview session
+|`*` |Interviewer |Have an audio recording for every interview session |Refer back to it to minimize missing details
 
-|`* * *` |Interviewer |navigate from the interviewees list to the answers of 1/2/3 particular interviewee to a specific questions
-|recall the answer of the interviewee to a certain question.
+|`* * *` |Interviewer |Open the interview transcript of an interviewee after interviewing him/her
+|Recall my impressions of the interviewee when making decisions on who to select.
 
-|`* *` |Interviewer |Find the best few interviewees based on the mean score of all attributes |Narrow down the number of interviewees
+|`* *` |Interviewer |Easily find the remarks I made at some time during the interview |Not need to slowly scroll through the entire transcript.
 
-|`* * *` |Interviewer |Find the best few interviewees based on an attribute |Narrow down the number of interviewees
+|`* * *` |Interviewer |Jump to the point where each question was asked |Focus on the important parts of the interview.
 
-|`* * *` |Interviewer |Navigate to 1/2/3 interviewee's scores of attributes|See the whole quality of attributes of the interviewee
+|`* * *` |Interviewer |Find the best few interviewees based on their scores for the attributes |Narrow down the selection when making the decision.
 
-|`* * *` |Interviewer |Navigate from the interviewees list to play audio of a particular recording at a certain time|
-Recall what the interviewee said at a certain time
+|`* * *` |Interviewer |Find the best few interviewees based on an attribute |Narrow down the selection when making the decision.
 
-|`* * *` |Interviewer |Navigate to a certain keyword from my remarks of 1/2/3 particular person|Recall my remarks about a certain topic
+|`* * *` |Interviewer |Find the best few interviewees based on a custom metric |Value certain attributes over others and give the most weightage to the most critical characteristics.
 
-|`* * *` |Interviewer |Navigate to a certain timestamp of a particular interviewee|Recall my remarks and the interviewee's
-audio recording around that time
+|`*` |Interviewer |Play audio of a recording of an interviewee's interview session at a given time|
+Recall what the interviewee said.
 
-|`* * *` |Interviewer |Visualise the score of attributes of all interviewees|To compare easily
+|`*` |Interviewer |Visualise the score of attributes of all interviewees|To make easy visual comparisons.
 
-|`* * *` |Interviewer |Export the full report of each interviewee|A record for each interview
+|`* *` |Interviewer |Export the full report of each interviewee|Share the information with others.
 
 |`* *` |Interviewer |App to be password protected |Protect sensitive information from prying eyes
 
-|`* *` |Experienced Interviewer |Only use the keyboard |Record down the particulars of the interviewee faster
+|`* *` |Experienced Interviewer |Perform all tasks from the keyboard |Not waste time moving between the cursor and the keyboard, especially while taking notes.
 
 |=======================================================================
 
@@ -408,7 +496,7 @@ Use case ends.
 *Extensions*
 
 [none]
-* 2a. User provides an invalid name.
+* 2a. User provides an invalid name or an existing session name.
 +
 [none]
 ** 2a1. HireLah! shows an error message.
@@ -437,24 +525,31 @@ Use case ends.
 Use case resumes at step 2.
 
 [discrete]
-=== Use case: UC03 - List Interviewee
-
-*Precondition*
-
-1. User has opened a session
+=== Use case: UC03 - Delete session
 
 *MSS*
 
-1. User requests a list of interviewees.
-2. HireLah! provides the list of interviewees with their IDs and aliases.
+1. User chooses to delete a session.
+2. User provides the name of the session to delete.
+3. HireLah! deletes all the session data of the given session.
 Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. No such previous session exists.
++
+[none]
+** 2a1. HireLah! shows an error message.
++
+Use case resumes at step 2.
 
 [discrete]
 === Use case: UC04 - Add Interviewee
 
 *Precondition*
 
-1. User has opened a session
+1. User has pass:[<u>opened a session (UC02)</u>]
 
 *MSS*
 
@@ -464,72 +559,101 @@ Use case ends.
 +
 Use case ends.
 
+*Extensions*
+
+[none]
+* 2a. An interviewee with the exact name already exists
++
+[none]
+** 2a1. HireLah! shows an error message.
++
+Use case resumes at step 2.
+* 2b. The alias given already refers to another interviewee (either the name or alias)
++
+[none]
+** 2b1. HireLah! creates the new Interviewee without the alias.
+** 2b2. HireLah! displays an error message regarding the repeated alias.
++
+Use case ends.
+
 [discrete]
 === Use case: UC05 - Delete Interviewee
 
 *Precondition*
 
-1. User has opened a session
+1. User has pass:[<u>opened a session (UC02)</u>]
 
 *MSS*
 
 1. User decides which Interviewee that wants to be deleted from the list.
-2. User requests to pass:[<u>list the interviewees (UC03)</u>] to view their details.
-3. HireLah! displays the list of interviewees.
-4. User provides either the full name, the alias, or the ID.
-5. HireLah! deletes the interviewee with the following details provided.
+2. User provides either the full name, the alias, or the ID.
+3. HireLah! deletes the interviewee with the following details provided.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 3a. The list is empty.
-+
-Use case ends.
-[none]
-* 4a. There is no interviewee with the given details.
+* 2a. There is no interviewee with the given identifier.
 +
 [none]
-** 4a1. HireLah! shows an error message.
+** 2a1. HireLah! shows an error message.
 +
-Use case resumes at step 3.
+Use case resumes at step 2.
 
 [discrete]
-=== Use case: UC06 - List Attribute
+=== Use case: UC06 - Update Interviewee
 
 *Precondition*
 
-1. User has opened a session
+1. User has pass:[<u>opened a session (UC02)</u>]
 
 *MSS*
 
-1. User requests to list all the saved attributes.
-2. HireLah! displays all the attributes that are stored.
+1. User chooses to edit an interviewee.
+2. User provides either the full name, the alias, or the ID.
+3. User provides the updated fields, either name, alias or both.
+4. HireLah! updates the interviewee information.
 +
 Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. There is no interviewee with the given identifier.
++
+[none]
+** 2a1. HireLah! shows an error message.
++
+Use case resumes at step 2.
+* 3a. Either the given new name or alias is invalid (a duplicate, or an illegal value)
++
+[none]
+** 3a1. HireLah! shows an error message.
++
+Use case resumes at step 2.
 
 [discrete]
 === Use case: UC07 - Add Attribute
 
 *Precondition*
 
-1. User has opened a session
+1. User has pass:[<u>opened a session (UC02)</u>]
+2. User has not pass:[<u>finalised the session attributes and questions (UC15)</u>]
 
 *MSS*
 
 1. User chooses a name for the attribute.
-2. User creates an attribute with the chosen name.
-3. HireLah! adds the attribute with a given name to the list.
+2. HireLah! adds the attribute with a given name to the list.
 +
 Use case ends.
 
 *Extensions*
 [none]
-* 3a. There is already an attribute with the identical name
+* 2a. There is already an attribute with the identical name
 +
 [none]
-** 3a1. HireLah! shows an error message.
+** 2a1. HireLah! shows an error message.
 +
 Use case resumes at step 1.
 
@@ -538,14 +662,13 @@ Use case resumes at step 1.
 
 *Precondition*
 
-1. User has opened a session
+1. User has pass:[<u>opened a session (UC02)</u>]
+2. User has not pass:[<u>finalised the session attributes and questions (UC15)</u>]
 
 *MSS*
 
-1. User requests to pass:[<u>list all the attributes stored (UC06)</u>].
-2. HireLah! displays all the attributes stored.
-3. User enters a prefix of the attribute that wants to be deleted.
-4. HireLah! removes the attribute with the given prefix from the list.
+1. User indicates which attribute to delete, either by full name or by a unique prefix.
+2. HireLah! removes the attribute with the given prefix from the list.
 
 +
 Use case ends.
@@ -553,162 +676,199 @@ Use case ends.
 *Extensions*
 
 [none]
-* 2a. The list is empty.
-+
-Use case ends.
-[none]
-* 3a. There is no attribute with the given prefix.
+* 2a. There is no attribute with the given prefix.
 +
 [none]
-** 3a1. HireLah! shows an error message.
+** 2a1. HireLah! shows an error message.
 +
-Use case resumes at step 3.
+Use case resumes at step 1.
 [none]
-* 3b. There are multiple attributes with the same given prefix.
+* 2b. There are multiple attributes with the same given prefix.
 +
 [none]
-** 3b1. HireLah! shows an error message.
+** 2b1. HireLah! shows an error message.
 +
-Use case resumes at step 3.
+Use case resumes at step 1.
 
 [discrete]
 === Use case: UC09 - Update Attribute
 
 *Precondition*
 
-1. User has opened a session
+1. User has pass:[<u>opened a session (UC02)</u>]
+2. User has not pass:[<u>finalised the session attributes and questions (UC15)</u>]
 
 *MSS*
 
-1. User requests to pass:[<u>list all the attributes stored (UC06)</u>].
-2. HireLah! displays all the attributes stored.
-3. User enters a prefix of the attribute and the new name of the attribute.
-4. HireLah! updates the attribute with the given prefix with the entered name.
+1. User indicates the attribute to edit, either by its full name or by a unique prefix.
+2. User gives the updated name of the attribute.
+3. HireLah! updates the attribute with the given name.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 2a. The list is empty.
-+
-Use case ends.
-[none]
-* 3a. There is no attribute with the given prefix.
+* 1a. There is no attribute with the given prefix.
 +
 [none]
-** 3a1. HireLah! shows an error message.
+** 1a1. HireLah! shows an error message.
 +
-Use case resumes at step 3.
-[none]
-* 3b. There are multiple attributes with the same given prefix.
-+
-[none]
-** 3b1. HireLah! shows an error message.
-+
-Use case resumes at step 3.
-
-[discrete]
-=== Use case: UC10 - List Question
-
-*Precondition*
-
-1. User has opened a session
-
-*MSS*
-
-1. User requests to list all the saved questions.
-2. HireLah! displays all the questions that are stored.
-+
-Use case ends.
-
-[discrete]
-=== Use case: UC11 - Add Question
-
-*Precondition*
-
-1. User has opened a session
-
-*MSS*
-
-1. User chooses a description of the question..
-2. User creates a question with the given description.
-3. HireLah! adds the question with the given to the list.
-+
-Use case ends.
-
-*Extensions*
-
-[none]
-* 3a. There is already a question with the identical description.
+Use case resumes at step 1.
+* 1b. There are multiple attributes with the same given prefix.
 +
 [none]
-** 3a1. HireLah! shows an error message.
+** 1b1. HireLah! shows an error message.
++
+Use case resumes at step 1.
+* 2a. The updated attribute name already exists.
++
+[none]
+** 2a1. HireLah! shows an error message.
 +
 Use case resumes at step 1.
 
 [discrete]
-=== Use case: UC12 - Delete Question
+=== Use case: UC10 - Add Question
 
 *Precondition*
 
-1. User has opened a session
+1. User has pass:[<u>opened a session (UC02)</u>]
+2. User has not pass:[<u>finalised the session attributes and questions (UC15)</u>]
 
 *MSS*
 
-1. User requests to pass:[<u>list all the questions stored (UC10)</u>].
-2. HireLah! displays all the questions stored.
-3. User enters the index of the question that wants to be deleted.
-4. HireLah! removes the question with the given index from the list.
+1. User chooses to add a question and types out the full question.
+2. HireLah! adds the question with the given to the list.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 2a. The list is empty.
-+
-Use case ends.
-[none]
-* 3a. The index given is not within the valid range.
+* 1a. There is already a question with the identical description.
 +
 [none]
-** 3a1. HireLah! shows an error message.
+** 1a1. HireLah! shows an error message.
 +
-Use case resumes at step 2.
+Use case resumes at step 1.
 
 [discrete]
-=== Use case: UC13 - Update Question
+=== Use case: UC11 - Delete Question
 
 *Precondition*
 
-1. User has opened a session
+1. User has pass:[<u>opened a session (UC02)</u>]
+2. User has not pass:[<u>finalised the session attributes and questions (UC15)</u>]
 
 *MSS*
 
-1. User requests to pass:[<u>list all the questions stored (UC10)</u>].
-2. HireLah! displays all the questions stored.
-3. User enters an index of the question and the updated description.
-4. HireLah! updates the description of the question with the given index.
+1. User enters the index of the question that the user wants deleted.
+2. HireLah! removes the question with the given index from the list.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 2a. The list is empty.
-+
-Use case ends.
-[none]
-* 3a. The index given is not within the valid range.
+* 1a. The index given is not within the valid range.
 +
 [none]
-** 3a1. HireLah! shows an error message.
+** 1a1. HireLah! shows an error message.
 +
-Use case resumes at step 2.
+Use case resumes at step 1.
 
 [discrete]
-=== Use case: UC14 - Finalize Questions and Attributes
+=== Use case: UC12 - Update Question
+
+*Precondition*
+
+1. User has pass:[<u>opened a session (UC02)</u>]
+2. User has not pass:[<u>finalised the session attributes and questions (UC15)</u>]
+
+*MSS*
+
+1. User enters an index of the question and the updated question.
+2. HireLah! updates the description of the question with the given index.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The index given is not within the valid range.
++
+[none]
+** 1a1. HireLah! shows an error message.
++
+Use case resumes at step 1.
+
+[discrete]
+=== Use caseL UC13 - Upload Interviewee Resume
+
+*Precondition*
+
+1. User has pass:[<u>opened a session (UC02)</u>]
+
+*MSS*
+
+1. User chooses to upload the resume of the interviewee the user specifies.
+2. User provides the path to the resume file.
+3. HireLah! remembers this path.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. HireLah! cannot find the user specified whether by id, alias or full name.
+[none]
+** 1a1. HireLah! displays an error message.
++
+Use case resumes at step 1.
+* 2a. The file specified by the path does not exist.
+[none]
+** 2a1. HireLah! displays an error message.
++
+Use case resumes at step 1.
+* 2b. No file is specified.
+[none]
+** 2b1. HireLah! shows the User files to choose from.
+** 2b2. User chooses a file.
++
+If User cancels the file choosing dialog, HireLah! displays an error message.
+Else Use case resumes at step 3.
+
+[discrete]
+=== Use caseL UC14 - Open Interviewee Resume
+
+*Precondition*
+
+1. User has pass:[<u>opened a session (UC02)</u>]
+
+*MSS*
+
+1. User chooses to open the resume of a specified interviewee.
+2. HireLah! opens the resume.
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. The identifier provided is not the id, alias or full name of any interviewee.
+[none]
+** 1a1. HireLah! displays an error message.
++
+Use case resumes at step 1.
+* 1b. The identified interviewee does not pass:[<u>have a resume uploaded (UC13)</u>]
+[none]
+** 1b1. HireLah! displays an error message.
++
+Use case resumes at step 1.
+
+[discrete]
+=== Use case: UC15 - Finalize Questions and Attributes
 
 *Precondition*
 
@@ -724,11 +884,11 @@ Use case resumes at step 2.
 Use case ends
 
 [discrete]
-=== Use case: UC15 - Interview an Interviewee
+=== Use case: UC16 - Interview an Interviewee
 
 *Precondition*
 
-1. User has pass:[<u>finalized questions and attributes for the session (UC14)</u>].
+1. User has pass:[<u>finalized questions and attributes for the session (UC15)</u>].
 
 *MSS*
 
@@ -736,8 +896,8 @@ Use case ends
 2. HireLah! displays the interview questions
 3. User writes remarks while conducting the interview
 4. HireLah! saves the remark and the time during the interview when the remark was made
-5. User pass:[<u>records answers to the interview questions (UC16)</u>]
-6. User pass:[<u>scores interviewee on each attribute (UC17)</u>]
+5. User pass:[<u>records answers to the interview questions (UC17)</u>]
+6. User pass:[<u>scores interviewee on each attribute (UC18)</u>]
 7. User chooses to end the interview
 +
 Use case ends.
@@ -762,23 +922,22 @@ Use case ends.
 * 7a. User has not scored the interviewee in all attributes
 +
 [none]
-** 7a1. HireLah! shows which attributes have not been scored
+** 7a1. HireLah! shows an error message.
 +
 Use case resumes from step 6.
 
 [discrete]
-=== Use case: UC16 - Record Question Answer
+=== Use case: UC17 - Record Question Answer
 
 *Precondition*
 
-1. User is pass:[<u>interviewing an interviewee (UC15)</u>].
+1. User is pass:[<u>interviewing an interviewee (UC16)</u>].
 
 *MSS*
 
 1. User indicates question to record answers for
 2. User takes notes of the answer to the question
 3. HireLah! saves the remark and the time during the interview when the remark was made
-4. User indicates the answer is finished
 +
 Use case ends.
 
@@ -793,11 +952,11 @@ Use case ends.
 Use case ends.
 
 [discrete]
-=== Use case: UC17 - Score Interviewee
+=== Use case: UC18 - Score Interviewee
 
 *Precondition*
 
-1. User is pass:[<u>interviewing an interviewee (UC15)</u>].
+1. User is pass:[<u>interviewing an interviewee (UC16)</u>].
 
 *MSS*
 
@@ -823,19 +982,24 @@ Use case ends.
 ** 2a1. HireLah! shows an error message.
 +
 Use case resumes from step 1.
+* 2b. Score given is out of the range of allowed values (0-10).
+[none]
+** 2b1. HireLah! shows an error message.
++
+Use case resumes from step 1.
 
 [discrete]
-=== Use case: UC18 - Working with an Interviewee Report
+=== Use case: UC19 - Working with an Interviewee Report
 
 *Precondition*
 
-1. User has pass:[<u>stopped an interview session(UC15)</u>] with any interviewee.
+1. User has pass:[<u>stopped an interview session(UC16)</u>] with any interviewee.
 
 *MSS*
 
 1. User chooses the interviewee that wants to be examined.
 2. User opens the interviewee transcript, containing the remarks that are added during the interview.
-3. User may navigate between questions and time (UC19) to view their remarks.
+3. User may navigate by pass:[<u>questions and time (UC20)</u>] to view their remarks for those questions or at that time.
 4. User closes the interviewee report when he/she is done.
 +
 Use case ends.
@@ -843,7 +1007,7 @@ Use case ends.
 *Extensions*
 
 [none]
-* 1a. User pass:[<u>has not started an interview (UC15)</u>] with this interviewee.
+* 1a. User pass:[<u>has not started an interview (UC16)</u>] with this interviewee.
 +
 [none]
 ** 1a1. HireLah! shows an error message.
@@ -858,24 +1022,39 @@ Use case ends.
 Use case resumes from step 1.
 
 [discrete]
-=== Use case: UC19 - Navigating through the Interview report
+=== Use case: UC20 - Navigating through the Interview report
 
 *Precondition*
 
-1. User is pass:[<u>viewing an interview report (UC18)</u>].
+1. User is pass:[<u>viewing an interview report (UC19)</u>].
 
 *MSS*
 
-1. User provides the time for which he/she wishes to see the remarks made during that period of the interview
-2. HireLah! scrolls the interview report to the remark made at the closest time
+1. User provides the time or question number for which he/she wishes to see the remarks made during that period of the interview
+2. HireLah! scrolls the interview report to the remark made at the moment specified.
 +
 Use case ends.
 
-=== Use case: UC20 - Choose Best Interviewees
+*Extensions*
+
+[none]
+* 1a. Time provided is too large (beyond the end time)
+[none]
+** 1a1. HireLah! scrolls to the end of the interview.
++
+Use case ends.
+* 1b. Question number provided does not correspond to a question that was answered.
+[none]
+** 1b1. HireLah! shows an error message.
++
+Use case ends.
+
+
+=== Use case: UC21 - Choose Best Interviewees
 
 *Precondition*
 
-1. User has pass:[<u>interviewed at least 1 interviewee (UC15)</u>].
+1. User has pass:[<u>interviewed at least 1 interviewee (UC16)</u>].
 
 *MSS*
 
@@ -895,33 +1074,28 @@ Use case ends.
 +
 Use case resumes from step 1.
 [none]
-* 2a. The indicated number of interviewees to show is invalid
+* 2a. The indicated number of interviewees to show is larger than the number of interviewees
 +
 [none]
-** 2a1. HireLah! sorts and displays all interviewed interviewees.
+** 2a1. HireLah! sorts and displays all interviewed interviewees in sorted order.
 +
 Use case ends.
-
-[discrete]
-=== Use case: UC21 - List Metric
-
-*Precondition*
-
-1. User has opened a session
-
-*MSS*
-
-1. User requests to list all the saved metrics.
-2. HireLah! displays all the metrics that are stored.
+* 3a. There are ties amongst the interviewees.
+[none]
+** 3a1. HireLah! includes all ties, even if it exceeds the number specified in step 2.
 +
 Use case ends.
 
 [discrete]
 === Use case: UC22 - Add Metric
 
+*Precondition*
+
+1. User has pass:[<u>finalized questions and attributes for the session (UC15)</u>].
+
 *MSS*
 
-1. User chooses the name of the metric and the weightage of each attribute
+1. User chooses the name of the metric and the weight of each attribute
 2. HireLah! adds the metric to the list.
 +
 Use case ends.
@@ -929,22 +1103,38 @@ Use case ends.
 *Extensions*
 
 [none]
-* 1a. If there is a missing attribute that has not given a weightage yet.
+* 1a. Any attribute specified is not in the attribute list.
 +
 [none]
 ** 1a1. HireLah! shows an error message.
++
+Use case resumes from step 1.
+[none]
+* 1b. Any weight provided is an invalid number.
++
+[none]
+** 1b1. HireLah! shows an error message.
++
+Use case resumes from step 1.
+[none]
+* 1c. The name specified is already used for another metric.
++
+[none]
+** 1c1. HireLah! shows an error message.
 +
 Use case resumes from step 1.
 
 [discrete]
 === Use case: UC23 - Delete Metric
 
+*Preconditions*
+
+1. User has pass:[<u>finalized questions and attributes for the session (UC15)</u>].
+
 *MSS*
 
-1. User requests to pass:[<u>list all the metrics stored (UC21)</u>].
-2. HireLah! displays all the metrics stored.
-3. User enters the prefix of the metric that wants to be deleted.
-4. HireLah! deletes the metric with the given prefix.
+1. User indicates the metric to delete by its name, or a unique prefix.
+2. HireLah! deletes the metric with the given prefix.
 
 +
 Use case ends.
@@ -952,21 +1142,17 @@ Use case ends.
 *Extensions*
 
 [none]
-* 2a. The list is empty.
+* 1a. There is no metric with the given prefix
++
+[none]
+** 1a1. HireLah! shows an error message.
 +
 Use case ends.
 [none]
-* 3a. There is no metric with the given prefix
+* 1b. There are multiple metrics with the given prefix
 +
 [none]
-** 3a1. HireLah! shows an error message.
-+
-Use case ends.
-[none]
-* 3b. There are multiple metrics with the given prefix
-+
-[none]
-** 3b1. HireLah! shows an error message.
+** 1b1. HireLah! shows an error message.
 +
 Use case ends.
 
@@ -975,46 +1161,51 @@ Use case ends.
 
 *MSS*
 
-1. User requests to pass:[<u>list all the metrics stored (UC21)</u>].
-2. HireLah! displays all the metrics stored.
-3. User enters the prefix of the metric that wants to be updated as well as the name of the new metric with the given weightage.
-4. HireLah! updates the metric with the given prefix.
+1. User indicates the metric to edit by its name or a unique prefix.
+2. User provides a new name, or an updated list of weights for attributes.
+3. HireLah! updates the metric with the new name and/or the new weights.
 +
 Use case ends.
 
 *Extensions*
 
 [none]
-* 2a. The list is empty.
+* 1a. There is no metric with the given prefix
++
+[none]
+** 1a1. HireLah! shows an error message.
 +
 Use case ends.
 [none]
-* 3a. There is no metric with the given prefix
+* 1b. There are multiple metrics with the given prefix
 +
 [none]
-** 3a1. HireLah! shows an error message.
+** 1b1. HireLah! shows an error message.
 +
 Use case ends.
+* 2a. The new name is invalid (uses illegal characters or is a duplicate)
 [none]
-* 3b. There are multiple metrics with the given prefix
-+
-[none]
-** 3b1. HireLah! shows an error message.
+** 2a1. HireLah! shows an error message.
 +
 Use case ends.
-
+* 2b. Any attribute specified cannot be found or the weight is not a valid number.
+[none]
+** 2b1. HireLah! shows an error message.
++
+Use case ends.
 
 [appendix]
 == Non Functional Requirements
 
 .  Should work on any <<mainstream-os,mainstream OS>> as long as it has Java `11` or above installed.
 .  Should be able to hold up to 1000 interviewees without a noticeable sluggishness in performance for typical usage.
-.  Each command word should not be longer than 6 characters so that interviewer with above-average typing speed for
-regular English text should be able to accomplish most of the tasks faster using commands than using the mouse.
+.  Each command should be intuitively named so the interviewer can get productive with the app without constantly referencing the User Guide.
 .  The application should be easy to use even for interviewers who have never used command-line programs before.
 .  The UI design of the application should be intuitive to interviewers to navigate between the different phases of the application.
 .  The application should not be larger than 100Mb.
 .  The application should save data after every command and not require interviews to save it manually.
+.  The application not cause interviewers to lose all their progress if the app crashes in the middle of an interview. The user should be able to
+   continue the interview where they left off after restarting the app.
 .  Our code should allow other developers to add new features in the application easily.
 
 [appendix]

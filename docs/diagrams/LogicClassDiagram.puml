@@ -10,9 +10,9 @@ package Parser {
 Interface Parser <<Interface>>
 Class NormalParser
 Class InterviewParser
+Class PreSessionParser
 Class XYZCommandParser
 Class CliSyntax
-Class ParserUtil
 Class ArgumentMultimap
 Class ArgumentTokenizer
 Class Prefix
@@ -38,12 +38,17 @@ Class HiddenStorage #FFFFFF
 
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> Logic
+Storage -up[hidden]- Model
 
+LogicManager --> Model
+LogicManager --> Storage
 LogicManager .up.|> Logic
+LogicManager -->"1" PreSessionParser
 LogicManager -->"1" InterviewParser
 LogicManager -->"1" NormalParser
 InterviewParser .down.> XYZCommandParser: creates >
 NormalParser .down.> XYZCommandParser: creates >
+PreSessionParser .down.> XYZCommandParser: creates >
 
 XYZCommandParser ..> XYZCommand : creates >
 XYZCommandParser ..|> Parser
@@ -52,20 +57,13 @@ XYZCommandParser ..> ArgumentTokenizer
 ArgumentTokenizer .left.> ArgumentMultimap
 XYZCommandParser ..> CliSyntax
 CliSyntax ..> Prefix
-XYZCommandParser ..> ParserUtil
-ParserUtil .down.> Prefix
 ArgumentTokenizer .down.> Prefix
 XYZCommand -up-|> Command
 LogicManager .left.> Command : executes >
 
-LogicManager --> Model
-LogicManager --> Storage
-Command .left.> Model
-Command .up.> Storage
-note left of XYZCommand: XYZCommand = AddAttributeCommand, \nFinalizeCommand, etc
+note bottom of XYZCommand : XYZCommand = AddAttributeCommand, \nFinalizeCommand, etc
 
-Logic ..> CommandResult
-LogicManager .down.> CommandResult
-Command .up.> CommandResult
-CommandResult -[hidden]-> Parser
+Command .up.> CommandResult : returns >
+Command .right.> Model : accesses and modifies >
+Command .right.> Storage : saves model to >
 @enduml

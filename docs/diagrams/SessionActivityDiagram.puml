@@ -1,0 +1,20 @@
+@startuml
+start
+repeat
+:User chooses a session to open;
+
+if () then ([session does not exist])
+else ([session exists])
+  :storage creates InterviewStorage,
+  AttributeStorage etc. to read and
+  save to the chosen session;
+  :IntervieweeList, AttributeList are
+  loaded from the created Storages;
+  if () then ([data is valid])
+  :Model sets the loaded lists;
+  :MainWindow creates new
+  InterviewPanel with updated Model;
+  stop
+
+else ([invalid json format])
+@enduml

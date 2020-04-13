@@ -56,6 +56,7 @@ public class IntervieweeList {
         this(1, new TreeMap<>(), new TreeMap<>());
     }
 
+    //@@author CornCobs
     /**
      * Restores an IntervieweeList from saved session.
      *
@@ -86,6 +87,7 @@ public class IntervieweeList {
         intervieweeList.observableList.addAll(intervieweeList.interviewees.values());
         return intervieweeList;
     }
+    //@@author
 
     public ObservableList<Interviewee> getObservableList() {
         return FXCollections.unmodifiableObservableList(observableList);
@@ -174,20 +176,29 @@ public class IntervieweeList {
         identifierIndices.put(fullName, interviewee.getId());
     }
 
+    /**
+     * Attempts to change the interviewee's name, then alias (in this order). If any fail, the whole operation fails.
+     *
+     * @param identifier
+     * @param fullName
+     * @param alias
+     * @throws IllegalValueException
+     * @throws IllegalActionException
+     */
     public void setNameAndAlias(String identifier, String fullName, String alias) throws IllegalValueException,
             IllegalActionException {
         checkDuplicateIdentifier(fullName);
         checkDuplicateIdentifier(alias);
+        Interviewee.checkValidIdentifier(fullName);
+        Interviewee.checkValidIdentifier(alias);
 
         Interviewee interviewee = getInterviewee(identifier);
-
-        // Store old full name before overwriting, to delete from identifierIndices after setting
-        // in case the new full name is invalid and Interviewee#setFullName throws an Exception.
-        String oldName = interviewee.getFullName();
+        interviewee.getAlias().ifPresent(oldAlias -> identifierIndices.remove(oldAlias));
+        identifierIndices.remove(interviewee.getFullName());
         interviewee.setFullName(fullName);
         interviewee.setAlias(alias);
-        identifierIndices.remove(oldName);
         identifierIndices.put(fullName, interviewee.getId());
+        identifierIndices.put(alias, interviewee.getId());
     }
 
     /**

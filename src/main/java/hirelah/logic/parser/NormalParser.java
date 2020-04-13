@@ -11,7 +11,6 @@ import hirelah.logic.commands.Command;
 import hirelah.logic.commands.ExitCommand;
 import hirelah.logic.commands.HelpCommand;
 import hirelah.logic.commands.ListAttributeCommand;
-import hirelah.logic.commands.ListIntervieweeCommand;
 import hirelah.logic.commands.ListMetricCommand;
 import hirelah.logic.commands.ListQuestionCommand;
 import hirelah.logic.commands.OpenResumeCommand;
@@ -44,7 +43,6 @@ public class NormalParser {
             put("edit", args -> new EditCommandParser().parse(args));
             put("delete", args -> new DeleteCommandParser().parse(args));
             put("attributes", args -> new ListAttributeCommand());
-            put("interviewees", args -> new ListIntervieweeCommand());
             put("metrics", args -> new ListMetricCommand());
             put("questions", args -> new ListQuestionCommand());
             put("finalise", args -> new FinaliseCommandParser().parse(args));
@@ -52,12 +50,13 @@ public class NormalParser {
             put("goto", args -> new NavigationCommandParser().parse(args));
             put("interviewee", args -> new IntervieweeParser().parse(args));
             put("interview", args -> new StartInterviewCommand(args.trim()));
+            put("load", args -> new LoadParser().parse(args.trim()));
             put("exit", args -> new ExitCommand());
             put("help", args -> new HelpCommand());
             put("upload", args -> new UploadResumeCommandParser().parse(args.trim()));
             put("export", args -> new ExportReportCommandParser().parse(args));
             put("resume", args -> new OpenResumeCommand(args.trim()));
-            put("close", args -> new CloseSessionCommandParser().parse(args.trim()));
+            put("close", args -> new CloseCommandParser().parse(args.trim()));
         }
     };
 

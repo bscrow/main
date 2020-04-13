@@ -11,11 +11,16 @@ import hirelah.storage.Storage;
  */
 public class CloseSessionCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Closed the current session: %s";
-    public static final String COMMAND_WORD = "close session";
+    public static final String COMMAND_WORD = "session";
 
     @Override
     public CommandResult execute(Model model, Storage storage) throws CommandException {
-        Path session = model.closeSession();
+        Path session = model.closeSession().getFileName();
         return new ToggleCommandResult(String.format(MESSAGE_SUCCESS, session), ToggleView.SESSION);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof CloseSessionCommand;
     }
 }

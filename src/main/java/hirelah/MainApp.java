@@ -55,19 +55,11 @@ public class MainApp extends Application {
 
         initLogging(config);
 
-        model = initModelManager(storage, userPrefs);
+        model = new ModelManager(userPrefs);
 
         logic = new LogicManager(model, storage);
 
         ui = new UiManager(logic);
-    }
-
-    /**
-     * Returns a {@code ModelManager} with {@code userPrefs}. Components of the model (IntervieweeList, etc.) start
-     * empty and are populated once a session is loaded.
-     */
-    protected Model initModelManager(Storage storage, UserPrefs userPrefs) {
-        return new ModelManager(userPrefs);
     }
 
     private void initLogging(Config config) {

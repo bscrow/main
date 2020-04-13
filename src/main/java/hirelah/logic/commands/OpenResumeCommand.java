@@ -3,6 +3,7 @@ package hirelah.logic.commands;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import hirelah.logic.commands.exceptions.CommandException;
 import hirelah.model.Model;
@@ -26,13 +27,20 @@ public class OpenResumeCommand extends Command {
         this.identifier = identifier;
     }
 
+    /** Creates a OpenResumeCommand that opens the resume of the current interviewee during the interview phase. */
+    public OpenResumeCommand() {}
+
     @Override
     public CommandResult execute(Model model, Storage storage) throws CommandException {
         Interviewee interviewee;
-        try {
-            interviewee = model.getIntervieweeList().getInterviewee(identifier);
-        } catch (IllegalActionException e) {
-            throw new CommandException(e.getMessage());
+        if (identifier == null) {
+            interviewee = model.getCurrentInterviewee();
+        } else {
+            try {
+                interviewee = model.getIntervieweeList().getInterviewee(identifier);
+            } catch (IllegalActionException e) {
+                throw new CommandException(e.getMessage());
+            }
         }
 
         File resume = interviewee.getResume().orElseThrow(() -> new CommandException(MESSAGE_NO_RESUME));
@@ -67,6 +75,6 @@ public class OpenResumeCommand extends Command {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof OpenResumeCommand // instanceof handles nulls
-                && identifier.equals(((OpenResumeCommand) other).identifier));
+                && Objects.equals(identifier, ((OpenResumeCommand) other).identifier));
     }
 }

@@ -33,9 +33,13 @@ public interface Storage extends UserPrefsStorage {
 
     Optional<AttributeList> readAttribute() throws DataConversionException;
 
+    Optional<AttributeList> readAttribute(Path session) throws DataConversionException;
+
     void saveQuestion(QuestionList source) throws IOException;
 
     Optional<QuestionList> readQuestion() throws DataConversionException;
+
+    Optional<QuestionList> readQuestion(Path session) throws DataConversionException;
 
     void saveMetric(MetricList source) throws IOException;
 

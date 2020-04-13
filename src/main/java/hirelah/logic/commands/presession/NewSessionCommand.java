@@ -2,6 +2,7 @@ package hirelah.logic.commands.presession;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.util.regex.Pattern;
 
 import hirelah.commons.exceptions.DataConversionException;
 import hirelah.logic.commands.Command;
@@ -20,7 +21,9 @@ public class NewSessionCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Opened session: %s";
     public static final String MESSAGE_DUPLICATE = "A session with that name already exists!";
     public static final String MESSAGE_ILLEGAL_PATH =
-            "Cannot create a directory with this name! Please stick to Alphanumeric characters or spaces to be safe";
+            "Cannot create a directory with this name! Please stick to Alphanumeric characters or spaces";
+
+    private static final Pattern SESSION_NAME_FORMAT = Pattern.compile("[\\p{Alnum} ]+");
 
     private String sessionName;
 
@@ -31,6 +34,9 @@ public class NewSessionCommand extends Command {
     @Override
     public CommandResult execute(Model model, Storage storage) throws CommandException {
         try {
+            if (!SESSION_NAME_FORMAT.matcher(sessionName).matches()) {
+                throw new CommandException(MESSAGE_ILLEGAL_PATH);
+            }
             Path session = model.getSessionsDirectory().resolve(sessionName);
             if (session.toFile().exists()) {
                 throw new CommandException(MESSAGE_DUPLICATE);

@@ -1,22 +1,20 @@
 package hirelah.logic.parser;
 
-import static hirelah.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static hirelah.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import hirelah.logic.commands.Command;
-import hirelah.logic.commands.HelpCommand;
 import hirelah.logic.commands.ListAttributeCommand;
 import hirelah.logic.commands.ListMetricCommand;
 import hirelah.logic.commands.ListQuestionCommand;
 import hirelah.logic.commands.OpenResumeCommand;
 import hirelah.logic.commands.interview.EndCommand;
 import hirelah.logic.commands.interview.RemarkCommand;
-import hirelah.logic.commands.interview.ScoreCommand;
-import hirelah.logic.commands.interview.StartQuestionCommand;
 import hirelah.logic.parser.exceptions.ParseException;
+import hirelah.logic.parser.interview.ScoreCommandParser;
+import hirelah.logic.parser.interview.StartQuestionCommandParser;
 
 /*
  * InterviewParser
@@ -35,10 +33,6 @@ import hirelah.logic.parser.exceptions.ParseException;
  */
 public class InterviewParser {
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
-    private static final Pattern SCORE_COMMAND_FORMAT =
-            Pattern.compile(":set (?<attribute>[\\p{Alpha}][\\p{Alpha} ]*?)\\s+(?<score>\\d+(\\.\\d+)?)");
-    private static final Pattern START_QUESTION_COMMAND_FORMAT =
-            Pattern.compile(":start q(?<questionNumber>.*)");
 
     /**
      * Parses user input into command for execution.
@@ -50,14 +44,6 @@ public class InterviewParser {
     public Command parseCommand(String userInput) throws ParseException {
         if (userInput.startsWith(":")) {
             return parseSpecialCommand(userInput);
-        } else if (userInput.startsWith("resume")) {
-            final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
-            if (!matcher.matches()) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
-            }
-
-            final String arguments = matcher.group("arguments");
-            return new OpenResumeCommand(arguments.trim());
         }
         return new RemarkCommand(userInput);
     }
@@ -70,27 +56,31 @@ public class InterviewParser {
      * @throws ParseException if the command word cannot be identified with any command or attribute to score.
      */
     private Command parseSpecialCommand(String userInput) throws ParseException {
-        if (userInput.equals(":end")) {
+        switch (userInput) {
+        case ":end":
             return new EndCommand();
-        }
-        if (userInput.equals(":attributes")) {
+        case ":attributes":
             return new ListAttributeCommand();
-        }
-        if (userInput.equals(":questions")) {
+        case ":questions":
             return new ListQuestionCommand();
-        }
-        if (userInput.equals(":metrics")) {
+        case ":metrics":
             return new ListMetricCommand();
+        case ":resume":
+            return new OpenResumeCommand();
+        default:
+            break;
         }
-        Matcher startQuestionMatcher = START_QUESTION_COMMAND_FORMAT.matcher(userInput.trim());
-        if (startQuestionMatcher.matches()) {
-            int index = ParserUtil.checkValidQuestionNumber(startQuestionMatcher.group("questionNumber"));
-            return new StartQuestionCommand(index);
-        }
-        Matcher scoreMatcher = SCORE_COMMAND_FORMAT.matcher(userInput.trim());
-        if (scoreMatcher.matches()) {
-            double score = Double.parseDouble(scoreMatcher.group("score"));
-            return new ScoreCommand(scoreMatcher.group("attribute"), score);
+        Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput);
+        if (matcher.matches()) {
+            String args = matcher.group("arguments").trim();
+            switch (matcher.group("commandWord")) {
+            case ":set":
+                return new ScoreCommandParser().parse(args);
+            case ":start":
+                return new StartQuestionCommandParser().parse(args);
+            default:
+                break;
+            }
         }
 
         throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

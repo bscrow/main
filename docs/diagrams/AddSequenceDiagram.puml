@@ -14,8 +14,18 @@ box Model MODEL_COLOR_T1
 participant ":Model" as Model MODEL_COLOR
 end box
 
+box Storage STORAGE_COLOR_T1
+participant ":Storage" as Storage STORAGE_COLOR
+end box
+
 [-> LogicManager : execute("add attribute leadership")
 activate LogicManager
+
+LogicManager -> Model : getAppPhase()
+activate Model
+
+Model -> LogicManager : appPhase
+deactivate Model
 
 LogicManager -> NormalParser : parseCommand("add attribute leadership")
 activate NormalParser
@@ -27,7 +37,7 @@ activate AddCommandParser
 AddCommandParser --> NormalParser
 deactivate AddCommandParser
 
-NormalParser -> AddCommandParser : parse("add attribute leadership")
+NormalParser -> AddCommandParser : parse("attribute leadership")
 activate AddCommandParser
 
 create AddAttributeCommand
@@ -49,18 +59,17 @@ deactivate NormalParser
 LogicManager -> AddAttributeCommand : execute()
 activate AddAttributeCommand
 
-AddAttributeCommand -> Model : Model.getAttributeList().add("leadership")
+AddAttributeCommand -> Model : getAttributeList().add("leadership")
 activate Model
 
 Model --> AddAttributeCommand
 deactivate Model
 
-create CommandUtil
-AddAttributeCommand -> CommandUtil : saveAttributes(Model, Storage)
-activate CommandUtil
+AddAttributeCommand --> Storage : saveAttribute(attributes)
+activate Storage
 
-CommandUtil --> AddAttributeCommand
-deactivate CommandUtil
+Storage --> AddAttributeCommand
+deactivate Storage
 
 create CommandResult
 AddAttributeCommand -> CommandResult

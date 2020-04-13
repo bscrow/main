@@ -18,8 +18,6 @@ public class CommandTestUtility {
     public static final String VALID_COMMAND_EXIT = "exit";
     public static final String VALID_COMMAND_HELP = "help";
     public static final String VALID_COMMAND_RESUME = "resume";
-    public static final String VALID_COMMAND_BEST = "best";
-    public static final String VALID_COMMAND_INTERVIEWEE = "interviewee";
 
     public static final String VALID_INTERVIEW_COMMAND_END = ":end";
     public static final String VALID_INTERVIEW_COMMAND_START = ":start";
@@ -64,6 +62,7 @@ public class CommandTestUtility {
 
     public static final String INVALID_QUESTION_NUMBER_1 = "q14a";
     public static final String INVALID_QUESTION_NUMBER_2 = "qabc";
+    public static final String INVALID_QUESTION_NUMBER_3 = "q 154";
     public static final String INVALID_QUESTION_BLANK = "q";
     public static final String INVALID_TIME_123 = "123,2";
     public static final String INVALID_TIME_1234 = "1234";

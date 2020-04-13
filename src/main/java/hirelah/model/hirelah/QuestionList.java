@@ -118,6 +118,17 @@ public class QuestionList {
         return questions.stream().anyMatch(question::equals);
     }
 
+    /**
+     * Clears all the questions from the list.
+     */
+    public void clear() {
+        questions.clear();
+    }
+
+    public void setAll(QuestionList other) {
+        questions.setAll(other.getObservableList());
+    }
+
     @Override
     public int hashCode() {
         return questions.hashCode();

@@ -16,8 +16,12 @@ import hirelah.storage.Storage;
  */
 public class ScoreCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Scored %.2f to %s";
-    private static final String MESSAGE_SCORE_OUT_OF_BOUND = "The score provided: %s is out of range. The score "
+    public static final String MESSAGE_SCORE_OUT_OF_BOUND = "The score provided: %s is out of range. The score "
             + "should ranges from 0 to 10, inclusive.";
+    public static final String MESSAGE_FORMAT = ":set <attribute> <score>";
+    public static final String MESSAGE_USAGE = MESSAGE_FORMAT
+            + ": gives the interviewee this score to the given attribute.\n"
+            + "Example: :set leadership 5.0";
 
     private String attributePrefix;
     private double score;
