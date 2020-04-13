@@ -7,6 +7,8 @@ import java.util.List;
 import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.model.hirelah.Interviewee;
 import hirelah.model.hirelah.IntervieweeList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /** A utility class to create Interviewee and InterviewList to be used in tests.*/
 public class TypicalInterviewee {
@@ -44,5 +46,19 @@ public class TypicalInterviewee {
         Interviewee firstInterviewee = new Interviewee(NAME1, ID1);
         firstInterviewee.setAlias(ALIAS1);
         return firstInterviewee;
+    }
+    /**Return a different interviewee who is yet to be interviewed*/
+    public static Interviewee getAnotherInterviewee() throws IllegalValueException {
+        Interviewee firstInterviewee = new Interviewee(NAME2, ID2);
+        firstInterviewee.setAlias(ALIAS2);
+        return firstInterviewee;
+    }
+    /**Returns an ObservableList of interviewees who have yet to be interviewed*/
+    public static ObservableList<Interviewee> getObservableIntervieweeList() throws IllegalValueException {
+        Interviewee firstInterviewee = new Interviewee(NAME1, ID1);
+        firstInterviewee.setAlias(ALIAS1);
+        Interviewee secondInterviewee = new Interviewee(NAME2, ID2);
+        secondInterviewee.setAlias(ALIAS2);
+        return FXCollections.observableArrayList(List.of(firstInterviewee, secondInterviewee));
     }
 }
