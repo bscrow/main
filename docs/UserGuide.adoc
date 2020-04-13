@@ -31,8 +31,9 @@ rubrics in one central location so that you can focus on what's important - the 
 .. A list of attributes you want to look out for in an interviewee.
 .. A set of questions that you would like to ask all interviewees.
 .. A collection of metrics to score interviewees, allowing you to easily rank potential candidates.
-. Record you remarks for an interviewee during an interview, and score the interviewee based on the attributes.
+. Record your remarks for an interviewee during an interview, and score the interviewee based on the attributes.
 . Identify the best interviewees based on particular attributes or metrics, so that you can follow up with them.
+. Export interview transcripts for future reference.
 {empty} +
 {empty} +
 

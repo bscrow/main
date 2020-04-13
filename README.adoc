@@ -5,15 +5,32 @@ https://travis-ci.com/AY1920S2-CS2103-W15-2/main[image:https://travis-ci.com/AY1
 https://ci.appveyor.com/project/CornCobs/main[image:https://ci.appveyor.com/api/projects/status/uvqpdgd3xsbcuyn4?svg=true[Build Status]]
 https://coveralls.io/github/AY1920S2-CS2103-W15-2/main[image:https://coveralls.io/repos/github/AY1920S2-CS2103-W15-2/main/badge.svg[Coverage Status]]
 
+
 ifdef::env-github[]
 image::docs/images/Ui.png[width="600"]
 endif::[]
 
 ifndef::env-github[]
-image::images/Ui.png[width="600"]
+image::docs/images/Ui.png[]
 endif::[]
 
-* This is a desktop HireLah! application. It has a GUI but most of the user interactions happen using a CLI (Command Line Interface).
+*HireLah!* is a productivity app designed to help busy interviewers manage multiple interview sessions in an orderly
+manner. During each interview session, *HireLah!* helps the user to keep track of interviewee information and interview
+rubrics in one central location, making the interview process more efficient.
+
+*HireLah!* has the following main features:
+
+. Manage multiple interview sessions.
+. Manage interview rubrics for each interview session, including:
+.. Attributes to look out for in interviewees.
+.. Questions to ask interviewees.
+.. Metrics to rank interviewees based on their performance.
+. Manage remarks and score entered by the user during an interview.
+. Rank interviewees based on particular sets of attributes or a metric after interviews.
+. Export interview transcripts as reference.
+
+*HireLah!* is a desktop application. It has a GUI (Graphical User Interface), but most of the user interactions occur
+using a CLI (Command Line Interface)
 
 == Site Map
 
@@ -28,6 +45,7 @@ endif::[]
 * This application was built upon the AddressBook-Level3 project created by https://se-education.org[SE-EDU initiative].
 * Some parts of this sample application were inspired by the excellent http://code.makery.ch/library/javafx-8-tutorial/[Java FX tutorial] by
 _Marco Jakob_.
-* Libraries used: https://openjfx.io/[JavaFX], https://github.com/FasterXML/jackson[Jackson], https://github.com/junit-team/junit5[JUnit5]
+* Libraries used: https://openjfx.io/[JavaFX], https://github.com/FasterXML/jackson[Jackson],
+https://github.com/junit-team/junit5[JUnit5], https://github.com/TestFX/TestFX[TestFX]
 
 == Licence : link:LICENSE[MIT]

@@ -33,6 +33,7 @@ rubrics in one central location, making the interview process more efficient.
 .. Metrics to rank interviewees based on their performance.
 . Manage remarks and score entered by the user during an interview.
 . Rank interviewees based on particular sets of attributes or a metric after interviews.
+. Export interview transcripts as reference.
 
 === Purpose and Audience
 This Developer Guide specifies the architecture, design and implementation of *HireLah!*, as well as our considerations
