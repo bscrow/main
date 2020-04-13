@@ -150,9 +150,9 @@ public class Metric {
 
     @Override
     public boolean equals(Object other) {
-        return other == this // short circuit if same object
+        return other == this //short circuit if it is the same object
                 || (other instanceof Metric // instanceof handles nulls
-                && name.equals(((Metric) other).name)); // state check
+               && name.equals(((Metric) other).name)); // state check
     }
 
     @Override

@@ -19,7 +19,7 @@ import hirelah.model.hirelah.QuestionList;
  * An Immutable InterviewList that is serializable to JSON format {@link IntervieweeList}.
  */
 @JsonRootName(value = "interviewees")
-class JsonSerializableInterviewee {
+public class JsonSerializableInterviewee {
     private final int uniqueIntervieweeId;
     private final List<JsonAdaptedInterviewee> interviewees;
 

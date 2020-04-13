@@ -55,6 +55,8 @@ public class CommandTestUtility {
     public static final String VALID_ATTRIBUTE_SCORE_1 = "5.35";
     public static final String VALID_ATTRIBUTE_SCORE_2 = "10";
 
+    public static final String VALID_SESSION = "CEO Interview";
+
     public static final int VALID_INTEGER = 5;
     public static final int VALID_ZERO = 0;
     public static final int VALID_NEGATIVE = -1;

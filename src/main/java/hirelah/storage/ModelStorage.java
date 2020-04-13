@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import hirelah.commons.core.LogsCenter;
 import hirelah.commons.exceptions.DataConversionException;
+import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.commons.util.FileUtil;
 import hirelah.commons.util.JsonUtil;
 
@@ -42,14 +43,19 @@ public class ModelStorage {
         if (jsonModel.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(jsonModel.get().toModelType());
+        try {
+            return Optional.of(jsonModel.get().toModelType());
+        } catch (IllegalValueException ive) {
+            logger.info("Illegal values found in model " + filePath + ": " + ive.getMessage());
+            throw new DataConversionException(ive);
+        }
     }
 
     /**
      * Save the information of the Model
      * @param  source of the data. Cannot be null.
      */
-    public void saveModel(boolean source) throws IOException {
+    public void saveModel(Boolean source) throws IOException {
         requireNonNull(path);
         FileUtil.createIfMissing(path);
         JsonUtil.saveJsonFile(new JsonSerializableModel(source), path);

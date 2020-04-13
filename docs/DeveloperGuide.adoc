@@ -328,7 +328,7 @@ is thrown instead, informing that the user has provided more than 1 parameter.
 
 image::FindBestScenario3SequenceDiagram.png[]
 
-Here is the Full Sequence Diagram for `FindBestCommand` for an ideal case:
+Here is the Sequence Diagram for `FindBestCommand` for an ideal case (minor method calls are omitted):
 
 image::FindBestSequenceDiagram.png[]
 

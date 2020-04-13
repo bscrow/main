@@ -16,6 +16,7 @@ import hirelah.logic.parser.exceptions.ParseException;
  */
 public class LoadParser implements Parser<Command> {
     public static final String TEMPLATE = "%s\n%s";
+    public static final String MESSAGE_EMPTY_SESSION = "The session's name cannot be left empty";
     private static final String ATTRIBUTE_STRING = "attribute";
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<data>\\S+)(?<name>.*)");
     private static final String QUESTION_STRING = "question";
@@ -28,21 +29,25 @@ public class LoadParser implements Parser<Command> {
      */
     public Command parse(String arguments) throws ParseException {
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(arguments.trim());
+        String message = String.format(MESSAGE_INVALID_COMMAND_FORMAT, String.format(TEMPLATE,
+                LoadAttributeCommand.MESSAGE_USAGE, LoadQuestionCommand.MESSAGE_USAGE));
         if (!matcher.matches()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, String.format(TEMPLATE,
-                    LoadAttributeCommand.MESSAGE_USAGE, LoadQuestionCommand.MESSAGE_USAGE)));
+            throw new ParseException(message);
         }
 
         final String dataType = matcher.group("data");
         final String sessionName = matcher.group("name");
 
+        if (sessionName.equals("")) {
+            throw new ParseException(MESSAGE_EMPTY_SESSION);
+        }
+
         if (dataType.equals(ATTRIBUTE_STRING)) {
-            return new LoadAttributeCommand(sessionName);
+            return new LoadAttributeCommand(sessionName.trim());
         } else if (dataType.equals(QUESTION_STRING)) {
-            return new LoadQuestionCommand(sessionName);
+            return new LoadQuestionCommand(sessionName.trim());
         } else {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, String.format(TEMPLATE,
-                    LoadAttributeCommand.MESSAGE_USAGE, LoadQuestionCommand.MESSAGE_USAGE)));
+            throw new ParseException(message);
         }
     }
 }

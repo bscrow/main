@@ -1,0 +1,9 @@
+{
+  "metrics" : [ {
+    "name" : "LeaderShip",
+    "attributeToWeight" : "Productivity-a0.5-aLeadership-a2.0-aTeamplayer-a0.8-a"
+  }, {
+    "name" : "Good Thinker",
+    "attributeToWeight" : "Productivity-a4.0-aLeadership-a0.3-aTeamplayer-a0.6-a"
+  } ]
+}

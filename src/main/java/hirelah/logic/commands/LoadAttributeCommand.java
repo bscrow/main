@@ -71,4 +71,11 @@ public class LoadAttributeCommand extends Command {
             throw new CommandException(MESSAGE_NOT_ABLE_TO_CONVERT);
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof LoadAttributeCommand // instanceof handles nulls
+                && session.equals(((LoadAttributeCommand) other).session));
+    }
 }

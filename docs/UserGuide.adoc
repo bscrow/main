@@ -385,6 +385,36 @@ image::Screenshots/Question.png[]
 {empty} +
 // end::questions[]
 
+//tag::load[]
+==== Load Attributes and Questions from other Session
+In case of having multiple sessions with the same attributes and questions. There is a `load` command
+to load attributes and questions from other session. Therefore, there is no extra work to do.
+
+*Command*
+
+....
+load attribute <session>
+load question <session>
+....
+
+*Example*
+
+....
+> load attribute ceo
+> load question janitor
+....
+
+_Output:_
+
+....
+Loaded attributes from ceo
+
+Loaded questions from janitor
+....
+
+image::Screenshots/Load.png[]
+{empty} +
+// end::load[]
 ==== Switching views
 
 When working on the attributes, questions and metrics (more about metrics in <<Metrics>>),

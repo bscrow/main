@@ -70,7 +70,6 @@ public class MetricList {
         if (isDuplicate) {
             throw new IllegalValueException(ALREADY_EXISTS_MESSAGE);
         }
-
         metrics.add(metric);
     }
 

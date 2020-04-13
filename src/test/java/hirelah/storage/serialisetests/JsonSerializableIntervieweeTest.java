@@ -1,4 +1,4 @@
-package hirelah.storage;
+package hirelah.storage.serialisetests;
 
 import static hirelah.commons.util.JsonUtil.readJsonFile;
 import static hirelah.testutil.Assert.assertThrows;
@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.commons.util.JsonUtil;
 import hirelah.model.hirelah.IntervieweeList;
+import hirelah.storage.JsonSerializableInterviewee;
+import hirelah.storage.TranscriptStorage;
 
 public class JsonSerializableIntervieweeTest {
     private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data", "JsonSerializableIntervieweeTest");

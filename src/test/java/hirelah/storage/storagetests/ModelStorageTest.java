@@ -46,7 +46,7 @@ public class ModelStorageTest {
     }
 
     @Test
-    public void readModel_invalidModelList_throwDataConversionException() {
+    public void readModel_invalidModel_throwDataConversionException() {
         assertThrows(DataConversionException.class, () -> readModel("invalidModel.json"));
     }
 
@@ -66,10 +66,6 @@ public class ModelStorageTest {
         modelStorage.saveModel(original);
         readBack = modelStorage.readModel(filePath).get();
         assertEquals(original, readBack);
-    }
-    @Test
-    public void saveModels_nullModelList_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> saveModel(null, "SomeFile.json"));
     }
 
     /** Method deployed to test for ModelStorage.*/

@@ -1,0 +1,9 @@
+{
+  "questions" : [ {
+    "description" : "How can you contribute to the company in 5 years?"
+  }, {
+    "description" : "Are you a good Team-player?"
+  }, {
+    "description" : "Have you taken CS2103 before?"
+  } ]
+}

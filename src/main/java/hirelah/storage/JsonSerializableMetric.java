@@ -39,8 +39,10 @@ public class JsonSerializableMetric {
         MetricList newData = new MetricList();
         for (JsonAdaptedMetric jsonAdaptedmetrics : metrics) {
             Metric metric = jsonAdaptedmetrics.toModelType();
+            if (newData.getObservableList().contains(metric)) {
+                throw new IllegalValueException("Duplicate metrics found!");
+            }
             newData.getObservableList().add(metric);
-
         }
         return newData;
     }

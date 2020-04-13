@@ -1,13 +1,19 @@
 package hirelah.testutil;
 
 import static hirelah.testutil.TypicalAttributes.getTypicalAttributes;
+import static hirelah.testutil.TypicalInterviewee.getAnInterviewee;
 import static hirelah.testutil.TypicalQuestionList.getTypicalQns;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 
+import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.model.hirelah.Attribute;
+import hirelah.model.hirelah.Interviewee;
 import hirelah.model.hirelah.Transcript;
+import hirelah.storage.TranscriptStorage;
 
 /**A utility class containing a list of {@code Transcript}  to be used in tests.*/
 public class TypicalTranscript {
@@ -27,4 +33,13 @@ public class TypicalTranscript {
         }
         return transcript;
     }
+
+    /** static method to create a Json file for transcript*/
+    public static void generateTranscriptJson(Path path) throws IOException, IllegalValueException {
+        TranscriptStorage transcriptStorage = new TranscriptStorage(path);
+        Interviewee interviewee = getAnInterviewee();
+        interviewee.setTranscript(getTypicalTranscript());
+        transcriptStorage.saveTranscript(interviewee);
+    }
+
 }

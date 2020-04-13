@@ -21,7 +21,7 @@ commands. Additionally, we included customised features in our desktop apps to h
 
 My role was to create the building blocks of the components of HireLah! such as the attribute, questions, metrics,
 etc. I have also contributed in creating the CRUD commands for attributes, questions, and metrics. I have also created
-for the Find Best N Interviewees feature. The section that follows the document will follow in more detailed discussion.
+for the Find Best Interviewees feature. The section that follows the document will follow in more detailed discussion.
 
 I have also made notable contributions to the User Guide and Developer Guide.
 
@@ -62,11 +62,21 @@ on overall score, a particular attribute, or even a weighted score.
 ** Highlights: This enhancement is relatively challenging, since it is a whole new feature that requires a well-designed
 strategy to execute the plan.
 
-* *Code contributed*: [https://nus-cs2103-ay1920s2.github.io/tp-dashboard/#search=mario7lorenzo[Collated code]]
+* *Major enhancement #3*: Implemented *Load Attributes and Questions from other Session* feature
+** What it does: It allows users to load attributes and questions from other sessions
+** Justification: It provides a convenience for the user when the user has multiple sessions with the same attributes and questions.
+Instead of starting from scratch, the user can add all the attributes and questions in one session, and load from this session
+for the rest.
+** Highlights: This enhancement requires some time to do it because it involves both Model and Storage to obtain the attributes
+and questions from the other sessions, which are managed by the Storage, before copying it to the Model.
+
+
+* *Code contributed*: [https://nus-cs2103-ay1920s2.github.io/tp-dashboard/#search=mario7lorenzo&sort=groupTitle&sortWithin=title&since=2020-02-14&timeframe=commit&mergegroup=false&groupSelect=groupByRepos&breakdown=false&tabOpen=true&tabType=authorship&tabAuthor=mario7lorenzo&tabRepo=AY1920S2-CS2103-W15-2%2Fmain%5Bmaster%5D[Collated code]]
 
 == Other contributions
 
 ** Project management
+*** Reminded weekly deadlines in the team
 *** Created several milestones on GitHub page
 *** Assigned members to issues upon discovery of bugs (Examples: https://github.com/AY1920S2-CS2103-W15-2/main/issues/15[#15], https://github.com/AY1920S2-CS2103-W15-2/main/issues/83[#83])
 *** Reviewed Pull Requests (Examples: https://github.com/AY1920S2-CS2103-W15-2/main/pull/57[#57], https://github.com/AY1920S2-CS2103-W15-2/main/pull/121[#121],
@@ -76,7 +86,7 @@ https://github.com/AY1920S2-CS2103-W15-2/main/pull/173[#173])
 *** Refactored and modified existing classes, to satisfy the requirements of the application
 
 ** Documentation:
-*** Cleaned up the User Guide and Developer Guide (Examples: https://github.com/AY1920S2-CS2103-W15-2/main/pull/10[#10],
+*** Cleaned up and rework the User Guide and Developer Guide (Examples: https://github.com/AY1920S2-CS2103-W15-2/main/pull/10[#10],
 https://github.com/AY1920S2-CS2103-W15-2/main/pull/27[27], https://github.com/AY1920S2-CS2103-W15-2/main/pull/84[84])
 
 ** Community:
@@ -92,6 +102,8 @@ include::../UserGuide.adoc[tag=attributes]
 
 include::../UserGuide.adoc[tag=questions]
 
+include::../UserGuide.adoc[tag=load]
+
 include::../UserGuide.adoc[tag=metrics]
 
 include::../UserGuide.adoc[tag=best]
@@ -105,3 +117,4 @@ Listed below are sections I contributed to the Developer Guide, which includes t
 UML diagram, as well as the sequence diagram for an add attribute command.
 
 include::../DeveloperGuide.adoc[tag=logic]
+include::../DeveloperGuide.adoc[tag=findbestfeature]
