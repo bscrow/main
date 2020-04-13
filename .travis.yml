@@ -8,8 +8,7 @@ services:
 
 script: >-
     ./config/travis/run-checks.sh &&
-    ./gradlew clean checkstyleMain checkstyleTest headless &&
-    ./test coverage coveralls asciidoctor
+    ./gradlew clean checkstyleMain checkstyleTest headless test coverage coveralls asciidoctor
 
 deploy:
   skip_cleanup: true

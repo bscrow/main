@@ -12,7 +12,6 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '4.0.4'
     id 'org.asciidoctor.convert' version '1.5.6'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 // Specifies the entry point of the application
@@ -28,11 +27,6 @@ repositories {
 
 checkstyle {
     toolVersion = '8.1'
-}
-
-javafx {
-    version = '12'
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 jacocoTestReport {
@@ -52,10 +46,7 @@ test {
 dependencies {
     String jUnitVersion = '5.4.0'
     String javaFxVersion = '11'
-    testCompile "org.testfx:testfx-core:4.0.16-alpha"
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.1'
-    testCompile "org.testfx:testfx-junit5:4.0.16-alpha"
-    testRuntimeOnly group: 'org.testfx', name: 'openjfx-monocle', version: 'jdk-11+26'
+
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'mac'
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'linux'
@@ -72,17 +63,25 @@ dependencies {
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.0'
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.7.4'
 
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: jUnitVersion
 
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jUnitVersion
 
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jUnitVersion
+
+
+    testCompile "org.testfx:testfx-core:4.0.16-alpha"
+    testCompile "org.testfx:testfx-junit5:4.0.16-alpha"
+    testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
+
+    testRuntimeOnly group: 'org.testfx', name: 'openjfx-monocle', version: 'jdk-11+26'
 
     compile 'org.apache.pdfbox:pdfbox:2.0.19'
 }
 
 shadowJar {
     archiveBaseName = "hirelah"
-    archiveVersion = "1.4.1alpha"
+    archiveVersion = "v1.4"
 }
 
 task coverage(type: JacocoReport) {
