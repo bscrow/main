@@ -20,7 +20,7 @@ public class AddQuestionCommand extends Command {
     public static final boolean DESIRED_MODEL_FINALIZED_STATE = false;
     public static final String MESSAGE_SUCCESS = "New question added: %1$s";
     public static final String MESSAGE_FUNCTION = ": Adds an question to the Question list.\n";
-    public static final String MESSAGE_FORMAT = "add " + COMMAND_WORD + "<question description>";
+    public static final String MESSAGE_FORMAT = "add " + COMMAND_WORD + " <question description>";
     public static final String MESSAGE_USAGE = MESSAGE_FORMAT
             + MESSAGE_FUNCTION
             + "Example: add " + COMMAND_WORD + " what is this question?";

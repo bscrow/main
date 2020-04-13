@@ -1,0 +1,21 @@
+@startuml
+start
+:User finalises the interview session;
+:A Finalise Command object is created and executed to the Model;
+:The Model is set to have a finalised state;
+
+repeat
+:User enters command to the app;
+:Parser parse the Command;
+if () then ([command is in invalid format])
+:throw ParseException;
+else ([command is in valid format])
+  :Create a Command object;
+endif
+:Command object passed to Model to be executed;
+if () then ([command is a CRUD operation to attributes and questions])
+:throw CommandException;
+else ([command is not a CRUD operation to attributes and questions])
+  :Execute the command to the Model;
+
+@enduml

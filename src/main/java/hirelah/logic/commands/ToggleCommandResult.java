@@ -22,4 +22,11 @@ public class ToggleCommandResult extends CommandResult {
         super.displayResult(mainWindow);
         mainWindow.handleToggle(toggleView);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return super.equals(other)
+                && other instanceof ToggleCommandResult
+                && toggleView == ((ToggleCommandResult) other).toggleView;
+    }
 }

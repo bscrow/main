@@ -5,6 +5,7 @@ import java.time.Duration;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.model.hirelah.QuestionRemark;
 import hirelah.model.hirelah.Remark;
 
@@ -12,6 +13,7 @@ import hirelah.model.hirelah.Remark;
  * A class to represent {@code Remark} and its subclass {@code QuestionRemark} in JSON.
  */
 public class JsonAdaptedRemark {
+    public static final String MESSAGE_CONSTRAINTS = "Invalid %s!";
     private final Duration time;
     private final String message;
     private final Integer questionNumber;
@@ -34,11 +36,17 @@ public class JsonAdaptedRemark {
         }
     }
 
-    public Duration getTime() {
+    public Duration getTime() throws IllegalValueException {
+        if (time == null) {
+            throw new IllegalValueException(String.format(MESSAGE_CONSTRAINTS, "time"));
+        }
         return time;
     }
 
-    public String getMessage() {
+    public String getMessage() throws IllegalValueException {
+        if (message == null) {
+            throw new IllegalValueException(String.format(MESSAGE_CONSTRAINTS, "message"));
+        }
         return message;
     }
 

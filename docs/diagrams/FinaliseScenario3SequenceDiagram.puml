@@ -1,0 +1,85 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":NormalParser" as NormalParser LOGIC_COLOR
+participant "d:StartInterviewCommand" as StartInterviewCommand LOGIC_COLOR
+participant ":CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+participant "<<class>>\n:ModelUtil" as ModelUtil UI_COLOR
+end box
+
+box Storage STORAGE_COLOR_T1
+participant ":Storage" as Storage STORAGE_COLOR
+end box
+
+[-> LogicManager : execute("interview Jane Doe")
+activate LogicManager
+
+LogicManager -> Model : getAppPhase()
+activate Model
+
+Model -> LogicManager : appPhase
+deactivate Model
+
+LogicManager -> NormalParser : parseCommand("interview Jane Doe")
+activate NormalParser
+
+create StartInterviewCommand
+NormalParser -> StartInterviewCommand
+activate StartInterviewCommand
+
+StartInterviewCommand --> NormalParser : d
+deactivate StartInterviewCommand
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+StartInterviewCommand -[hidden]-> NormalParser
+
+NormalParser --> LogicManager : d
+deactivate NormalParser
+
+LogicManager -> StartInterviewCommand : execute()
+activate StartInterviewCommand
+
+StartInterviewCommand -> ModelUtil : validateFinalisation()
+activate ModelUtil
+
+ModelUtil --> StartInterviewCommand
+deactivate ModelUtil
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+ModelUtil -[hidden]-> StartInterviewCommand
+
+StartInterviewCommand -> Model : startInterview("Jane Doe")
+activate Model
+
+Model --> StartInterviewCommand
+deactivate Model
+
+StartInterviewCommand --> Storage : saveTranscript(transcript)
+activate Storage
+Storage --> StartInterviewCommand
+deactivate Storage
+
+StartInterviewCommand --> Storage : saveInterviewees(interviewee)
+activate Storage
+
+Storage --> StartInterviewCommand
+deactivate Storage
+
+create CommandResult
+StartInterviewCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> StartInterviewCommand
+deactivate CommandResult
+
+StartInterviewCommand --> LogicManager : result
+deactivate StartInterviewCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

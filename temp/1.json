@@ -1,0 +1,18 @@
+{
+  "attributeToScore" : {
+    "Productivity" : 1.0,
+    "Leadership" : 2.0,
+    "Teamplayer" : 3.0
+  },
+  "remarkList" : [ {
+    "time" : "PT3M",
+    "message" : "He is very good with JAVA:)",
+    "questionNumber" : null
+  }, {
+    "time" : "PT15M",
+    "message" : "He is very okay with python:(",
+    "questionNumber" : null
+  } ],
+  "completed" : false,
+  "startTime" : "2007-12-03T10:15:30Z"
+}

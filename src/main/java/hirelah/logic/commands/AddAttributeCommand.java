@@ -15,7 +15,6 @@ import hirelah.storage.Storage;
  * AddAttributeCommand describes the behavior when the
  * client wants to add an attribute to the list.
  */
-
 public class AddAttributeCommand extends Command {
     public static final String COMMAND_WORD = "attribute";
     public static final boolean DESIRED_MODEL_FINALIZED_STATE = false;

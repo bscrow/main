@@ -1,5 +1,7 @@
 package hirelah.storage;
 
+import static hirelah.model.hirelah.Attribute.isValidAttributeName;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,7 +12,10 @@ import hirelah.model.hirelah.Attribute;
  * Jackson-friendly version of {@link Attribute}.
  */
 
-class JsonAdaptedAttributes {
+public class JsonAdaptedAttributes {
+    public static final String MESSAGE_CONSTRAINTS =
+            "The attribute saved should only contain alphabet characters and spaces, and it should not be blank";
+    public static final String MESSAGE_CONSTRAINT1 = "The attribute saved is empty";
     private final String attribute;
 
     /**
@@ -31,8 +36,11 @@ class JsonAdaptedAttributes {
      */
     public Attribute toModelType() throws IllegalValueException {
         if (attribute == null) {
-            throw new IllegalValueException("Invalid Attribute.");
+            throw new IllegalValueException(MESSAGE_CONSTRAINT1);
         }
-        return new Attribute(attribute);
+        if (!isValidAttributeName(attribute)) {
+            throw new IllegalValueException(MESSAGE_CONSTRAINTS);
+        }
+        return Attribute.of(attribute);
     }
 }

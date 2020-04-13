@@ -159,6 +159,7 @@ list of the current attribute.
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("add attribute leadership")` API call.
 
+[[AddSequenceDiagram]]
 .Interactions Inside the Logic Component for the `add attribute leadership` Command
 image::AddSequenceDiagram.png[]
 
@@ -198,14 +199,48 @@ image::StorageClassDiagram.png[]
 // tag::storage[]
 The `Storage` component,
 
-* can save `UserPref` objects in json format and read it back.
-* can save the Model data in json format and read it back.
-** Save IntervieweeList to interviewee.json
-** Save AttributeList to attribute.json
-** Save QuestionList to question.json
-** Save MetricList to metric.json
-** Save Transcripts of individual interviewees to separate json files in /transcript
- - for example an interviewee with id = 1 has his/her transcript saved to transcript/1.json
+* contains the various classes of *Storages* to support the following features.
+** `UserPrefsStorage` saves `UserPref` objects in json format and read it back.
+** `ModelStorage` saves the `Model` data in json format and read it back.
+** `IntervieweeStorage` saves `IntervieweeList` to interviewee.json and read it back.
+** `AttributeStorage` saves `AttributeList` to attribute.json and read it back.
+** `QuestionStorage` saves `QuestionList` to question.json and read it back.
+** `MetricStorage` saves `MetricList` to metric.json and read it back.
+** `TranscriptStorage` saves `Transcripts` of individual interviewees to separate json files in /transcript
+- for example an interviewee with id = 1 has his/her transcript saved to transcript/1.json
+
+
+.Structure of the IntervieweeStorage Component
+image::IntervieweeStorageClassDiagram.png[]
+
+*API* : link:{repoURL}/src/main/java/hirelah/storage/Storage.java[`IntervieweeStorage.java`]
+
+The `IntervieweeStorage` component,
+is responsible for saving an `IntervieweeList`.
+An `Interviewee` contains a `Transcript` which holds contain the `RemarkList` and a `Hashmap` of `Attribute` to score.
+
+During the interview, the interviewee will rate certain desirable `Attribute` with a certain score, this is stored in
+the `Hashmap`.`RemarkList` contains all the `Remarks` for the `Interviewee` during the interview.
+
+The interviewer may give a particular `Remark` based on certain `Question`, hence the `RemarkList` would depend on the
+`QuestionList` to check for its validity.
+
+There is also a need to check for the validity of `Hashmap` by checking the `Attribute` given in the `Hashmap` against the
+`AttributeList`, which result in the dependency between `JsonSerializableTranscript` and `AttributeList`.
+
+
+.Structure of the AttributeStorage Component
+image::AttributeStorageClassDiagram.png[]
+
+*API* : link:{repoURL}/src/main/java/hirelah/storage/Storage.java[`AttributeStorage.java`]
+
+
+All the `Attribute` are being stored as a list which is saved in a json file. When converting the json file back
+their `Attribute` Object, the `JsonSerializableAttributes` and `JsonAdaptedAttributes` classes are being deployed.
+
+The other types of storages contains the identical structure similar to  `AttributeStorage` , they
+are being omitted.
+
 
 [[Design-Commons]]
 === Common classes
@@ -216,6 +251,7 @@ Classes used by multiple components are in the `hirelah.commons` package.
 
 This section describes some noteworthy details on how certain features are implemented.
 
+// tag::sessionFeature[]
 === Session Feature
 
 HireLah! differs from AddressBook significantly in that a single user will likely have many sessions,
@@ -291,6 +327,166 @@ specific thing, for example a role in the company.
 ** Pros: Simplest to implement, yet memory efficient as only the relevant data is loaded
 ** Cons: Not user friendly - functionality cannot be performed within the app. User cannot discover the functionality on how
 to start a new session without consulting the user guide.
+// end::sessionFeature[]
+
+// tag::validstate[]
+=== State Validity and Finalise Feature
+==== Description
+HireLah! can process numerous different inputs from the user, starting from adding an interviewee, adding a metric,
+opening the report of an interviewee, etc. However, not all inputs are valid at any point of time. So, we need to make
+sure that the right commands are accepted at the right phase. In addition, we also need to check that the input received
+is also valid such that the Model component of our application is always in a valid state.
+
+A feature in our application that supports this state validity is the Finalise feature, the feature used to
+finalise the attributes and questions of an interview session, after the user has finished their CRUD operations to the
+attributes and questions. After finalising, the user can no longer change the attributes and questions of this interview
+session.
+
+==== Implementation
+
+Validity of our application state is achieved through three ways, which includes:
+
+* Separation of the application into 3 different phases
+* Command validation by the Parser and Model component
+* Implementation of Finalise feature
+
+===== Separation of the application into 3 different phases
+There are 3 different phases in our application, pre-session, normal, and interview phase. At any point of time, our
+application is in one of these 3 states, and this information is stored inside the model, and it can be retrieved by calling
+`model.getAppPhase()`. The reason behind the separation of the application into 3 different phases is because we need to prevent the user from
+entering invalid commands at any point of time. For example, you cannot start interviewing person B while you are
+interviewing person A. You need to end your interview with person A then you can interview person B.
+
+When the application had just opened, it will immediately enter into the `pre-session phase`, where the user are not allowed
+to do anything except creating a new session or opening other previously-made sessions.
+
+When the user had entered into a session, the application enter the `normal phase`. In this phase, the user can prompt the application
+to execute all of the features in the application, except opening a new session and adding interview-related information
+specific to an interviewee (e.g. adding a remark to person A).
+
+When the application is in the `normal phase` and the user decided to interview a particular interviewee, the application will
+enter to the `interview phase`. During this phase, the user are only allowed to execute commands related to the interview process
+of an interviewee, which includes adding remark, scoring the attribute and adding remarks as the answer to a particular question,
+and toggling view between attributes, questions, or metrics.
+
+The implementation of these 3 different phases is achieved through the presence of 3 different `parsers` in our application.
+After retrieving the `current phase` of the application from the `Model`, the `Logic` component will then decide which `parser` of these 3
+should be used to parse the input. Through this, we make sure that only appropriate and valid `commands` at a particular `phase`
+are accepted at any point of time.
+
+Given below are several examples of usage scenarios when the user prompts for some commands at a certain phase of the application:
+
+Scenario 1. When the user provides a `command` which is not recognized by the `parser` that is associated with the
+current `phase` of the application, the respective `parser` will throw a `ParseException`, informing the user that this
+command is unknown. Suppose the app is currently at the `PreSession phase`, and the user tries to add a new interviewee,
+`add interviewee Jane Doe`.
+
+image::SessionScenario1SequenceDiagram.png[]
+
+Scenario 2 (Ideal Scenario). When the user provides a `command` which is recognized by the `parser` that is associated with the
+current `phase` of the application, the respective `parser` will parser the `command` and execute the respective `CommandResult`
+to the model. For an example, see <<AddSequenceDiagram>>.
+
+===== Command Validation by the Parser and Model component
+
+By the separation of the application into 3 different phases, we had make sure that the input that is accepted at any particular
+point if time are input that are appropriate at the current application `phase`. However, this does not guarantee that this
+input will be valid according to the current state of the `Model`. For example, if the application is currently at the `normal phase`,
+it will be able to accept the `command` to interview an interviewee. However, if this interviewee has been interviewed before,
+doing an interview to the same person should not be allowed.
+
+Assuming that the prompt inserted by the user is accepted at the `current phase` of the application, given below are
+several examples of usage scenarios:
+
+Scenario 1. When the user provides a `command` that is recognized by the `current phase` of the app but it is missing compulsory fields ,
+the respective `parser` will check against it and throw `ParseException`, informing that the prompt is incomplete. For an example, see
+<<Scenario-1-Best-Interviewee-Feature>>.
+
+Scenario 2. When the user provides a complete and valid command that is recognized by the `current phase` of the application
+but is not valid for the current state, the `Model` will check the command and throw a `CommandException`, informing the user
+that this `command` is invalid for the current state. For an example, see <<Scenario-2-Best-Interviewee-Feature>>.
+
+Scenario 3 (Ideal Scenario). When the user provides a complete and valid `command` that is recognized by the `current phase` of the
+application and is valid for the current state. For an example, see <<Scenario-Ideal-Best-Interviewee-Feature>>.
+
+===== Finalise Feature
+
+Even with all of these implementations of `command` accepting according to the `current phase` and `command` checking in a
+particular `phase`, there is another possibility of invalid state in our application, which happens through the modification
+of the `interview session's` `attributes` and `questions`. For example, a metric which takes in `attribute` `leadership` and `integrity`
+has been created. Later, the user can possibly delete the `attribute` `leadership`. This makes the metric create not valid anymore.
+
+Thus, we need a feature that can indicate that the `interview session` has been `finalised`, which means that all CRUD operations
+to the `attributes` and `questions` of this `interview session` is disallowed. CRUD operations to the `attributes` and `questions`
+are originally accepted in the `normal phase` and if the CRUD operation is valid. However, if the application has entered the
+`finalised` state, this disablement happens regardless of the validity of the phase and command.
+
+The `finalised` state can be achieved through the `Finalise Command` when the user inputs the word `finalise`. Before the application
+is `finalised` the user is not allowed to hold any interview with any interviewee, create any metric and find any best interviewees.
+If the application has reached `finalised` state, the user are allowed to do so.
+
+Assuming that the user is currently on the `normal phase`, the phase which accepts CRUD operations for the `attributes`
+and `questions`, and assuming that the given CRUD operation is valid (e.g. `delete attribute leadership` and
+`attribute` `leadership` was there previously), given below are several examples of usage scenarios when the user prompts are related to Finalise Feature:
+
+Scenario 1. If the application has not been finalised `finalised` and the user tries to interview an interviewee,
+`interview Jane Doe`, the `Normal Parser` will parse the input and create an instance of `StartInterviewCommand`.
+The `LogicManager` will try to execute this `StartInterviewCommand` toward the `model`, but because it has not been `finalised`,
+it will throw a `CommandException` error.
+
+image::FinaliseScenario1SequenceDiagram.png[]
+
+Scenario 2. If the application has been `finalised` and the user tries to do add a new `attribute`, `add attribute leadership`,
+the `Normal Parser` will parse the input and create an instance of `AddAttributeCommand`. The `LogicManager` will try to execute
+this AddAttributeCommand toward the `model`, but because it has been `finalised`, it will throw a `CommandException` error.
+
+image::FinaliseScenario2SequenceDiagram.png[]
+
+Scenario 3 (Ideal Scenario). If the application has been `finalised` and the user tries to interview an interviewee,
+`interview Jane Doe`, the `Normal Parser` will parse the input and create an instance of `StartInterviewCommand`.
+The `LogicManager` will execute this `StartInterviewCommand` toward the `model`,  and the result is returned.
+
+image::FinaliseScenario3SequenceDiagram.png[]
+
+Scenario 4 (Ideal Scenario). If the application has not been `finalised` and the user tries to do add a new `attribute`,
+`add attribute leadership`, the `Normal Parser` will parse the input and create an instance of AddAttributeCommand.
+The `LogicManager` will execute this AddAttributeCommand towards the `model` and the result is returned.
+
+image::FinaliseScenario4SequenceDiagram.png[]
+
+The following activity diagram shows the sequence of activities happening after `finalise` command.
+
+image::FinaliseActivityDiagram.png[]
+
+==== Design Considerations
+
+===== Aspect: Maintaining the consistency of application state
+
+* **Alternative 1 (current choice):** Have `finalise` command and disallow CRUD operation to `attributes` and `questions`
+** Pros: There will no be any invalid values or states, like an `attribute` score assigned to null.
+** Cons: Once the user decide to `finalise`, the user can no longer edit the `attributes` and `questions`. THe user will
+need to create a new session if the user wants to.
+* **Alternative 2:** Do not have a `finalise` command. User can perform CRUD operation to `attributes` and `questions` at any time,
+including after interview has been done or some metrics have been created. Deleted `attributes` and `questions` will be removed
+from any part of the application, and newly created `attributes` will have null score and newly created `questions`
+will be assigned to no answers.
+** Pros: More flexibility for the user if the user wants to change the `attributes` and `questions`.
+** Cons: The user might not be aware about the consequence of deleting one `attribute` or `question`, which might lead
+to deletion of the all the `metrics` that uses this `attribute `, removal of all `remarks` associated as the answer of a `question`.
+As new `attribute` are assigned to null score, these interviewees could not be compared with the others with regards to this feature
+when the user is using the `best interviewee` feature.
+User might need to assign the score value of this newly added `attribute` to every single `interviewees` that has been interviewed
+before this addition, which is a tedious and unfriendly operation.
+* **Alternative 3:** Do not have a `finalise` command. User can perform CRUD operation to `attributes` and `questions` at any time,
+including after interview has been done or some metrics have been created. Deleted `attributes` and `questions` will be removed
+from any part of the application, and newly created `attributes` will have a default score and newly created `questions`
+will be assigned to no answers.
+** Pros: More flexibility for the user if the user wants to change the `attributes` and `questions`.
+** Cons: The user might not be aware about the consequence of deleting one `attribute` or `question`, which might lead
+to deletion of the all the `metrics` that uses this `attribute `, removal of all `remarks` associated as the answer of a `question`.
+As new `attribute` are assigned to default score, the result of comparison between this `interviewee` and the others might
+not be accurate anymore.
+// end::validstate[]
 
 
 // tag::findbestfeature[]
@@ -312,11 +508,15 @@ The Find Best Interviewee feature is facilitated by the `BestCommand`. It has th
 
 Given below are several examples of usage scenarios when the user prompts for Best Interviewees:
 
+[[Scenario-1-Best-Interviewee-Feature]]
+
 Scenario 1. When the user provides a command with incomplete compulsory fields (e.g. number of interviewees), the
 `BestCommandParser` will throw `ParseException`, informing that the size provided is not an integer because the parser
 takes the preamble of the command to get the value for `numberOfInterviewees`.
 
 image::FindBestScenario1SequenceDiagram.png[]
+
+[[Scenario-2-Best-Interviewee-Feature]]
 
 Scenario 2. When the user provides a command with valid fields, yet there are no interviewees that has been interviewed,
 a `CommandException` is thrown instead, informing that there is no interviewee that has been interviewed, thus no result
@@ -329,7 +529,9 @@ is thrown instead, informing that the user has provided more than 1 parameter.
 
 image::FindBestScenario3SequenceDiagram.png[]
 
-Here is the Sequence Diagram for `FindBestCommand` for an ideal case (minor method calls are omitted):
+[[Scenario-Ideal-Best-Interviewee-Feature]]
+
+Scenario 4 (Ideal Scenario). Here is the Sequence Diagram for `FindBestCommand` for an ideal case (minor method calls are omitted):
 
 image::FindBestSequenceDiagram.png[]
 
@@ -1295,22 +1497,6 @@ Windows, Linux, Unix, OS-X
 [[private-contact-detail]] Private contact detail::
 A contact detail that is not meant to be shared with others
 
-[appendix]
-== Product Survey
-
-*Product Name*
-
-Author: ...
-
-Pros:
-
-* ...
-* ...
-
-Cons:
-
-* ...
-* ...
 
 [appendix]
 == Instructions for Manual Testing
@@ -1326,34 +1512,232 @@ These instructions only provide a starting point for testers to work on; testers
 
 .. Download the jar file and copy into an empty folder
 .. Double-click the jar file +
-   Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   Expected: Shows the GUI with an empty session screen.
 
-. Saving window preferences
+. Shutdown
+.. Type `exit` in the command line. +
+Expected: The app is closed, with all the data saved.
 
-.. Resize the window to an optimum size. Move the window to a different location. Close the window.
-.. Re-launch the app by double-clicking the jar file. +
-   Expected: The most recent window size and location is retained.
+=== Create, Open and Close Session
+. Test case: `new session ceo` +
+Expected: It will create a session named `ceo` and the GUI switches to the normal mode.
+. Test case: `new session ceo` then `close session` +
+Expected: It will create a session named `ceo` and the GUI switches to the normal mode, then after
+executing the second command, it closes the session and goes to the session screen.
 
-_{ more test cases ... }_
+=== Create Interviewees, and Attributes
+. Prerequisites: The app is in a session and the session is not finalized yet.
+. Test case: `add interviewee Jane` +
+Expected: An interviewee named Jane is added to the interviewee list.
+. Test case: `add interviewee Dr. Bro the 3rd -aka Bro` +
+Expected: An interviewee named Dr. Bro the 3rd with alias Bro is added to the interviewee list.
+. Test case: `add attribute nonalphanums123`
+Expected: An error message is shown that the attribute cannot be added because it contains non alphabets.
+. Test case:  `add attribute leadership`
+Expected: An attribute named `leadership` is added to the list
+. Test case: `add attribute`
+Expected: An error message showing that the format is invalid.
+. Test case: `add interviewee`
+Expected: An error message showing that the format is invalid.
 
-=== Deleting a person
+=== Delete Interviewees, and Attributes
+. Prerequisites: The session only have an interviewee named Jane with alias Doe, and id 1, and an attribute named leadership, and
+the session is not finalized yet.
+. Test case: `delete interviewee Bob` +
+Expected: An error message is shown, stating that there is no interviewee identified with Bob.
+. Test case: `delete interviewee Doe` +
+Expected: The interviewee is deleted from the list.
+. Test case: `delete attribute tenacity` +
+Expected: An error message is shown, stating that there is no attribute named tenacity
+. Test case: `delete attribute lea` +
+Expected: The attribute leadership is deleted because lea is a unique prefix for leadership.
+. Test case: `delete attribute`
+Expected: An error message showing that the format is invalid.
+. Test case: `delete interviewee`
+Expected: An error message showing that the format is invalid.
 
-. Deleting a person while all persons are listed
+=== Edit Interviewees, and Attributes
+. Prerequisites: The session only have an interviewee named Jane with alias Doe, and id 1, and an attribute named leadership, and
+the session is not finalized yet.
+. Test case: `edit interviewee Bob -n Bobby` +
+Expected: An error message is shown, stating that there is no interviewee identified with Bob.
+. Test case: `edit interviewee Doe -n John` +
+Expected: Changes the name of the interviewee from `Jane` to `John`.
+. Test case: `edit interviewee Doe -aka brother` +
+Expected: Changes the alias of the interviewee from `Doe` to `brother`.
+. Test case: `edit interviewee 1 -n Bob -aka Bobby` +
+Expected: Changes the name of the interviewee from `Jane` to `Bob`, and the alias from `Doe` to `Bobby`
+. Test case: `edit attribute tenacity -a dignity` +
+Expected: An error message is shown because the attribute `tenacity` does not exist.
+. Test case: `edit attribute lea -a dignity` +
+Expected: The attribute `leadership` is changed to `dignity` because `lea` is a unique prefix for `leadership` in this
+case.
+. Test case: `edit attribute`
+Expected: An error message showing that the format is invalid.
+. Test case: `edit interviewee`
+Expected: An error message showing that the format is invalid.
 
-.. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
-.. Test case: `delete 1` +
-   Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
-.. Test case: `delete 0` +
-   Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
-.. Other incorrect delete commands to try: `delete`, `delete x` (where x is larger than the list size) _{give more}_ +
-   Expected: Similar to previous.
+=== Create Questions
+. Prerequisites: The session is not finalized yet.
+. Test case: `add question what is this question?` +
+Expected: A question with a deescription `what is this question?` will be added to the question list.
 
-_{ more test cases ... }_
+=== Edit Questions
+. Prerequisites: The session is not finalized yet and there is one question in the session with a description `how are you?`
+. Test Case: `edit question 1 -q what ya doin?` +
+Expected: The question's description will be changed to `what ya doin?`.
+. Test Case: `edit question -1 -q what ya doin?` +
+Expected: An error message is shown because there is no question with number `-1`.
 
-=== Saving data
+=== List Interviewees, Questions, and Attributes
+. Prerequisites: The app is already in a session
+. Test case: `attributes` +
+Expected: Shows all the attributes that have been added in the session. They are shown at the right panel of the GUI.
+. Test case: `questions` +
+Expected: Shows all the questions that have been added in the session. They are shown at the right panel of the GUI.
+. Test case: `interviewees` +
+Expected: Shows all the interviewees that have been added in the session. They are shown at the left panel of the GUI.
 
-. Dealing with missing/corrupted data files
+=== Upload Resume
+. Prerequisites: There is an interviewee named Bob, with alias Bobby and id 1, and his resume located at `path`.
+. Test case: `upload 5` +
+Expected: An error message will be shown, stating that there is no interviewee that haa `5` as an identifier.
+. Test case: `upload 1` +
+Expected: A window will pop up, that allows to choose a file that serves as Bob's resume.
+. Test case: `upload 1 -p unidentifiedpath` +
+Expected: An error message will be shown, because there is no file at the given path.
+. Test case: `upload 1 -p path` +
+Expected: The file at `path` will be served as the resume of Bob.
 
-.. _{explain how to simulate a missing/corrupted file and the expected behavior}_
+=== Open Resume
+. Prerequisites: There are two interviewees, one has an alias Alice, and a resume has been uploaded under her name, and
+the other is named Bob, and there is no resume under him yet.
+. Test case: `resume Alice` +
+Expected: A window pops up, showing the resume of Alice.
+. Test case: `resume Bob` +
+Expected: An error message is shown because there is no resume uploaded for Bob yet.
 
-_{ more test cases ... }_
+=== Interviewing
+. Prerequisites: The session has been finalized and there is an interviewee named Jane.
+.. Test case: `interview Bob` +
+Expected: An error message will be shown, because there is no interviewee that is identified as Bob.
+.. Test case: `interview Jane` +
+Expected: The GUI will switch to interview screen, and the app enters the Interview Phase.
+
+. Prerequisites: The app is in interview mode with an interviewee named Jane, has her resume uploaded and there is an
+attribute named leadership, and a question with a description `how do you do?`.
+.. Test case: `this girl is very good` +
+Expected: The sentence will be added as a remark. The GUI will show the remark with the corresponding timestamp.
+.. Test case: `:set agility 4` +
+Expected: An error message will be shown since there is no attribute with name `agility`.
+.. Test case: `:set leadership 11` +
+Expected: An error message will be shown since the score that can be added is between 0 to 10 inclusive.
+.. Test case: `:set lea 6` +
+Expected: The score of attribute `leadership` will be set to 6 since `lea` is a unique prefix for leadership.
+.. Test case: `start q10` +
+Expected: An error message will be shown since there is no question with number 10.
+.. Test case: `start q1` +
+Expected: The GUI will show the starting point of the question 1.
+.. Test case: `:attributes` +
+Expected: The right panel of the GUI will show all the attributes that have been added, which in this case shows one
+attribtue, which is leadership.
+.. Test case: `:metrics` +
+Expected: The right panel of the GUI will show all the metrics that have been added, which in this case is empty.
+.. Test case: `:questions` +
+Expected: The right panel of the GUI will show all the questions that have been added, which in this case, is a question
+`how do you do?`.
+.. Test case: `:resume` +
+Expected: A window will pop up, showing the resume of Jane.
+.. Test case: `:end` +
+Expected: An error message will be shown since there is an attribute that has not been scored.
+.. Test case: `:set lea 6` then `:end` +
+Expected: First, the score of attribute `leadership` will be set to 6. Then, the interview is ended and the GUI shows
+the normal screen.
+
+=== Dealing with Interviewee's Report
+. Prerequisites: There are two interviewees, Alice who has been interviewed, and Bob who has not been interviewed yet.
+.. Test case: `open Bob` +
+Expected: An error message will be shown since Bob has not been interviewed.
+.. Test case: `close report` +
+Expected: An error message will be shown since currently the app is not opening any report.
+.. Test case: `open Alice` +
+Expected: The GUI will show the report of Alice, which is identical to the interview screen, showing the remarks that have been
+added, as well as the scores that have been added.
+.. Test case: `open Alice` then `close report` +
+Expected: The GUI will show the report of Alice, similar to the previous case. Then, after executing the `close report` command,
+the GUI will switch back to the normal screen.
+.. Test case: `report Bob` +
+Expected: An error message will be shown, because Bob has not been interviewed yet.
+.. Test case: `report Alice` +
+Expected: A success message will be shown, specifying the directory where the PDF file is exported. The PDF file can be found
+at the specified directory.
+. Prerequisites: The app is opening Alice's report. The report has several remarks, and there are 2 questions, the first
+question was asked during the interview, and the second one was not. The interview is done within 10 minutes.
+.. Test case: `goto q100` +
+Expected: An error message will be shown, indicating that there are only 2 questions in the interview session.
+.. Test case: `goto q2` +
+Expected: An error message will be shown, indicating that the second question was not answered during the interview.
+.. Test case: `goto q1` +
+Expected: The remark panel of the GUI will navigate to the first remark after the first question is started.
+.. Test case: `goto 0.00` +
+Expected: The remark panel of the GUI will navigate to the very first remark.
+.. Test case: `goto 5.00` +
+Expected: The remark panel of the GUI will navigate to the first remark after the fifth minute.
+.. Test case: `goto 15.00` +
+Expected: The remark panel of the GUI will navigate to the very last remark.
+
+=== Create, Edit, Delete, and List Metrics
+. Prerequisites: The app has been finalized, with three attributes: `one`, `two`, and `three`.
+.. Test case: `add metric extreme` +
+Expected: An error message will be shown, indicating that it misses the attribute and weight details.
+.. Test case: `add metric extreme -a four -w 0.5` +
+Expected: An error message will be shown, indicating that there is no attribute `four`.
+.. Test case: `add metric extreme one -a two` +
+Expected: An error message will be shown, indicating that it misses the attribute and weight details because there is no w
+weight assigned to attribute `two`.
+.. Test case: `add metric extreme one -a two -w 0.4 -a on -w 0.6` +
+Expected: A metric with name `extreme` will be created with weight `0.6` assigned to `one` since `on` is a unique prefix for
+`one`, and `0.4` assigned to `two`.
+
+. Prerequisites: Same as point 1, with an addition of existing metric named `extreme` with the same attribute to weight
+as case 1d.
+.. Test case: `edit metric extreme` +
+Expected: An error message will be shown, indicating that it misses the attribute and weight details.
+.. Test case: `edit metric extreme -n soft` +
+Expected: The metric name is changed from `extreme` to `soft`.
+.. Test case: `edit metric extreme -a two` +
+Expected: An error message will be shown, indicating that it misses the attribute and weight details because there is no w
+weight assigned to attribute `two`.
+.. Test case: `edit metric extreme -a two -w 0.9` +
+Expected: The weight of attribute `two` in metric `extreme` will be changed to `0.9`.
+.. Test case: `edit metric extreme -a thr -w 0.5` +
+Expected: It introduces the weight for attribute `three` to be assigned to weight `0.5` to metric `extreme`. The rest remains
+unchanged.
+.. Test case: `delete metric dictator` +
+Expected: An error message will be shown, indicating that there is no metric `dictator`.
+.. Test case: `delete metric extr` +
+Expected: The metric `extreme` is being deleted because `extr` is a unique prefix for metric `extreme`.
+.. Test case: `metrics` +
+Expected: The right panel of thee GUI will show all the metrics that have been created. In this case, the metric `extreme`.
+
+=== Find Best
+. Prerequisites: The session has been finalized, with the following interviewed interviewees details: +
+Name: Alice +
+Attributes to score: [one: 5, two: 4, three: 3] +
+Name: Bob +
+Attributes to score: [one: 2, two: 4, three: 5] +
+Name: Charlie +
+Attributes to score: [one: 4, two: 7, three: 4]
+.. Test case: `interviewee -best` +
+Expected: An error message is shown, showing that the command format is invalid.
+.. Test case: `interviewee -best 5` +
+Expected: All 3 interviewed interviewees are listed in sorted order based on their overall score (Charlie, Alice, Bob).
+The output message indicates that there are only 3 interviewed interviewees.
+.. Test case: `interviewee -best 2 -a tw` +
+Expected: All 3 interviewed interviewees are listed in sorted order based on their score for attribute `two` (Charlie, Alice, Bob).
+Both Alice and Bob are shown because they have the same score. The output message also indicates that there are ties, which leads
+to show more than 2 interviewees.
+. Prerequisites: In addition to the prerequisites stated in point 1, there is a metric named `extreme` with the following
+weightage: [one: 0.4, two: 0.3]
+.. Test case: `interviewee -best 2 -m extr` +
+Expected: Charlie and Alice will be shown in the best interviewees list.

@@ -48,7 +48,7 @@ public class OpenResumeCommand extends Command {
             throw new CommandException(String.format(MESSAGE_RESUME_NOT_FOUND, resume));
         }
         openFile(resume);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, identifier));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, interviewee));
     }
 
     /**

@@ -27,6 +27,7 @@ public class DeleteSessionCommand extends Command {
     public static final String MESSAGE_FORMAT = "delete <session>";
     public static final String MESSAGE_USAGE = MESSAGE_FORMAT + ": deletes the given session";
 
+    private static final String MESSAGE_EMPTY_SESSION = "The session's name cannot be left empty";
     private String sessionName;
 
     public DeleteSessionCommand(String sessionName) {
@@ -35,6 +36,9 @@ public class DeleteSessionCommand extends Command {
 
     @Override
     public CommandResult execute(Model model, Storage storage) throws CommandException {
+        if (sessionName.equals("")) {
+            throw new CommandException(MESSAGE_EMPTY_SESSION);
+        }
         File sessionDir = new File(model.getSessionsDirectory().toFile(), sessionName);
         if (!sessionDir.isDirectory()) {
             throw new CommandException(MESSAGE_NO_SUCH_SESSION);

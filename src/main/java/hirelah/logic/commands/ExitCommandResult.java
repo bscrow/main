@@ -16,4 +16,9 @@ public class ExitCommandResult extends CommandResult {
         super.displayResult(mainWindow);
         mainWindow.handleExit();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return super.equals(other) && other instanceof ExitCommandResult;
+    }
 }

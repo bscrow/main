@@ -1,10 +1,10 @@
 package hirelah.logic.parser;
 
 import static hirelah.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static hirelah.logic.commands.CommandTestUtility.VALID_PROPERTY_ATTRIBUTE;
+import static hirelah.logic.commands.CommandTestUtility.VALID_PLURAL_ATTRIBUTE;
+import static hirelah.logic.commands.CommandTestUtility.VALID_PLURAL_QUESTION;
 import static hirelah.logic.commands.CommandTestUtility.VALID_PROPERTY_INTERVIEWEE;
 import static hirelah.logic.commands.CommandTestUtility.VALID_PROPERTY_METRIC;
-import static hirelah.logic.commands.CommandTestUtility.VALID_PROPERTY_QUESTION;
 import static hirelah.logic.commands.CommandTestUtility.VALID_SESSION;
 import static hirelah.logic.commands.CommandTestUtility.WHITESPACE;
 import static hirelah.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -21,17 +21,17 @@ public class LoadParserTest {
 
     @Test
     public void parse_noArgument_failure() {
-        assertParseFailure(parser, WHITESPACE + VALID_PROPERTY_ATTRIBUTE,
+        assertParseFailure(parser, WHITESPACE + VALID_PLURAL_ATTRIBUTE,
                 LoadParser.MESSAGE_EMPTY_SESSION);
-        assertParseFailure(parser, WHITESPACE + VALID_PROPERTY_QUESTION,
+        assertParseFailure(parser, WHITESPACE + VALID_PLURAL_QUESTION,
                 LoadParser.MESSAGE_EMPTY_SESSION);
     }
 
     @Test
     public void parse_completeArgument_success() {
-        assertParseSuccess(parser, WHITESPACE + VALID_PROPERTY_ATTRIBUTE + WHITESPACE + VALID_SESSION,
+        assertParseSuccess(parser, WHITESPACE + VALID_PLURAL_ATTRIBUTE + WHITESPACE + VALID_SESSION,
                 new LoadAttributeCommand(VALID_SESSION));
-        assertParseSuccess(parser, WHITESPACE + VALID_PROPERTY_QUESTION + WHITESPACE + VALID_SESSION,
+        assertParseSuccess(parser, WHITESPACE + VALID_PLURAL_QUESTION + WHITESPACE + VALID_SESSION,
                 new LoadQuestionCommand(VALID_SESSION));
     }
 

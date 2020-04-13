@@ -15,4 +15,9 @@ public class HelpCommandResult extends CommandResult {
         super.displayResult(mainWindow);
         mainWindow.handleHelp();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return super.equals(other) && other instanceof HelpCommandResult;
+    }
 }

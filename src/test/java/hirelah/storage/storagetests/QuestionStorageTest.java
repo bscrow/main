@@ -1,7 +1,7 @@
 package hirelah.storage.storagetests;
 
 import static hirelah.testutil.Assert.assertThrows;
-import static hirelah.testutil.TypicalQuestionList.getTypicalQns;
+import static hirelah.testutil.TypicalQuestions.getTypicalQns;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 

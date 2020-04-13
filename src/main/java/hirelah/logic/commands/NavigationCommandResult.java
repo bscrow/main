@@ -37,4 +37,11 @@ public class NavigationCommandResult extends CommandResult {
     public int getIndex() {
         return this.index;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return super.equals(other)
+                && other instanceof NavigationCommandResult
+                && index == ((NavigationCommandResult) other).index;
+    }
 }

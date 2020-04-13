@@ -1,0 +1,73 @@
+= Ong Wei Cheng - Project Portfolio for HireLah!
+:site-section: AboutUs
+:icons: font
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+:xrefstyle: full
+:experimental:
+
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:warning-caption: :warning:
+endif::[]
+
+== About the Project
+
+HireLah! is targeted to bring greater convenience to interviewers who can type quickly and prefer typing over mouse +
+commands. Additionally, we included customised features in our desktop apps to help interviewers to manage interviews.
+
+=== My Role
+
+My role was mainly to design, implement and test the various Storage Classes to save the current Interview Session into
+respective their json formats. Additionally, I also helped to load and convert the data from their json file.I was also
+involved in designing the directory structure for saving the Transcript of each interviewee.
+
+== Summary of contributions
+This section shows a summary of my contributions to the team project.
+
+* *Major enhancement #1*: Save all the important information during an Interview Session.
+** What it does: Everytime there is a particular change to the state of the system, the relevant storage will save the
+relevant change. For the example. if there is a change to an Interviewee's transcript, the TranscriptStorage will  save
+and update corresponding transcript file of the interviewee. This will capture all remarks given by the interviewee
+during the interview and the scores that that the interviewee obtained for each of the attributes.
+
+** Justification: This feature ensures that all the information, before and after the interview session is saved.
+
+** Highlights: I had to communicate with my teammates as I need to know what are the components that
+are changed after the particular execution of a command, so that I will only save the relevant component.
+This would help to reduce the system from overloading when then handing large volume of data.
+
+* *Major enhancement #2*: Implement the relevant checks when loading the data from the json file.
+
+** What it does: It will check to ensure that all the relevant information captured in the interview is valid, otherwise
+we would start the interview with no loaded data. For example, we would load all the relevant attributes and questions
+from the previous session and check that they are reflected in each of the transcript of the interview.
+
+** Justification: This will ensure that all the saved information are valid for the next interview session.
+
+** Highlights: I need to communicate with my teammate to ensure what are the bugs that I need to check could possibly
+result in a bug during the execution of the HireLah!
+
+* *Minor Enhancement: I wrote did the unit testings for the JsonAdapted, JsonSerizalizable and Storage classes.
+
+== Other contributions
+
+** Project management
+*** Reviewed Pull Requests https://github.com/AY1920S2-CS2103-W15-2/main/pull/224[#224]
+*** Created issues for v1.3 https://github.com/AY1920S2-CS2103-W15-2/main/issues/61[#61]
+and v1.4 https://github.com/AY1920S2-CS2103-W15-2/main/issues/104[#104]
+
+** Enhancements to existing features:
+*** Refactored and modified existing classes, to satisfy the requirements of the application https://github.com/AY1920S2-CS2103-W15-2/main/pull/178[#178]
+
+== Contributions to the User Guide
+Listed below are sections I contributed to the User Guide, which includes the Command Summary.
+
+include::../UserGuide.adoc[tag=summary]
+
+== Contributions to the Developer Guide
+Listed below are sections I contributed to the Developer Guide, which includes the Class Diagrams for
+the various Storages.
+
+include::../DeveloperGuide.adoc[tag=storage]

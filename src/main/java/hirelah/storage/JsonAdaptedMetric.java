@@ -1,5 +1,7 @@
 package hirelah.storage;
 
+import static hirelah.model.hirelah.Metric.isValidMetricName;
+
 import java.util.HashMap;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -9,11 +11,11 @@ import hirelah.commons.exceptions.IllegalValueException;
 import hirelah.model.hirelah.Attribute;
 import hirelah.model.hirelah.Metric;
 
-
 /**
  * Jackson-friendly version of {@link Metric}.
  */
 public class JsonAdaptedMetric {
+    public static final String MESSAGE_CONSTRAINTS = "Invalid %s stored!";
     private String name;
     private String attributeToWeight;
 
@@ -38,11 +40,11 @@ public class JsonAdaptedMetric {
      * @throws IllegalValueException if there were any data constraints violated in the adapted metric.
      */
     public Metric toModelType() throws IllegalValueException {
-        if (name == null) {
-            throw new IllegalValueException("Invalid name for the matric");
+        if (!isValidMetricName(name)) {
+            throw new IllegalValueException(String.format(MESSAGE_CONSTRAINTS, "NAME"));
         }
         if (attributeToWeight == null || attributeToWeight.length() == 0) {
-            throw new IllegalValueException("Invalid Attribute to weight pair stored!");
+            throw new IllegalValueException(String.format(MESSAGE_CONSTRAINTS, "pair of Attribute to weight"));
         }
         String[] source = attributeToWeight.split("-a");
         HashMap<Attribute, Double> destination = new HashMap<>();

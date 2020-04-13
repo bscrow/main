@@ -1,0 +1,16 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor STORAGE_COLOR
+skinparam classBackgroundColor STORAGE_COLOR
+
+Package AttributeStorage <<Rectangle>> {
+class AttributeStorage
+class JsonSerializableAttributes
+class JsonAdaptedAttributes
+}
+
+AttributeStorage .right.> JsonSerializableAttributes
+JsonSerializableAttributes .right.> JsonAdaptedAttributes
+
+@enduml

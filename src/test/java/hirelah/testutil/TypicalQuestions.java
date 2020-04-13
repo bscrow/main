@@ -1,12 +1,13 @@
 package hirelah.testutil;
 
 import hirelah.commons.exceptions.IllegalValueException;
+import hirelah.model.hirelah.Question;
 import hirelah.model.hirelah.QuestionList;
 
 /**
  * A utility class containing a list of {@code QuestionList}  to be used in tests.
  */
-public class TypicalQuestionList {
+public class TypicalQuestions {
     public static final String QN1 = "How can you contribute to the company in 5 years?";
     public static final String QN2 = "Are you a good Team-player?";
     public static final String QN3 = "Have you taken CS2103 before?";
@@ -21,5 +22,8 @@ public class TypicalQuestionList {
             e.printStackTrace();
         }
         return typicalQuestions;
+    }
+    public static Question getAQuestion() {
+        return new Question(QN1);
     }
 }

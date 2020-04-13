@@ -3,6 +3,7 @@ package hirelah.testutil;
 import java.util.List;
 
 import hirelah.commons.exceptions.IllegalValueException;
+import hirelah.model.hirelah.Attribute;
 import hirelah.model.hirelah.AttributeList;
 
 /**A utility class containing a list of {@code AttributeList}  to be used in tests.*/
@@ -26,5 +27,9 @@ public class TypicalAttributes {
 
     public static List<String> getAttributePrefix() {
         return PREFIX;
+    }
+
+    public static Attribute getAnAttribute() {
+        return new Attribute(ATTRIBUTE1);
     }
 }

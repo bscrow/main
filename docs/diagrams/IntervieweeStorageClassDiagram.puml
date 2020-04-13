@@ -1,0 +1,32 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor STORAGE_COLOR
+skinparam classBackgroundColor STORAGE_COLOR
+
+Package IntervieweeStorage <<Rectangle>> {
+Class IntervieweeStorage
+
+package Question {
+Class QuestionList
+}
+package Attribute {
+Class AttributeList
+}
+
+package TranscriptStorage {
+Class TranscriptStorage
+class JsonSerializableTranscript
+}
+
+Class JsonAdaptedInterviewee
+Class JsonSerializableInterviewee
+}
+
+IntervieweeStorage .right.> JsonSerializableInterviewee
+JsonSerializableInterviewee .right.> JsonAdaptedInterviewee
+JsonAdaptedInterviewee .down.> TranscriptStorage
+TranscriptStorage .down.> JsonSerializableTranscript
+TranscriptStorage .right.> AttributeList
+TranscriptStorage .down.> QuestionList
+@enduml

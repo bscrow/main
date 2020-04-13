@@ -2,7 +2,7 @@ package hirelah.storage.serialisetests;
 
 import static hirelah.commons.util.JsonUtil.readJsonFile;
 import static hirelah.testutil.Assert.assertThrows;
-import static hirelah.testutil.TypicalMetricList.getMetricList;
+import static hirelah.testutil.TypicalMetric.getMetricList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.file.Path;

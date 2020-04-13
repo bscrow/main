@@ -11,33 +11,31 @@ endif::[]
 
 == About the Project
 
-HireLah! is targeted to bring greater convenience to interviewers who can type quickly and prefer typing over mouse +
+HireLah! is targeted to bring greater convenience to interviewers who can type quickly and prefer typing over mouse
 commands. Additionally, we included customised features in our desktop apps to help interviewers to manage interviews.
 
 == Role
 
-My contribution to the project includes implementing the parser for most of the commands that that was passed as input by the user.
-I was also involved in building the foundation blocks of an interview report, the transcript. I had also implemented the navigation commands,
-the commands that are used when the user want to navigate to a certain remark of the interview report of a particular interviewee.
+My contribution to the project includes implementation of command to open an interview report, exporting an interview report
+and command for navigation to a certain part of the interview report. I also implemented
+the parser for most of the commands, with test coverage increase of 93% in class, 88% in method and 90% in line amount.
+I was also involved in building the implementing the transcript of an interviewee.
 
-I also contributed to the UserGuide and DeveloperGuide of the application.
+I also contributed to the UserGuide, which includes a total of 6 different sections in the User Guide and DeveloperGuide,
+which includes detailed implementation of the state validity of the application, with a total of 7 UML diagrams.
 
 == Summary of Contributions
 
-It is the placeholder of all information
-of a particular interview with an interviewee, including the remarks, the attributes and the score associated with it, as well as remarks
-associated as the answer to a particular question.
+* *Major enhancement #1*: Implemented *export report* command for exporting a particular interview report as a PDF.
+** What it does: allows the user to export the report of a particular interviewee in a distributable and highly useful form, which is PDF.
+** Justification: These features are very useful for the user as it allows them to retain a copy of the interview report outside
+the application itself and it is exported in a distributable form.
+** Highlights: This enhancement are very challenging and tedious. I used Apache PDF Box library and it does not have a lot of
+support in text wrapping, positioning and pagination. Thus, I have to manually calculate and split sentences that are to be written in the PDF.
+In addition, I need to manually split  paragraphs or sections that could not fit into the current page. Furthermore, for every line
+that is written, I have to manually calculate the x and y coordinate of the starting point of this line.
 
-* *Major enhancement #1*: Implemented the parser for *create, update, and delete* commands of attributes, interviewees, and questions
-** What it does: allows the user to perform an addition, deletion and edition of attributes, interviewees, and questions
-of an interview session according to input message to the CLI
-** Justification: These features are a crucial part of the application as it allows the user to add properties to the interview session
-in order to be able to start the interview.
-** Highlights: This enhancement are totally new and was not part of the codebase. The implementation too was challenging
-as it required careful considerations on the different possible input received from the user and to handle incorrect and
-correct input formats properly. I also added unit tests that covers most of the cases in these parser.
-
-* *Major enhancement #2*: Implemented *open report* commands for opening a particular interview report.
+* *Major enhancement #2*: Implemented *open report* command for opening a particular interview report.
 ** What it does: allows the user to open the report of a particular interviewee.
 ** Justification: These features are useful for the user because it allows them to retrieve the interview report or result
 after he/she has interviewed a particular interviewee.
@@ -52,71 +50,72 @@ a particular time or answer to a question.
 ** Highlights: This enhancement are totally new and was not part of the codebase. The implementation needs careful
 consideration of the current interviewee, the bounds and input format given by the user.
 
-* *Minor enhancement*: added a finalise command for user to indicate if he/she wants to finalise the properties of an
-interview session and thus can start interviewing.
+* *Major enhancement #4*: Implemented the parser for *create, update, and delete* commands of attributes, interviewees, and questions
+** What it does: allows the user to perform an addition, deletion and edition of attributes, interviewees, and questions
+of an interview session according to input message to the CLI
+** Justification: These features are a crucial part of the application as it allows the user to add properties to the interview session
+in order to be able to start the interview.
+** Highlights: This enhancement are totally new and was not part of the codebase. The implementation too was challenging
+as it required careful considerations on the different possible input received from the user and to handle incorrect and
+correct input formats properly. I also added unit tests that covers most of the cases in these parser.
+
+* *Minor enhancement #1*: Implemented the building block of the interviewee transcript, which is the placeholder of all information
+of a particular interview with an interviewee, including the remarks, the attributes and the score associated with it, as well as remarks
+associated as the answer to a particular question.
 
 * *Code contributed*: [https://nus-cs2103-ay1920s2.github.io/tp-dashboard/#search=agnesnatasya[Collated code]]
 
 * *Other contributions*:
 
-** Project management:
-*** Created issues for respective milestones from v1.1 to v1.4.
-*** Assigned issues to some teammates.
-*** Reviewed pull requests from other members of the team (e.g. https://github.com/AY1920S2-CS2103-W15-2/main/pull/121[#121],
-https://github.com/AY1920S2-CS2103-W15-2/main/pull/96[#96], https://github.com/AY1920S2-CS2103-W15-2/main/pull/81[#81].
-
-** Enhancements to existing features:
-*** Enhanced the codebase and refactor it to suite the need of our application.
-*** Removed code from the codebase that are no longer used for the current application.
+** Project management (team-based tasks and review contribution):
+*** Created issues for respective milestones from v1.1 to v1.4 and assign them to my teammates.
+*** Report bugs discovered in the app and issue it to the team (e.g. https://github.com/AY1920S2-CS2103-W15-2/main/issues/197[#197])
+*** Reviewed pull requests from other members of the team (e.g. https://github.com/AY1920S2-CS2103-W15-2/main/pull/186[#186],
+https://github.com/AY1920S2-CS2103-W15-2/main/pull/121[#121], https://github.com/AY1920S2-CS2103-W15-2/main/pull/96[#96],
+https://github.com/AY1920S2-CS2103-W15-2/main/pull/81[#81])
+*** Created the logo for HireLah!
 
 ** Documentation:
 *** Enhanced user guide and developer guide to document things specific to our application (e.g.
-https://github.com/AY1920S2-CS2103-W15-2/main/pull/110[#110], https://github.com/AY1920S2-CS2103-W15-2/main/pull/119[#119].
-https://github.com/AY1920S2-CS2103-W15-2/main/pull/122[#122], https://github.com/AY1920S2-CS2103-W15-2/main/pull/136[#136].
+https://github.com/AY1920S2-CS2103-W15-2/main/pull/218[#128], https://github.com/AY1920S2-CS2103-W15-2/main/pull/110[#110],
+https://github.com/AY1920S2-CS2103-W15-2/main/pull/119[#119]. https://github.com/AY1920S2-CS2103-W15-2/main/pull/122[#122],
+https://github.com/AY1920S2-CS2103-W15-2/main/pull/136[#136])
+*** Documented a total of 6 sections describing the features of HireLah! in the User Guide.
+*** Documented the detail of state validity and finalise feature of HireLah! in the Developer Guide, with a total of 7 UML diagrams created.
 *** Removed irrelevant documentation of the codebase.
 
 ** Community:
-** Community:
-*** Discovered bug in other teams project and gave suggestions to remove those bugs
+*** Reported bugs in other teams project and gave suggestions to remove them
 (e.g. https://github.com/AY1920S2-CS2103T-F10-4/main/issues/158[158], https://github.com/nus-cs2103-AY1920S2/duke/pull/151[151])
-
-** Tools:
-*** Our team used TravisCI for building the project (https://github.com[#42])
 
 == Contributions to the User Guide
 
-
-|===
-|_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
-|===
-
-I have edited the user guide to comply with our application. I wrote parts in user guide specifically for the
-add, edit and delete commands of attributes, questions and interviewees. I also added guide for the navigation command.
+I contributed to the user guide to make it comply with our application function. I wrote parts in user guide specifically for the
+add, edit and delete commands of attributes, questions and interviewees. I also added guide for the feature to open an interview report,
+exporting an interview report and navigation to a certain part of the interview report feature.
 
 In addition, I also provides screenshots of the result of all commands execution that is included in the user guide
-to increase understandability and readability by the user.
-
-=== Add, Edit and Delete Commands for Attributes, Interviewees, and Questions
-include::../UserGuide.adoc[tag=interviewees]
-
-include::../UserGuide.adoc[tag=attributes]
-
-include::../UserGuide.adoc[tag=questions]
+to increase understandability and readability by the user. I also contributed to the summary of all the commands available in the application.
+Here are some of the example of my contributions to the User Guide.
 
 === Open Report Command
 include::../UserGuide.adoc[tag=open]
+
+=== Export Command
+include::../UserGuide.adoc[tag=export]
 
 === Navigation Command
 include::../UserGuide.adoc[tag=navigation]
 
 == Contributions to the Developer Guide
 
-|===
-|_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
-|===
-
-My contributions to the developer guide includes remaking UML diagram for ModelClassDiagram, as well as editing the
+My contributions to the developer guide includes providing one of the most important feature in the application which is
+state validity and finalise feature. I also remade the UML diagram for ModelClassDiagram, as well as editing the
 descriptions and instructions in the developer guide that was customised for the codebase instead of our current application.
+In total, I created 7 UML diagrams in the developer guide.
+
+=== State Validity and Finalise Feature
+include::../DeveloperGuide.adoc[tag=validstate]
 
 === Model
 include::../DeveloperGuide.adoc[tag=model]

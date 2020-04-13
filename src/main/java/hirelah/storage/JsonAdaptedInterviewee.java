@@ -16,7 +16,7 @@ import hirelah.model.hirelah.Transcript;
 /**
  * Jackson-friendly version of {@link Interviewee}.
  */
-class JsonAdaptedInterviewee {
+public class JsonAdaptedInterviewee {
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
     private final String fullName;
     private final Integer id;
@@ -56,8 +56,9 @@ class JsonAdaptedInterviewee {
     public Interviewee toModelType(QuestionList questionList, AttributeList attributeList,
                                    TranscriptStorage storage, Boolean finalised)
             throws IllegalValueException, DataConversionException {
-        Interviewee interviewee = new Interviewee(fullName, id);
 
+        Interviewee interviewee = new Interviewee(fullName, id);
+        System.out.println(interviewee.getFullName());
         if (alias != null) {
             interviewee.setAlias(alias);
         }

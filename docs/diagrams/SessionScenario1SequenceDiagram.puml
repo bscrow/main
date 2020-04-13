@@ -1,0 +1,33 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":PreSessionParser" as PreSessionParser LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("add interviewee Jane Doe")
+activate LogicManager
+
+LogicManager -> Model : getAppPhase()
+activate Model
+
+Model -> LogicManager : appPhase
+deactivate Model
+
+LogicManager -> PreSessionParser : parseCommand("add interviewee Jane Doe")
+activate PreSessionParser
+
+PreSessionParser --> LogicManager : throw ParseException("Unknown command")
+deactivate PreSessionParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+PreSessionParser -[hidden]-> LogicManager
+destroy PreSessionParser
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

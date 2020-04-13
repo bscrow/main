@@ -2,8 +2,8 @@ package hirelah.storage;
 
 import static hirelah.testutil.TypicalAttributes.getTypicalAttributes;
 import static hirelah.testutil.TypicalInterviewee.getIntervieweeList;
-import static hirelah.testutil.TypicalMetricList.getMetricList;
-import static hirelah.testutil.TypicalQuestionList.getTypicalQns;
+import static hirelah.testutil.TypicalMetric.getMetricList;
+import static hirelah.testutil.TypicalQuestions.getTypicalQns;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

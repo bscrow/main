@@ -3,7 +3,7 @@ package hirelah.storage.storagetests;
 import static hirelah.testutil.Assert.assertThrows;
 import static hirelah.testutil.TypicalAttributes.getTypicalAttributes;
 import static hirelah.testutil.TypicalInterviewee.intervieweeBeforeInterview;
-import static hirelah.testutil.TypicalQuestionList.getTypicalQns;
+import static hirelah.testutil.TypicalQuestions.getTypicalQns;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -22,10 +22,10 @@ import hirelah.storage.IntervieweeStorage;
 import hirelah.storage.TranscriptStorage;
 
 public class IntervieweeStorageTest {
+    public static final TranscriptStorage TRANSCRIPT_STORAGE = new TranscriptStorage(Paths.get("src", "test", "data",
+            "IntervieweeStorageTest", "transcript"));
     private static final Path TEST_DATA_FOLDER = Paths.get("src", "test", "data",
             "IntervieweeStorageTest");
-    private static final TranscriptStorage transcriptStorage = new TranscriptStorage(Paths.get("src", "test", "data",
-            "IntervieweeStorageTest", "transcript"));
     private static final boolean model = false;
     @TempDir
     public Path testFolder;
@@ -33,7 +33,7 @@ public class IntervieweeStorageTest {
     @Test
     public void readInterviewee_nullFilePath_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> readInterviewee(null, getTypicalQns(),
-                getTypicalAttributes(), model, transcriptStorage));
+                getTypicalAttributes(), model, TRANSCRIPT_STORAGE));
     }
     /**Create a readInterviewee method to support the tests*/
     private java.util.Optional<IntervieweeList> readInterviewee(String filePath, QuestionList questionList,
@@ -52,26 +52,26 @@ public class IntervieweeStorageTest {
     @Test
     public void read_missingFile_emptyResult() throws Exception {
         assertFalse(readInterviewee("NonExistentFile.json", getTypicalQns(),
-                getTypicalAttributes(), model, transcriptStorage).isPresent());
+                getTypicalAttributes(), model, TRANSCRIPT_STORAGE).isPresent());
     }
 
     @Test
     public void read_notJsonFormat_exceptionThrown() {
         assertThrows(DataConversionException.class, () -> readInterviewee("notJsonFormat.json", getTypicalQns(),
-                getTypicalAttributes(), model, transcriptStorage));
+                getTypicalAttributes(), model, TRANSCRIPT_STORAGE));
     }
 
     @Test
     public void readInterviewee_invalidIntervieweeList_throwDataConversionException() {
         assertThrows(DataConversionException.class, () -> readInterviewee("invalidInterviewee.json", getTypicalQns(),
-                getTypicalAttributes(), model, transcriptStorage));
+                getTypicalAttributes(), model, TRANSCRIPT_STORAGE));
     }
 
     @Test
     public void readInterviewee_invalidAndValidInterviewee_throwDataConversionException() {
         assertThrows(DataConversionException.class, () ->
                 readInterviewee("invalidAndValidInterviewee.json" , getTypicalQns(),
-                getTypicalAttributes(), model, transcriptStorage));
+                getTypicalAttributes(), model, TRANSCRIPT_STORAGE));
     }
     @Test
     public void readAndSaveInterviewees_allInOrder_success() throws Exception {
@@ -82,7 +82,7 @@ public class IntervieweeStorageTest {
         // Save in new file and read back
         intervieweeStorage.saveInterview(original);
         IntervieweeList readBack = intervieweeStorage.readInterviewee(filePath,
-                getTypicalQns(), getTypicalAttributes(), model, transcriptStorage).get();
+                getTypicalQns(), getTypicalAttributes(), model, TRANSCRIPT_STORAGE).get();
         assertEquals(original, readBack);
 
         // Modify data, overwrite exiting file, and read back, without specifying file path
@@ -90,7 +90,7 @@ public class IntervieweeStorageTest {
         original.deleteInterviewee("JANE");
         intervieweeStorage.saveInterview(original);
         readBack = intervieweeStorage.readInterviewee(filePath,
-                getTypicalQns(), getTypicalAttributes(), model, transcriptStorage).get();
+                getTypicalQns(), getTypicalAttributes(), model, TRANSCRIPT_STORAGE).get();
         assertEquals(original, readBack);
     }
     @Test

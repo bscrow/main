@@ -3,8 +3,8 @@ package hirelah.storage.storagetests;
 import static hirelah.testutil.Assert.assertThrows;
 import static hirelah.testutil.TypicalAttributes.getAttributePrefix;
 import static hirelah.testutil.TypicalAttributes.getTypicalAttributes;
-import static hirelah.testutil.TypicalMetricList.getMetricList;
-import static hirelah.testutil.TypicalMetricList.getSamplemetricWeight;
+import static hirelah.testutil.TypicalMetric.getMetricList;
+import static hirelah.testutil.TypicalMetric.getSamplemetricWeight;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 

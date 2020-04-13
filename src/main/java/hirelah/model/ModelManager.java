@@ -4,6 +4,7 @@ import static hirelah.commons.util.CollectionUtil.requireAllNonNull;
 import static java.util.Objects.requireNonNull;
 
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -283,8 +284,15 @@ public class ModelManager implements Model {
 
         // state check
         ModelManager other = (ModelManager) obj;
-        return userPrefs.equals(other.userPrefs);
+        return userPrefs.equals(other.userPrefs)
+                && Objects.equals(session, other.session)
+                && Objects.equals(appPhase, other.appPhase)
+                && finalisedInterviewProperties == other.finalisedInterviewProperties
+                && Objects.equals(currentInterviewee, other.currentInterviewee)
+                && Objects.equals(intervieweeList, other.intervieweeList)
+                && Objects.equals(attributeList, other.attributeList)
+                && Objects.equals(questionList, other.questionList)
+                && Objects.equals(metricList, other.metricList)
+                && bestNIntervieweeList.equals(other.bestNIntervieweeList);
     }
-
-
 }

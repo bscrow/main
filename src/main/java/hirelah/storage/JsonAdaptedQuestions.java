@@ -10,6 +10,7 @@ import hirelah.model.hirelah.Question;
  * Jackson-friendly version of {@link Question}.
  */
 public class JsonAdaptedQuestions {
+    public static final String MESSAGE_CONSTRAINTS = "Invalid Question!";
     private final String description;
 
     @JsonCreator
@@ -27,7 +28,7 @@ public class JsonAdaptedQuestions {
      */
     public Question toModelType() throws IllegalValueException {
         if (description == null) {
-            throw new IllegalValueException("Invalid Question");
+            throw new IllegalValueException(MESSAGE_CONSTRAINTS);
         }
         return new Question(description);
     }

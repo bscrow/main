@@ -23,7 +23,10 @@ public class NewSessionCommand extends Command {
     public static final String MESSAGE_ILLEGAL_PATH =
             "Cannot create a directory with this name! Please stick to Alphanumeric characters or spaces";
 
+    private static final String MESSAGE_EMPTY_SESSION = "The session's name cannot be left empty";
+
     private static final Pattern SESSION_NAME_FORMAT = Pattern.compile("[\\p{Alnum} ]+");
+
 
     private String sessionName;
 
@@ -33,6 +36,9 @@ public class NewSessionCommand extends Command {
 
     @Override
     public CommandResult execute(Model model, Storage storage) throws CommandException {
+        if (sessionName.equals("")) {
+            throw new CommandException(MESSAGE_EMPTY_SESSION);
+        }
         try {
             if (!SESSION_NAME_FORMAT.matcher(sessionName).matches()) {
                 throw new CommandException(MESSAGE_ILLEGAL_PATH);

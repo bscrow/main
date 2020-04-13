@@ -2,7 +2,7 @@ package hirelah.testutil;
 
 import static hirelah.testutil.TypicalAttributes.getTypicalAttributes;
 import static hirelah.testutil.TypicalInterviewee.getAnInterviewee;
-import static hirelah.testutil.TypicalQuestionList.getTypicalQns;
+import static hirelah.testutil.TypicalQuestions.getTypicalQns;
 
 import java.io.IOException;
 import java.nio.file.Path;

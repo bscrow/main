@@ -45,6 +45,7 @@ public class PreSessionParser {
 
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
+
         if (suppliers.containsKey(commandWord)) {
             return suppliers.get(commandWord).getCommand(arguments);
         } else {

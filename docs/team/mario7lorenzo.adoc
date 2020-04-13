@@ -88,6 +88,7 @@ https://github.com/AY1920S2-CS2103-W15-2/main/pull/173[#173])
 ** Documentation:
 *** Cleaned up and rework the User Guide and Developer Guide (Examples: https://github.com/AY1920S2-CS2103-W15-2/main/pull/10[#10],
 https://github.com/AY1920S2-CS2103-W15-2/main/pull/27[27], https://github.com/AY1920S2-CS2103-W15-2/main/pull/84[84])
+*** Works on the Instruction for Manual Testing
 
 ** Community:
 *** Offered suggestions for other teams in the class (Examples: https://github.com/nus-cs2103-AY1920S2/addressbook-level3/pull/12[12])
@@ -98,15 +99,8 @@ Listed below are sections I contributed to the User Guide, which includes the cr
 for attributes, questions, and metrics, as well as finding the best N interviewees from a certain parameter.
 
 
-include::../UserGuide.adoc[tag=attributes]
-
-include::../UserGuide.adoc[tag=questions]
 
 include::../UserGuide.adoc[tag=load]
-
-include::../UserGuide.adoc[tag=metrics]
-
-include::../UserGuide.adoc[tag=best]
 
 include::../UserGuide.adoc[tag=summary]
 
