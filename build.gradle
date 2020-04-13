@@ -55,6 +55,7 @@ dependencies {
     testCompile "org.testfx:testfx-core:4.0.16-alpha"
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.1'
     testCompile "org.testfx:testfx-junit5:4.0.16-alpha"
+    testRuntimeOnly group: 'org.testfx', name: 'openjfx-monocle', version: 'jdk-11+26'
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'mac'
     implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'linux'
@@ -98,6 +99,23 @@ task coverage(type: JacocoReport) {
         xml.enabled = true
     }
 }
+
+task headless {
+    doLast {
+        println 'Setting headless mode properties.'
+        test {
+            systemProperties = [
+                    'java.awt.headless': 'true',
+                    'testfx.robot': 'glass',
+                    'testfx.headless': 'true',
+                    'prism.order': 'sw',
+                    'prism.text': 't2k',
+                    'headless.geometry': '1600x1200-32'
+            ]
+        }
+    }
+}
+
 
 coveralls {
     sourceDirs = sourceSets.main.allSource.srcDirs.absolutePath
