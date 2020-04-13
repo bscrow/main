@@ -1,0 +1,37 @@
+@startuml
+
+
+
+enum ToggleView {
+    SESSION
+    INTERVIEW
+    INTERVIEWEE
+    BEST_INTERVIEWEE
+    ATTRIBUTE
+    METRIC
+    QUESTION
+    TRANSCRIPT
+    CLOSE_TRANSCRIPT
+}
+
+class CommandResult {
+-String: FeedbackToUser
+
++String getFeedbackToUser
++displayResult(MainWindow mainWindow)
+}
+
+class ToggleCommandResult {
+-ToggleView: toggleview
+}
+
+class NavigationCommandResult {
+-int: index
+}
+
+CommandResult <|-- ToggleCommandResult
+CommandResult <|-- NavigationCommandResult
+ToggleCommandResult ..> ToggleView
+
+@enduml
+

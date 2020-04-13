@@ -15,63 +15,57 @@ endif::[]
 
 == About the Project
 
-HireLah! is targeted to bring greater convenience to interviewers who can type quickly and prefer typing over mouse +
-commands. Additionally, we included customised features in our desktop apps to help interviewers to manage interviews.
+Our team of 5 NUS students were tasked to enhance AddressBook3, a basic Command Line Interface (CLI) desktop application
+for the module CS2103 Software Engineering Projects. Over the past few weeks, we have morphed the desktop application into
+an interview productivity app, HireLah!. HireLah! is targeted to bring greater convenience to interviewers who can
+type quickly and prefer typing over mouse commands. Additionally, we included customised features in HireLah! to help
+interviewers to manage multiple interview sessions at the same time.
 
-=== My Role
 
-My role was to design and write codes to create the Graphical User Interface (GUI) of HireLah!, such that the GUI is +
-elegant and convenient to use. I will elaborate on my contributions in the following sections.
+My role was to design and write codes in Java and FXML to create the Graphical User Interface (GUI) of HireLah!, such
+that the GUI is elegant and convenient to use. I will elaborate on my contributions in the following sections.
 
-Listed in the table below are some notations that are used throughout the document.
-
-.Legend table
-[#Legend]
-[width="100%",cols="^15%,85%",options="header"]
-|===
-a| *Icon* | *Description*
-a| `command` | Command that can be executed, or a component, class or object in the architecture of the application
-a| icon:lightbulb-o[role="icon-tip", size="2x"] | Tips that might be helpful in navigating the application
-a| icon:info-circle[role="icon-note blue", size="2x"] | Important information that should be noted
-a| ====
-==== | Useful information for a deeper understanding of the command
-|===
-
-As shown in <<Legend>>, these icons associated to their following descriptions, such as commands, tips, important information and useful information, enable greater clarity in understanding the document. Note that useful information will have text enclosed in its box.
 
 == Summary of contributions
 
 This section shows a summary of my contributions to the team project.
 
-* *Major enhancement #1*: Designed and implemented the UI components of HireLah!
-** What it does: It enables users to view all the information relevant to an interview, including the list of +
-interviewees, lists of rubrics (including attributes, questions and metrics), as well as the transcript of each +
-interviewee after an interview. This can be done via the `list` as well as `open` commands.
+* *Major enhancement*: Designed and implemented the UI components of HireLah!
+** What it does: It enables users to view all the information relevant to an interview, including the list of
+interviewees, lists of rubrics (including attributes, questions and metrics), as well as the transcript of each
+interviewee after an interview. The UI receives user commands after they have been parsed within the Logic component and
+updates according to the user's commands via polymorphism.
 
-** Justification: This feature allows an user to easily navigate between and find the information that he/she needs in +
+** Justification: This feature allows an user to easily navigate between and find the information that he/she needs in
 order to conduct an interview, without the hassle of cross-referencing various sources of information.
+
 ** Highlights: This feature depends on the backend implementation of HireLah! and therefore requires consistent
-communication with the rest of my teammates in order to correctly display features implemented by them. This is not +
-easy as I have to take into account the constraints of the UI elements and possible use cases, such as inputting long +
-paragraphs of text or resizing the application, and ensure that the UI still displays correctly.
+communication with the rest of my teammates in order to correctly display features implemented by them. This is not
+easy as I have to take into account the constraints of the UI elements and possible use cases, such as inputting long
+paragraphs of text or resizing the application, and ensure that the UI still displays correctly. As new features are
+added to HireLah!, such as the implementation of sessions, I have to update the UI accordingly as well.
 
 
-* *Code contributed*: The code that I have contributed to HireLah! can be found [https://nus-cs2103-ay1920s2.github.io/tp-dashboard/#search=mario7lorenzo[here]].
+* *Code contributed*: The code that I have contributed to HireLah! can be found
+[https://nus-cs2103-ay1920s2.github.io/tp-dashboard/#search=bscrow[here]].
 
 == Other contributions
 
 ** Project management
-*** Created issues for v1.3 and v1.4
-
+*** Created and managed issues during v1.3 and v1.4.
+*** Reviewed pull requests of team mates.
+*** Created bug reports and assigned them according to our roles. https://github.com/AY1920S2-CS2103-W15-2/main/issues/195[#195]
 
 ** Enhancements to existing features:
+*** Added ToggleView enums and refactored CommandResults to pass the correct ToggleView enum to the UI https://github.com/AY1920S2-CS2103-W15-2/main/pull/40[#40]
 *** Refactored list commands https://github.com/AY1920S2-CS2103-W15-2/main/pull/56[#56]
 *** Edited Transcript class to have a complete property https://github.com/AY1920S2-CS2103-W15-2/main/pull/113[#113]
 
 ** Documentation:
-*** Updated UserGuide for Metrics https://github.com/AY1920S2-CS2103-W15-2/main/pull/66[#66] and advanced GUI features +
+*** Updated the User Guide to reflect changes in v1.4, writing sections 1 - 4 of the User Guide.
+*** Updated User Guide for Metrics https://github.com/AY1920S2-CS2103-W15-2/main/pull/66[#66] and advanced GUI features
 https://github.com/AY1920S2-CS2103-W15-2/main/pull/112[#112]
-*** Updated Architecture Diagram for UI in the Developer Guide
+*** Documented the implementation of UI in Developer's Guide
 
 == Contributions to the User Guide
 
@@ -79,6 +73,11 @@ https://github.com/AY1920S2-CS2103-W15-2/main/pull/112[#112]
 |===
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
+
+include::../UserGuide.adoc[tag=intro]
+
+{empty} +
+{empty} +
 
 include::../UserGuide.adoc[tag=gui]
 
@@ -88,11 +87,9 @@ include::../UserGuide.adoc[tag=gui]
 |_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
 
-image::UiClassDiagram.png[]
+include::../DeveloperGuide.adoc[tag=ui]
 
+{empty} +
+{empty} +
 
-== PROJECT: PowerPointLabs
-
----
-
-_{Optionally, you may include other projects in your portfolio.}_
+include::../DeveloperGuide.adoc[tag=uicommand]

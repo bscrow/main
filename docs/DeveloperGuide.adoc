@@ -99,6 +99,7 @@ image::ArchitectureSequenceDiagram.png[]
 
 The sections below give more details of each component.
 
+// tag::ui[]
 [[Design-Ui]]
 === UI component
 
@@ -134,7 +135,7 @@ image::UiSwitchPanelActivityDiagram.png[]
 .Structure of the InterviewPanel used to display an interview session
 image::UiInterviewPanelClassDiagram.png[]
 
-
+// end::ui[]
 
 [[Design-Logic]]
 // tag::logic[]
@@ -373,6 +374,65 @@ best interviewees list to point to this list, and the MainWindow's BestInterview
 
 // end::findbestfeature[]
 
+// tag::uicommand[]
+=== Updating UI elements after user commands
+
+==== Description
+A lot of things goes on during the interview process. As such, HireLah! needs to handle different types of input commands
+from the user and update the GUI accordingly in response. AddressBook3, which HireLah! is based on, uses the `CommandResult`
+class to achieve this. Based on our design of HireLah! however, there are three types of command outcomes that the user's
+input may give:
+
+. Toggle to see a different list of information, for example toggling from the `SessionPanel`, which lists out the information
+of all interview sessions created on HireLah!, to `InterviewPanel`, which shows the details of one interview session.
+
+. Scroll to a particular entry in a list. This is required for the `goto` command, which allows the user to see an
+interviewee's remarks at a particular timestamp by scrolling the `RemarkList` to a particular index.
+
+. Simply printing out a message in the `ResultDisplay` to show the user.
+
+
+==== Implementation
+In order to handle all three types of command outcomes, we have decided to extend the original `CommandResult` class to
+produce two new subclasses: `ToggleCommandResult`, which handles type 1 outcomes, and `NavigationCommandResult`, which
+handles type 2 outcomes. The original `CommandResult` class is used to handle type 3 outcomes.
+
+In addition, we have implemented the `ToggleView` enum, which is returned as an attribute in `ToggleCommandResult` to inform
+the UI on the UI component to toggle to.
+
+Given below is a class diagram to summarise the characteristics of these three CommandResult classes, as well as the
+ToggleView enum:
+
+image::CommandResultClassDiagram.png[]
+
+==== Design Considerations
+
+===== Aspect: How to design and update the UI components
+`ToggleCommandResult` also signals that the relevant UI component needs to be updated, and decisions have to be made on
+how the implicated UI components should be updated
+
+* *Alternative 1*: Reinitialise the entire UI after every command
+** Pros: This will definitely update the changes required of the UI accordingly, as the new UI can be built to reflect the
+current state of the `Model`.
+** Cons: This method is extremely inefficient, and may slow down the application considerably when the user has entered a
+lot of information.
+* *Alternative 2*: Update only the UI component affected if necessary, for eg `IntervieweeListPanel`
+** Pros: This is a lot more efficient compared to Alternative 1.
+** Cons: Some commands, such as `:end` which ends an interview with an interviewee needs multiple UI components to be updated,
+such as `IntervieweeListPanel`, `RemarkList` and `SessionInformationCard`, and this method only updates `IntervieweeListPanel`
+as this command returns the ToggleView enum INTERVIEWEE.
+
+Current Implementation: We have taken a compromise between the two approaches. UI components that are often updated together
+are grouped together, such as `IntervieweeListPanel` and `SessionInformationCard`, such that they are always updated together.
+In addition, we made use of Observable classes to reduce the number of times an UI component needs to be reinitialised.
+
+===== Aspect: How to display the Interviewee's scores for each `Attribute` most suitably
+
+* *Alternative 1* Bar Chart
+** Pros: Able to display
+
+
+// end::uicommand[]
 
 === Logging
 

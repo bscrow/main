@@ -16,6 +16,8 @@ endif::[]
 
 By: `AY1920S2-W15-2`      Since: `Feb 2020`
 
+// tag::intro[]
+
 == Introduction
 
 *HireLah!* is a productivity app that helps busy interviewers like you manage multiple interview sessions in an orderly
@@ -163,6 +165,8 @@ Refer to <<Result Display Box>>
 
 ==== Command Box
 Refer to <<Command Box>>
+
+// end::intro[]
 
 == Features
 
