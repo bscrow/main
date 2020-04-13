@@ -18,27 +18,150 @@ By: `AY1920S2-W15-2`      Since: `Feb 2020`
 
 == Introduction
 
-HireLah! is an app that helps interviewers manage their interviewees, the attributes
-you look out for in these interviewees, and the questions to ask during the interviews.
-As a complete solution for interviewers, HireLah! also helps interviewers conduct interviews
-on the app and identify the best interviewees.
+*HireLah!* is a productivity app that helps busy interviewers like you manage multiple interview sessions in an orderly
+manner. During each interview session, *HireLah!* helps you to keep track of interviewee information and interview
+rubrics in one central location so that you can focus on what's important - the interview itself!
+{empty} +
+{empty} +
+
+*HireLah!* has the following main features:
+
+. Manage multiple interview sessions, one for each different job position you are conducting interview for.
+. Add and modify interview rubrics for each interview session, including:
+.. A list of attributes you want to look out for in an interviewee.
+.. A set of questions that you would like to ask all interviewees.
+.. A collection of metrics to score interviewees, allowing you to easily rank potential candidates.
+. Record you remarks for an interviewee during an interview, and score the interviewee based on the attributes.
+. Identify the best interviewees based on particular attributes or metrics, so that you can follow up with them.
+{empty} +
+{empty} +
+
+*HireLah!* is optimised for interviewers who are fast typists and prefer typing over other means of input. It comes with:
+
+* A Command Line Interface (CLI) which allows you to access all *HireLah!* features by typing.
+* A Graphical User Interface (GUI) that displays the information you need to conduct an interview, with limited GUI
+convenience features.
+
+== About this Guide
+
+=== Basic Information
+This User Guide explains how you can use *HireLah!* to help you manage your interviews.
+
+You may refer to <<Quick Start>> for a short tutorial on how to run *HireLah!* on your device and use *HireLah!*'s main
+features. Please refer to <<GUI Components>> for a breakdown of *HireLah!*'s GUI components. For a full walkthrough of
+*HireLah!*, please refer to <<Features>>.
+
+If you encounter any difficulties while using *HireLah!*, you can refer to <<FAQ>> for a list of common issues.
+
+If you are an experienced CLI user, you can find all the *HireLah!* commands under <<Command Summary>>.
+
+=== Command Format
+This section explains the format of commands in this User Guide:
+====
+*Command Format*
+
+* Words in `<angular brackets>` are the parameters to be supplied by the user e.g. in `add interviewee <full name>`, `<full name>` is a parameter which can be used as `add interviewee John Doe`.
+* Items in square brackets are optional e.g `<full name> [-aka <alias>]` can be used as `John Doe -aka Jo` or as `John Doe`.
+* Items with `…`​ after them can be used multiple times including zero times, unless otherwise stated e.g. `[-a <attribute> -w <weight>]...` can be used as, `-a ambition -w 0.5`, `-a ambition -w 0.5 -a teamwork -w 0.1` etc.
+====
 
 == Quick Start
 .  Ensure you have Java 11 or above installed in your Computer.
 .  Download the latest `HireLah.jar` link:{repoURL}/releases[here].
 .  Copy the file to the folder you want to use as the home folder for your HireLah!.
-.  Double-click the file to start the app. The GUI should appear in a few seconds.
+.  Double-click the file to start the app. The following window should appear within a few seconds - this is the Session
+Screen, where you can create, open, or delete interview sessions:
 +
-image::Ui.png[width="790"]
+.Image of the Session Screen
+image::Screenshots/EmptySessionScreen.png[width="790"]
 +
 .  Type the command in the command box and press kbd:[Enter] to execute it. +
 e.g. typing *`help`* and pressing kbd:[Enter] will open this user guide.
 .  Some example commands you can try:
-
+* *`new`* `CEO Interview`: creates an interview session named "CEO Interview" and opens the Interview Screen.
++
+.Image of the Interview Screen
+image::Screenshots/EmptyInterviewScreen.png[width="790"]
++
+.  Once you are on the Interview Screen shown above, here are some example commands you can try:
 * *`add interviewee`* `John Doe`: adds an interviewee named John Doe to the application
 * *`add question`* `How old are you?`: adds the question to the application
 * *`exit`*: exits the app
-.  Refer to <<Features>> for details of all the commands.
+.  Refer to <<GUI Components>> for an explanation of the GUI and <<Features>> for details of all the commands.
+
+== GUI Components
+*HireLah!* consists of two main screens, the Session Screen as well as the Interview Screen, as shown below.
+
+=== Session Screen
+.Breakdown of the Session Screen
+image::Screenshots/GUIComponent1.png[width="790"]
+
+==== Menu Bar
+You may use the Menu Bar to access this User Guide, or to exit *HireLah!*.
+
+==== Session List Display
+Displays a list of all current interview sessions that has been created using *HireLah!*
+
+==== Result Display Box
+The Result Display Box displays success and error messages for your last command.
+
+==== Command Box
+This is where you can type commands into the CLI to interact with this app.
+
+{empty} +
+
+=== Interview Screen
+.Breakdown of the Interview Screen
+image::Screenshots/GUIComponent2.png[width="790"]
+
+==== Menu Bar
+Refer to <<Menu Bar>>
+
+==== Session Info Display
+This panel displays a few meta information about this interview session, in order:
+
+* The name given to this interview session.
+* The number of interviewees that has been interviewed over the total number of interviewees.
+* Whether this session has been finalised. Refer to <<Finalise Interview Attributes and Questions>> for more information.
+
+==== Interviewee List Display
+Interviewee List Display shows the current list of interviewees. This list will display either the list of all
+interviewees, or a list of the best few interviewees selected based on your input ranking criteria, as shown below: (See <<Find Best Candidates>>)
+
+.*LEFT* List of all interviewees, *RIGHT* List of best interviewees.
+image::Screenshots/IntervieweeVSBestInterviewee.png[width="500"]
+
+Each interviewee card contains the full name, ID and alias of the interviewee. It also shows whether the
+interviewee has had uploaded a resume (indicated by a green circle with a tick beside "Resume:") and the interview
+status of the interviewee (white circle indicates the interviewee has not been interviewed, yellow circle indicates
+that interview with this interviewee is currently underway/incomplete, green circle indicates that the interview with
+this interviewee has been completed).
+
+In addition, if the list of best interviewees is being shown, the score of each interviewee based on the ranking
+criteria will be displayed on each interviewee's card.
+
+==== Transcript Panel
+Transcript Panel displays the interview transcript of an interviewee. It consists of two sub-components:
+
+* A Detailed Interviewee Card on the left, which contains:
+  . Full name, ID and alias of the interviewee.
+  . A button that opens the interviewee's resume.
+  . A table showing the score assigned to the interviewee for each attribute that this interview looks out for. If an
+attribute has not been scored yet, the score will be shown as "-".
+
+* A Remarks List showing the time-stamped remarks entered by the user about the interviewee during the interview. The
+list also contains question headers, indicating that the remarks entered after it are in response to the interviewee's
+answer to the particular question.
+
+==== Rubrics Panel
+Rubrics Panel displays information about attributes, questions and metrics created for this interview session. You can
+easily toggle between these lists of information by clicking on the respective tab headers at the top of this Panel.
+
+==== Result Display Box
+Refer to <<Result Display Box>>
+
+==== Command Box
+Refer to <<Command Box>>
 
 == Features
 
@@ -51,19 +174,13 @@ Generally, in an interview session (for example, an interview for a role in a co
 . Decision phase - after interviewing all candidates, the interviewer summarises his/her opinions, refers
   to the remarks he/she made of each interviewee and decides who to select
 
-These 3 phases are clearly defined in HireLah!. What you can do in each phase is listed below.
+These 3 phases are clearly defined in *HireLah!*. What you can do in each phase is listed below.
 
-====
-*Command Format*
 
-* Words in `<angular brackets>` are the parameters to be supplied by the user e.g. in `add interviewee <full name>`, `<full name>` is a parameter which can be used as `add interviewee John Doe`.
-* Items in square brackets are optional e.g `<full name> [-aka <alias>]` can be used as `John Doe -aka Jo` or as `John Doe`.
-* Items with `…`​ after them can be used multiple times including zero times, unless otherwise stated e.g. `[-a <attribute> -w <weight>]...` can be used as, `-a ambition -w 0.5`, `-a ambition -w 0.5 -a teamwork -w 0.1` etc.
-====
 
 === Start Session
 
-HireLah! takes care of this for you! By default, the first time you use HireLah!, the app will create a new folder
+*HireLah!* takes care of this for you! By default, the first time you use HireLah!, the app will create a new folder
 `/data` in the same directory as the app and save your session data there. To learn how to configure your interview
 sessions (starting a fresh session, renaming your session, changing sessions) refer to <<FAQ>>.
 
@@ -80,8 +197,8 @@ _Action:_ This user guide is opened as a PDF with your system's default PDF view
 // tag::interviewees[]
 ==== Add, Edit and Delete Interviewees
 
-HireLah! allows you to manage your list of candidates from within the app. You can add interviewees to the list
-by giving their full name, and HireLah! automatically generates a unique ID for each candidate. To make things easier,
+*HireLah!* allows you to manage your list of candidates from within the app. You can add interviewees to the list
+by giving their full name, and *HireLah!* automatically generates a unique ID for each candidate. To make things easier,
 you can also specify an alias (a shorter name) to the interviewee, so you need not memorise their IDs or type out their
 full names every time.
 
@@ -124,6 +241,7 @@ Deleted interviewee: Janice Doe
 ....
 
 image::Screenshots/Interviewee.png[]
+{empty} +
 
 ==== Upload Resume
 
@@ -142,15 +260,16 @@ upload <interviewee> [-p <path>]
 > upload Jane Doe
 ....
 
-_Action:_ Resume is uploaded for the interviewee Jane Doe.
+_Action:_ Resume is selected by the user via a file-picker window and then uploaded for the interviewee Jane Doe.
 
-_Output:_
+_Output after selecting the resume file:_
 
 ....
 Successfully added the resume!
 ....
 
 image::Screenshots/Upload.png[]
+{empty} +
 
 ==== Open Resume
 
@@ -169,6 +288,7 @@ _Output:_
 ....
 Resume of Jane Doe opened.
 ....
+{empty} +
 // end::interviewees[]
 
 [[Attributes]]
@@ -176,7 +296,7 @@ Resume of Jane Doe opened.
 ==== Add, Edit and Delete Attributes
 
 In an interview, you often look out for a particular set of attributes in your candidates.
-HireLah! lets you keep track of what to look out for during the interview, and even assign
+*HireLah!* lets you keep track of what to look out for during the interview, and even assign
 scores for each attribute to the interviewees so you can compare them after interviewing.
 
 [TIP]
@@ -215,15 +335,15 @@ Deleted attribute: teamwork
 ....
 
 image::Screenshots/Attribute.png[]
+{empty} +
 // end::attributes[]
 
 // tag::questions[]
 ==== Add, Edit and Delete Interview Questions
 
-Before the interview process, the interviewer may one to review the
-questions. During review process, the interviewer may wants to add more
-questions, remove the unnecessary questions and to edit the existing
-questions.
+Before the interview process, the interviewer may wish to review the
+questions. During review process before the commencement of interviews, the interviewer may want to add more
+questions, remove unnecessary questions or modify existing questions.
 
 *Command*
 
@@ -243,8 +363,8 @@ delete question <question number>
 > delete question 1
 ....
 
-_Action:_ A question "What are your relevant experiences?" will be added.
-Then, question 1 and 2 will be edited, before question 1 is deleted.
+_Action:_ The question "What are your relevant experiences?" will be added first, followed by the question "What are
+your strengths?". Then, question 1 and 2 are edited, before question 1 is deleted.
 
 _Output:_
 
@@ -261,14 +381,14 @@ Deleted question: What do you hope to accomplish in 5 years?
 ....
 
 image::Screenshots/Question.png[]
-
+{empty} +
 // end::questions[]
 
 ==== Switching views
 
 When working on the attributes, questions and metrics (more about metrics in <<Metrics>>),
-HireLah! displays the relevant content you are working on on the right side of the application.
-To switch views, HireLah! also provides these commands.
+*HireLah!* displays the relevant content you are working on on the right side of the application.
+To switch views between them, *HireLah!* also provides these commands.
 
 *Command*
 
@@ -289,7 +409,8 @@ Here is the list of questions:
 
 Here is the list of metrics:
 ....
-
+{empty} +
+{empty} +
 On the left side of the application, all of the interviewees are listed. It will switch to only show several
 best interviewees when the the command is entered by the user. To switch back to list down the interviewees, HireLah!
 provides this command.
@@ -307,11 +428,13 @@ _Output:_
 ....
 Here is the list of interviewees:
 ....
-
+{empty} +
 
 ==== Finalise Interview Attributes and Questions
 
-After the interviewer is satisfied with the list of questions and attributes created for an interview session, the interviewer must finalise changes in attributes and questions. This is to ensure that the interviewers will evaluate all interviewees fairly and equally using the same set of questions and attributes.
+After the interviewer is satisfied with the list of questions and attributes created for an interview session, the
+interviewer must finalise changes in attributes and questions. This is to ensure that the interviewers will evaluate all
+interviewees fairly and equally using the same set of questions and attributes.
 
 *Command*
 
@@ -326,6 +449,7 @@ Attributes and questions of this interview session has been finalised. You canno
 ....
 
 image::Screenshots/Finalise.png[]
+{empty} +
 
 === Interview Phase
 
@@ -352,21 +476,22 @@ also starts the interview time.
 _Output:_
 
 ....
-Interview with Jane Doe started
+Interview with Jane Doe started!
 ....
 
 image::Screenshots/Interview.png[]
+{empty} +
 
 *Command*
 
 ....
-resume <interviewee>
+:resume <interviewee>
 ....
 
 *Example*
 
 ....
-> resume Jane Doe
+> :resume Jane Doe
 ....
 
 _Action:_ Opens the resume of Jane Doe. It is not necessary to only open Jane Doe's resume during the interview.
@@ -377,13 +502,13 @@ _Output:_
 ....
 Opening resume..
 ....
+{empty} +
 
 ==== Record Remarks
 
-After starting the interview, HireLah! allows you to easily take notes within the app itself.
-Anything you type in the Command Box (except sentences starting with resume),
-will be recorded as interview remarks, which are timestamped, allowing you to easily navigate your interview remarks
-after the interview is over.
+After starting the interview, *HireLah!* allows you to easily take notes within the app itself.
+Anything you type in the Command Box, will be recorded as interview remarks, which are timestamped, allowing you to
+easily navigate your interview remarks after the interview is over.
 
 *Command*
 
@@ -407,6 +532,7 @@ Added the remark.
 ....
 
 image::Screenshots/Remark.png[]
+{empty} +
 
 ==== Asking Questions
 
@@ -449,6 +575,7 @@ Added the remark
 _Action:_ Marks the start of question 1, then adds some remarks related to question 1.
 
 image::Screenshots/StartQuestion.png[]
+{empty} +
 
 ==== Score attributes
 
@@ -458,24 +585,25 @@ attributes you have created earlier (see <<Attributes>>).
 *Command*
 
 ....
-:<attribute> <score>
+:set <attribute> <score>
 ....
 
 *Example*
 
 ....
-> :leadership 5
+> :set leadership 5
 ....
 
-_Action:_ update the Leadership score for John Doe (displayed on a bar chart).
+_Action:_ update the leadership score for John Doe (displayed in a table).
 
 _Output:_
 
 ....
-Scored 5.00 to Leadership
+Scored 5.00 to leadership
 ....
 
 image::Screenshots/AttributeScore.png[]
+{empty} +
 
 ==== End interview
 
@@ -484,7 +612,7 @@ you will not be allowed to make any more remarks or change the interviewee's sco
 Don't end prematurely!
 
 [TIP]
-HireLah! will not allow you to end the interview if you have not assigned a score
+*HireLah!* will not allow you to end the interview if you have not assigned a score
 on all the attributes!
 
 *Command*
@@ -504,12 +632,153 @@ _Action:_ Ending the interview session.
 _Output_:
 
 ....
-Ended interview with John Doe.
+Ended interview with Jane Doe.
 ....
 
 image::Screenshots/EndInterview.png[]
+{empty} +
 
 === Decision Phase
+
+
+// tag::report[]
+==== Viewing Interviewee Reports
+After interviewing a candidate, you can view the interview transcript any
+time by doing an open command. To close the report, you can use a close command.
+
+*Command*
+....
+
+open <interviewee>
+close <interviewee>
+....
+
+*Example*
+
+....
+> open Jane Doe
+....
+
+_Action_: Shows the entire list of remarks made during the interview, with
+their timestamps.
+
+_Output_:
+
+....
+Successfully opened Interviewee report: Jane Doe
+....
+
+image::Screenshots/Report.png[]
+{empty} +
+// end::report[]
+
+[[Metrics]]
+// tag::metrics[]
+==== Add, Edit and Delete Metrics
+
+After the interview process, the interviewer may want to compare the interviewed interviewees by
+creating a custom metric to determine the relative importance of several attributes. Each metric
+assigns a weight to one or more Attributes, and interviewees can be ranked based on their score calculated by
+this metric via the `interviewee -best` command (see <<Find Best Candidates>>.
+
+
+add metric <name> -a <attribute> -w <weight> [-a <attribute> -w <weight>]...
+edit metric <name> [-n <metric name>] [-a <attribute> -w <weight>]...
+delete metric <name>
+
+image::Screenshots/Metric.png[]
+{empty} +
+// end::metrics[]
+
+// tag::export[]
+==== Exporting Interviewee Reports to PDF
+
+After interviewing a candidate, you can also export the report of the interviewee
+in the form of a PDF.
+
+*Command*
+
+....
+export <interviewee>
+....
+
+*Example*
+
+....
+> export Jane Doe
+....
+
+_Action_: Exports the interview report of a particular interviewee in PDF.
+
+_Output_:
+
+....
+Report of Anna exported in /Users/jane/main with file name "2.pdf".
+....
+
+image::Screenshots/Export.png[]
+// end::export[]
+
+// tag::navigation[]
+==== Working in an Interviewee Report
+
+After opening a report, you can scroll up and down to navigate through
+the remarks you made during the interview. In addition, you can zoom in
+on a particular moment in the interview by question number, or by the
+interview time.
+
+===== Navigating by Question Number
+
+Jumps to the point when the interviewee was
+answering the given question (marked by the `:start q<question number>` command).
+
+*Command*
+
+....
+goto q<question number>
+....
+
+*Example*
+
+....
+> goto q2
+....
+
+_Output_:
+
+....
+Here is the remark of question 2!
+....
+
+image::Screenshots/NavigationQuestion.png[]
+{empty} +
+
+===== Navigating by Timestamp
+
+Scrolls the list of remarks to the given time.
+The user can scroll up and down to see the rest of the remarks.
+
+*Command*
+
+....
+goto <time>
+....
+
+*Example*
+
+....
+> goto 2.00
+....
+
+_Output_:
+
+....
+Here is the remark at time 2.00!
+....
+
+image::Screenshots/NavigationTime.png[]
+{empty} +
+// end::navigation[]
 
 [[Metrics]]
 // tag::metrics[]
@@ -561,135 +830,43 @@ New metric added: extremeLeader
 image::Screenshots/Metric.png[]
 // end::metrics[]
 
-// tag::report[]
-==== Viewing Interviewee Reports
-
-After interviewing a candidate, you can view the interview transcript any
-time by doing an open command. To close the report, simply just switch to another view
-via the list commands (see <<Switching views>>) or open another person's report.
-
-*Command*
-
-....
-open <interviewee>
-....
-
-*Example*
-
-....
-> open Jane Doe
-....
-
-_Action_: Shows the entire list of remarks made during the interview, with
-their timestamps.
-
-_Output_:
-
-....
-Successfully opened Interviewee report: Jane Doe
-....
-
-image::Screenshots/Report.png[]
-// end::report[]
-
-// tag::navigation[]
-==== Working in an Interviewee Report
-
-After opening a report, you can scroll up and down to navigate through
-the remarks you made during the interview. In addition, you can zoom in
-on a particular moment in the interview by question number, or by the
-interview time.
-
-===== Navigating by Question Number
-
-Jumps to the point when the interviewee was
-answering the given question (marked by the `:start q<question number>` command.
-
-*Command*
-
-....
-goto q<question number>
-....
-
-*Example*
-
-....
-> goto q2
-....
-
-_Output_:
-
-....
-Here is the remark of question 2!
-....
-
-image::Screenshots/NavigationQuestion.png[]
-
-===== Navigating by Timestamp
-
-Scrolls the list of remarks to the given time.
-The user can scroll up and down to see the rest of the remarks.
-
-*Command*
-
-....
-goto <time>
-....
-
-*Example*
-
-....
-> goto 1.00
-....
-
-_Output_:
-
-....
-Here is the remark at time 1.00!
-....
-
-image::Screenshots/NavigationTime.png[]
-// end::navigation[]
-
 // tag::best[]
 ==== Find Best Candidates
 
-After interviewing all the candidates, HireLah! can help you analyse the candidates and show
-you who scored the best in the attributes you set. By default, HireLah! allows you to compare by
+After interviewing all the candidates, *HireLah!* can help you analyse the candidates and show
+you who scored the best in the attributes you set. By default, *HireLah!* allows you to compare by:
 
-. The candidates' average scores across all attributes
-. A single attribute (eg. find who scored the highest in leadership)
-
-However you can also specify your own custom scoring metric (see <<Metrics>>).
+. The candidates' average scores across all attributes.
+. A single attribute (eg. find who scored the highest in leadership).
+. Your own custom scoring metric (see <<Metrics>>).
 
 [TIP]
-Take note that HireLah! will only compare interviewees who have completed their interviews
+Take note that *HireLah!* will only compare interviewees who have completed their interviews
 (Those who you have successfully performed an `:end` command after interviewing). This is
 to make sure all the compared candidates have been scored in all attributes.
 
 [TIP]
 In case there are ties in terms of the score, e.g. if we would like to retrieve the best 5 interviewees,
-but the score between the fifth and the sixth interviewees, both interviewees will be shown.
+but the score is the same between the fifth and the sixth interviewees, both interviewees will be shown.
 
 *Command*
 
 ....
-best <number of candidates>
-best <number of candidates> [-a <attribute>]
-best <number of candidates> [-m <metric>]
+interviewee -best <number of candidates> [-a <attribute>]
+interviewee -best <number of candidates> [-m <metric>]
 ....
 
 *Example*
 
 ....
-best 1
-best 2 -m extremeLeader
-best 3 -a leadership
+interviewee -best 1
+interviewee -best 2 -m extremeLeader
+interviewee -best 3 -a leadership
 ....
 
-_Action_: Firstly, HireLah! will show top 1 interviewees in overall score.
-Then, it will show the top 2 interviewees based on their leadership score. Finally, it will
-show the top 3 interviewees based on the extremeDictatorship metric.
+_Action_: Firstly, *HireLah!* will show the top interviewee in overall score.
+Then, it will show the top 2 interviewees based on the extremeLeader metric. Finally, it will
+show the top 3 interviewees based on their leadership score.
 
 _Output_:
 
@@ -702,7 +879,6 @@ Here are the best 3 interviewees.
 ....
 
 image::Screenshots/Best.png[]
-
 // end::best[]
 
 == Advanced Features
@@ -715,94 +891,86 @@ precious time, possibly missing some important thing the interviewee said. HireL
 thus allows you to simply type part (a prefix) of the full word, as long as it
 uniquely identifies an attribute.
 
-For example, if you have the following attributes
+For example, if you have the following attributes:
 
 * Leadership
 * Ambition
 * Team player
 * Team motivator
 
-Then
+{empty} +
+Then:
 
 * "L", "Le" or any longer prefix can uniquely identify "Leadership"
 * "A" sufficiently identifies "Ambition"
 * "Team" **cannot** identify "Team player" as "Team motivator" shares this prefix
 * To minimally distinguish the 2, you must provide "Team p" or "Team m"
 
-HireLah! also provides this convenient function for other things that require
+*HireLah!* also provides this convenient function for other things that require
 typing names, such as the metric names. Questions are referenced by their question number
 and interviewees can use their interviewee ID, and a short alias can be given so the feature is not provided.
+
+{empty} +
 
 // tag::gui[]
 === GUI Convenience Features
 
-==== Accessing Interviewee Report
+==== Opening an Interview Session
 
-It might be tedious opening an interviewee's reports via the Command Line Interface command
-`open <interviewee>`. As such, we have implemented a convenient way of accessing interviewee reports.
+It might be tedious opening an interview session via the open command `open <session>`, as session names can be very
+long. As such, we have implemented a convenient way of opening interview sessions via the GUI.
 
-In order to open the report of an interviewee, the user can simply navigate view the interviewees, and click on the card of the interviewee the user want to view.
+In order to open the report of an interviewee, you can simply scroll to the interview session you want to open, and
+double click on it!
 
 ==== Accessing Interviewee Resume
 
-During an interview or while viewing the interview report of an interviewee, the user can open the interviewee's resume easily by clicking on the "View Resume" button. If no resume has been uploaded for the interviewee, the button will say "No Resume" instead.
+During an interview or while viewing the interview report of an interviewee, the user can open the interviewee's resume
+easily by clicking on the "View Resume" button in the Detailed Interviewee Card. If no resume has been uploaded for the
+interviewee, the button will say "No Resume" instead, and clicking on the button will do nothing.
 
-image::Screenshots/OpenResumeGUI.png[width="400"]
+image::Screenshots/OpenResumeGUI.png[]
+{empty} +
 
-=== Keeping Track of Interview Questions
+=== Keeping Track of Interview Rubrics
 
-The user may wish to refer to the list of interview questions created during an interview. As such, a second window showing the list of questions will pop up when the interviewer starts an interview.
+You may wish to refer to the attributes, questions and metrics created during an interview. As an alternative to typing
+the switching views commands (See <<Switching views>>), you may also click on the respective tab headers to view the list.
 
-image::Screenshots/QuestionListInterview.png[width="300"]
+image::Screenshots/InterviewRubricsTab.png[width="300"]
+{empty} +
 // end::gui[]
 
 == FAQ
 
-Q: After an interview session for a role is finished, how do I start a fresh session? +
-A: In the home directory of HireLah! After the first time the app is run, a
-file called `preferences.json` will be created by the app to save your preferences, including
-the file where the session data is saved. Simply change the "sessionsDirectory" field to a new
-directory (with a relative path to the home directory), or just change the name and let HireLah!
-create the new directory for you!
+[.big]##*Q*##: After an interview session for a role is finished, how do I start a fresh session? +
+[.big]##*A*##: You can close the current interview session with the close session command `close session`, then use the new interview session
+command `new <session>` to start a new interview session!
 
-Sample `preferences.json`:
-....
-{
-  "guiSettings" : {
-    "windowWidth" : 1382.0,
-    "windowHeight" : 744.0,
-    "windowCoordinates" : {
-      "x" : -8,
-      "y" : -8
-    }
-  },
-  "sessionsDirectory" : "data"
-}
-....
-After changing the session directory:
-....
-{
-  "guiSettings" : {
-    "windowWidth" : 1382.0,
-    "windowHeight" : 744.0,
-    "windowCoordinates" : {
-      "x" : -8,
-      "y" : -8
-    }
-  },
-  "sessionsDirectory" : "ceo-interview"
-}
-....
-Now HireLah! will start in an empty session called ceo-interview. To switch
-between multiple sessions, just change the sessionDirectory to the correct directory.
+.Now *HireLah!* will start in an empty session called CEO Interview.
+image::Screenshots/FAQ1.png[]
+To switch between multiple sessions, just select the interview session you want in the session screen via
+`open <session>` or by clicking the interview session card.
 
-Q: What happens if the app crashes halfway? Especially during an interview? +
-A: HireLah! saves your work after every change. If the app crashes during an interview,
+{empty} +
+[.big]##*Q*##: What happens if the app crashes halfway? Especially during an interview? +
+[.big]##*A*##: *HireLah!* saves your work after every change. If the app crashes during an interview,
 the next time you open the app, the interviewee you were interviewing will be in
 an "incomplete interview" state. You can simply resume the interview by calling
 the `interview <interviewee>` command again. Note that you cannot perform the usual
 decision phase commands (finding best interviewee, viewing report) on an interviewee whose
 interview is incomplete!
+
+{empty} +
+[.big]##*Q*##: After an interview, can I check how the interviewee would score under metric X? +
+[.big]##*A*##: Yes you can! You can use the use the best interviewees command:
+
+`interviewee -best <total number of interviewees> -m X`
+
+The interviewee's scores would be shown in the best interviewees list, as shown below:
+
+image::Screenshots/QnASeeMetricScore.png[]
+
 
 // tag::summary[]
 == Command Summary
@@ -847,22 +1015,26 @@ e.g. `:set Agility 10`
 * List attributes: `:attributes`
 * List metrics: `:metrics`
 * List questions: `:questions`
+* Show resume: `:resume`
 * End: `:end`
 
 *Decision Phase*
 
 * Open an interviewee report: `open <interviewee>` +
 e.g. `open Jane Doe`
+* Close an interviewee report: `close <interviewee>` +
+e.g. `close Jane Doe`
+* Export interview report of an interviewee: `export <interviewee>`
 * Navigate to answer of interviewee: `q<question number>` +
 e.g. `goto q4`
 * Navigate to a time of interviewee: `at <time>` +
 e.g. `goto 30.00`
-* Create a new metric: `add metric <weightage_name>` +
+* Create a new metric: `add metric <name> -a <attribute> -w <weight> [-a <attribute> -w <weight>]...` +
 e.g. `add metric -a ambition -w 0.9 -a leadership -w 0.1`
 * List metrics: `metrics`
-* Find the Best N candidates based on average attribute: `best <no_of_candidates>`
-* Find the Best N candidates based on a particular attribute: `best <no_of_candidates> -a <attribute>` +
+* Find the Best N candidates based on average attribute: `interviewee -best <no_of_candidates>`
+* Find the Best N candidates based on a particular attribute: `interviewee -best <no_of_candidates> -a <attribute>` +
 e.g. `best 3 -a strength`
-* Find the Best N candidates based on a metric: `best <no_of_candidates> -m <metric>` +
+* Find the Best N candidates based on a metric: `interviewee -best <no_of_candidates> -m <metric>` +
 e.g. `best 5 -m extremeDictatorship`
 //end::summary[]

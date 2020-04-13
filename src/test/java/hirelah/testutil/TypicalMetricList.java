@@ -23,4 +23,7 @@ public class TypicalMetricList {
         }
         return metricList;
     }
+    public static List<Double> getSamplemetricWeight() {
+        return WEIGHT1;
+    }
 }

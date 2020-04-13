@@ -1,0 +1,6 @@
+{
+  "metrics" : [ {
+    "name" : not a valid metric
+    "attributeToWeight" : "kind-a0.8-asmart-a0.9-a"
+  } ]
+}

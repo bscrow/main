@@ -160,87 +160,86 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
-// tag::undoredo[]
-=== [Proposed] Undo/Redo feature
-==== Proposed Implementation
+// tag::findbestfeature[]
+=== Find Best Interviewees Feature
+==== Description
+When an interviewer wants to take a decision on hiring interviewees, it will be cumbersome for the interviewer to take
+a look of the interviewees' score, to take a decision, especially when it comes to a large scale hiring pool. Therefore,
+HireLah! provides a Find Best Interviewees feature to show the top interviewees, depending on how many employees the
+company need, and what kind of employees does the company desire.
 
-The undo/redo mechanism is facilitated by `VersionedAddressBook`.
-It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`.
-Additionally, it implements the following operations:
+==== Implementation
 
-* `VersionedAddressBook#commit()` -- Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` -- Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` -- Restores a previously undone address book state from its history.
+The Find Best Interviewee feature is facilitated by the `BestCommand`. It has the following fields:
 
-These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
+* `numberOfInterviewees`: The number of interviewees that the interviewer wants to hire
+* `paramPrefix`: The prefix of the parameter that wants to be used as a comparator between interviewees.
+* `paramType`: The type of parameter that wants to be used by the interviewer. The possible values are the following:
+`OVERALL`, `METRIC`, and `ATTRIBUTE`.
 
-Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
+Given below are several examples of usage scenarios when the user prompts for Best Interviewees:
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+Scenario 1. When the user provides a command with incomplete compulsory fields (e.g. number of interviewees), the
+`BestCommandParser` will throw `ParseException`, informing that the size provided is not an integer because the parser
+takes the preamble of the command to get the value for `numberOfInterviewees`.
 
-image::UndoRedoState0.png[]
+image::FindBestScenario1SequenceDiagram.png[]
 
-Step 2. The user executes `delete 5` command to delete the 5th person in the address book. The `delete` command calls `Model#commitAddressBook()`, causing the modified state of the address book after the `delete 5` command executes to be saved in the `addressBookStateList`, and the `currentStatePointer` is shifted to the newly inserted address book state.
+Scenario 2. When the user provides a command with valid fields, yet there are no interviewees that has been interviewed,
+a `CommandException` is thrown instead, informing that there is no interviewee that has been interviewed, thus no result
+can be shown.
 
-image::UndoRedoState1.png[]
+image::FindBestScenario2SequenceDiagram.png[]
 
-Step 3. The user executes `add n/David ...` to add a new person. The `add` command also calls `Model#commitAddressBook()`, causing another modified address book state to be saved into the `addressBookStateList`.
+Scenario 3. When the user provides a command with multiple parameters that want to be used for a comparator, a `ParseException`
+is thrown instead, informing that the user has provided more than 1 parameter.
 
-image::UndoRedoState2.png[]
+image::FindBestScenario3SequenceDiagram.png[]
 
-[NOTE]
-If a command fails its execution, it will not call `Model#commitAddressBook()`, so the address book state will not be saved into the `addressBookStateList`.
+Here is the Full Sequence Diagram for `FindBestCommand` for an ideal case:
 
-Step 4. The user now decides that adding the person was a mistake and decides to undo that action by executing the `undo` command. The `undo` command will call `Model#undoAddressBook()`, which will shift the `currentStatePointer` once to the left, pointing it to the previous address book state, and restores the address book to that state.
+image::FindBestSequenceDiagram.png[]
 
-image::UndoRedoState3.png[]
+===== Getting the best interviewees from Model
+To obtain the list of best interviewees, the `BestCommand` has a private method called `getBest` which takes in a `model`,
+a `comparator`, and `size`. The `getBest` method retrieves the best interviewees using an Iterator design pattern. It does
+the following:
 
-[NOTE]
-If the `currentStatePointer` is at index 0, pointing to the initial address book state, then there are no previous address book states to restore. The `undo` command uses `Model#canUndoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the undo.
+* Retrieve `intervieweeList` and `bestNIntervieweeList` from `model`
+* Clear the current `bestNIntervieweeList`
+* Since the `comparator` only compares interviewees that have been interviewed, a filter operation needs to be done to
+filter out interviewees that have not been interviewed
+* Sort the filtered interviewees based on the `comparator`
+* Insert the first `size` interviewees to the `bestNIntervieweeList`
 
-The following sequence diagram shows how the undo operation works:
+There are cases where `getBest` method does not reflect exactly the number of interviewees that the user entered:
 
-image::UndoSequenceDiagram.png[]
+* The number of interviewees that has been interviewed is less than the number of interviewees the user prompted. In
+this case, all the interviewed interviewees will be shown, in a sorted order based on their score. Therefore, the number
+of interviewees shown will be less than what the user entered.
 
-NOTE: The lifeline for `UndoCommand` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
+* There are ties between interviewees at the cut-off position. For example, a case where the fifth interviewee, and the
+sixth interviewee have the same scores, while the user prompts for the best 5 interviewees. In this case, the sixth interviewee
+will also be shown. Therefore, the number of interviewees shown will be more than what the user entered.
 
-The `redo` command does the opposite -- it calls `Model#redoAddressBook()`, which shifts the `currentStatePointer` once to the right, pointing to the previously undone state, and restores the address book to that state.
+Below is the activity diagram to summarize and show how `getBest` method works:
 
-[NOTE]
-If the `currentStatePointer` is at index `addressBookStateList.size() - 1`, pointing to the latest address book state, then there are no undone address book states to restore. The `redo` command uses `Model#canRedoAddressBook()` to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-
-Step 5. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
-
-image::UndoRedoState4.png[]
-
-Step 6. The user executes `clear`, which calls `Model#commitAddressBook()`. Since the `currentStatePointer` is not pointing at the end of the `addressBookStateList`, all address book states after the `currentStatePointer` will be purged. We designed it this way because it no longer makes sense to redo the `add n/David ...` command. This is the behavior that most modern desktop applications follow.
-
-image::UndoRedoState5.png[]
-
-The following activity diagram summarizes what happens when a user executes a new command:
-
-image::CommitActivityDiagram.png[]
+image::GetBestActivityDiagram.png[]
 
 ==== Design Considerations
 
-===== Aspect: How undo & redo executes
+===== Aspect: How to display the best interviewees
 
-* **Alternative 1 (current choice):** Saves the entire address book.
+* **Alternative 1 (current choice):** Clears the current content of best interviewees, then add the
+best interviewees one by one.
 ** Pros: Easy to implement.
-** Cons: May have performance issues in terms of memory usage.
-* **Alternative 2:** Individual command knows how to undo/redo by itself.
-** Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
-** Cons: We must ensure that the implementation of each individual command are correct.
+** Cons: Have a slightly lower execution time.
+* **Alternative 2:** Creates a new ObservableList for the best interviewee list, then change the Model's
+best interviewees list to point to this list, and the MainWindow's BestIntervieweeListPanel.
+** Pros: Have a slightly faster theoretical execution time.
+** Cons: The implementation is slightly trickier compared to alternative 1 since it involves multiple components of the app.
 
-===== Aspect: Data structure to support the undo/redo commands
-
-* **Alternative 1 (current choice):** Use a list to store the history of address book states.
-** Pros: Easy for new Computer Science student undergraduates to understand, who are likely to be the new incoming developers of our project.
-** Cons: Logic is duplicated twice. For example, when a new command is executed, we must remember to update both `HistoryManager` and `VersionedAddressBook`.
-* **Alternative 2:** Use `HistoryManager` for undo/redo
-** Pros: We do not need to maintain a separate list, and just reuse what is already in the codebase.
-** Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things.
-// end::undoredo[]
+// end::findbestfeature[]
 
 // tag::dataencryption[]
 === [Proposed] Data Encryption

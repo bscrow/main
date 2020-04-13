@@ -1,0 +1,49 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":NormalParser" as NormalParser LOGIC_COLOR
+participant ":IntervieweeParser" as IntervieweeParser LOGIC_COLOR
+participant ":BestCommandParser" as BestCommandParser LOGIC_COLOR
+end box
+
+[-> LogicManager : execute("interviewee -best -a leadership -m extremeDictatorship")
+activate LogicManager
+
+LogicManager -> NormalParser : parseCommand("interviewee -best -a leadership -m extremeDictatorship")
+activate NormalParser
+
+create IntervieweeParser
+NormalParser -> IntervieweeParser : parse("-best -a leadership -m extremeDictatorship")
+activate IntervieweeParser
+
+create BestCommandParser
+IntervieweeParser -> BestCommandParser : parse("-a leadership -m extremeDictatorship")
+activate BestCommandParser
+
+BestCommandParser -> BestCommandParser : getNumberOfTotalParams()
+activate BestCommandParser
+
+BestCommandParser --> BestCommandParser
+deactivate BestCommandParser
+
+BestCommandParser --> IntervieweeParser : throw ParseException("Multiple parameters for comparisons provided.")
+deactivate BestCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+BestCommandParser -[hidden]-> IntervieweeParser
+destroy BestCommandParser
+
+IntervieweeParser --> NormalParser : throw ParseException("Multiple parameters for comparisons provided.")
+deactivate IntervieweeParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+IntervieweeParser -[hidden]-> NormalParser
+destroy IntervieweeParser
+
+NormalParser --> LogicManager : throw ParseException("Multiple parameters for comparisons provided.")
+deactivate NormalParser
+
+[<--LogicManager
+deactivate LogicManager
+
+@enduml

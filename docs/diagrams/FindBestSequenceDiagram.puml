@@ -1,0 +1,90 @@
+@startuml
+!include style.puml
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":NormalParser" as NormalParser LOGIC_COLOR
+participant ":IntervieweeParser" as IntervieweeParser LOGIC_COLOR
+participant ":BestCommandParser" as BestCommandParser LOGIC_COLOR
+participant "d:BestCommand" as BestCommand LOGIC_COLOR
+participant ":ToggleCommandResult" as ToggleCommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant ":Model" as Model MODEL_COLOR
+end box
+
+box Ui UI_COLOR_T1
+participant ":MainWindow" as MainWindow UI_COLOR
+
+[-> LogicManager : execute("interviewee -best 5 -a leadership")
+activate LogicManager
+
+LogicManager -> NormalParser : parseCommand("interviewee -best 5 -a leadership")
+activate NormalParser
+
+create IntervieweeParser
+NormalParser -> IntervieweeParser : parse("-best 5 -a leadership")
+activate IntervieweeParser
+
+create BestCommandParser
+IntervieweeParser -> BestCommandParser : parse("5 -a leadership")
+activate BestCommandParser
+
+create BestCommand
+BestCommandParser -> BestCommand
+activate BestCommand
+
+BestCommand --> BestCommandParser : d
+deactivate BestCommand
+
+BestCommandParser --> IntervieweeParser : d
+deactivate BestCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+BestCommandParser -[hidden]-> IntervieweeParser
+destroy BestCommandParser
+
+IntervieweeParser --> NormalParser : d
+deactivate IntervieweeParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+IntervieweeParser -[hidden]-> NormalParser
+destroy IntervieweeParser
+
+NormalParser --> LogicManager : d
+deactivate NormalParser
+
+LogicManager -> BestCommand : execute()
+activate BestCommand
+
+BestCommand -> BestCommand : getBest()
+activate BestCommand
+
+BestCommand -> Model
+activate Model
+
+Model --> BestCommand
+deactivate Model
+
+BestCommand --> BestCommand
+deactivate BestCommand
+
+create ToggleCommandResult
+BestCommand -> ToggleCommandResult
+activate ToggleCommandResult
+
+ToggleCommandResult -> MainWindow : displayResult()
+activate MainWindow
+
+MainWindow --> ToggleCommandResult
+deactivate MainWindow
+
+ToggleCommandResult --> BestCommand
+deactivate ToggleCommandResult
+
+BestCommand --> LogicManager : result
+deactivate BestCommand
+
+[<--LogicManager
+deactivate LogicManager
+
+@enduml

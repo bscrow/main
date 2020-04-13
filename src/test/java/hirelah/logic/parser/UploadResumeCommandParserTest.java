@@ -1,4 +1,4 @@
-package seedu.address.logic.parser;
+package hirelah.logic.parser;
 
 import static hirelah.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static hirelah.logic.commands.CommandTestUtility.VALID_INTERVIEWEE_JANE;
@@ -11,7 +11,6 @@ import static hirelah.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import org.junit.jupiter.api.Test;
 
 import hirelah.logic.commands.UploadResumeCommand;
-import hirelah.logic.parser.UploadResumeCommandParser;
 
 class UploadResumeCommandParserTest {
 

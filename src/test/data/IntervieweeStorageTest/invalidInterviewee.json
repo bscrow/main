@@ -1,0 +1,16 @@
+{
+  "uniqueIntervieweeId" : 3,
+  "interviewees" : [ {
+    "fullName" : 123,
+    "id" : 1,
+    "alias" : "lucky boy",
+    "resume" : null,
+    "transcript" : false
+  },{
+    "fullName" : "invalid alias",
+    "id" : 2,
+    "alias" : 123,
+    "resume" : null,
+    "transcript" : false
+  } ]
+}

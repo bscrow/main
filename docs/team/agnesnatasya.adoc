@@ -104,7 +104,7 @@ include::../UserGuide.adoc[tag=attributes]
 include::../UserGuide.adoc[tag=questions]
 
 === Open Report Command
-include::../UserGuide.adoc[tag=report]
+include::../UserGuide.adoc[tag=open]
 
 === Navigation Command
 include::../UserGuide.adoc[tag=navigation]

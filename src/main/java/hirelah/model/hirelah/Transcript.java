@@ -185,6 +185,7 @@ public class Transcript {
             return false;
         }
         Transcript comparison = (Transcript) other;
+
         return (comparison.completed == completed)
                 && comparison.attributeToScoreData.equals(getAttributeToScoreData())
                 && comparison.remarkList.equals(remarkList);

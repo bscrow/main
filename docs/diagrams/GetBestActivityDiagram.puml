@@ -1,0 +1,21 @@
+@startuml
+start
+:Retrieves the list of interviewees and the list of best interviewees that is recently shown;
+:Clears the list of recent best interviewees;
+:Filters the list of interviewees that has been interviewed;
+:Sorts the filtered list, based on the comparator provided;
+:Choose a number n to be the minimum between the number of interviewed interviewees and the number of interviewees provided;
+if (n is zero?) then (yes)
+:throw CommandException;
+stop
+else (no)
+while (is the size of best interviewees list equal to n?)
+	:Insert the current interviewee to the best interviewees list;
+	:Go to the next interviewee;
+endwhile
+while (is the current interviewee has the same score as the last interviewee that is inserted to the best interviewee list and are there interviewed interviewees left?)
+	:Insert the current interviewee to the list;
+	:Go to the next interviewee;
+endwhile
+stop
+@enduml

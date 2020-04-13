@@ -6,6 +6,7 @@ participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":NormalParser" as NormalParser LOGIC_COLOR
 participant ":AddCommandParser" as AddCommandParser LOGIC_COLOR
 participant "d:AddAttributeCommand" as AddAttributeCommand LOGIC_COLOR
+participant ":CommandUtil" as CommandUtil LOGIC_COLOR
 participant ":CommandResult" as CommandResult LOGIC_COLOR
 end box
 
@@ -53,6 +54,13 @@ activate Model
 
 Model --> AddAttributeCommand
 deactivate Model
+
+create CommandUtil
+AddAttributeCommand -> CommandUtil : saveAttributes(Model, Storage)
+activate CommandUtil
+
+CommandUtil --> AddAttributeCommand
+deactivate CommandUtil
 
 create CommandResult
 AddAttributeCommand -> CommandResult
